@@ -32,8 +32,7 @@ Future<bool> openNativeScreen(
   required String title,
   required String message,
 }) {
-  return ref.read(nativeBridgeProvider).openNativeScreen(
-        title: title,
-        message: message,
-      );
+  return ref
+      .read(nativeBridgeProvider)
+      .openNativeScreen(title: title, message: message);
 }

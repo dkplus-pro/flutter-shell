@@ -1,0 +1,6 @@
+# Copy to key.properties with real values; the file is git-ignored.
+# v0 uses debug signing only; do not commit real keystore material.
+storeFile=upload-keystore.jks
+storePassword=REPLACE_ME
+keyAlias=upload
+keyPassword=REPLACE_ME

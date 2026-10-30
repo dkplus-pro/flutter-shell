@@ -8,7 +8,7 @@ analyzer:
     - "**/pigeons/**"
 
 formatter:
-  page_width: 100
+  page_width: 80
 
 linter:
   rules:

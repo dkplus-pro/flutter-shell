@@ -35,9 +35,8 @@ Uri _uri(String path) => Uri.parse('https://api.example.invalid$path');
 
 void main() {
   test('returns decoded JSON map on 200', () async {
-    final dio = Dio(
-      BaseOptions(baseUrl: 'https://api.example.invalid'),
-    )..httpClientAdapter = _FakeAdapter(200, <String, Object?>{'ok': true});
+    final dio = Dio(BaseOptions(baseUrl: 'https://api.example.invalid'))
+      ..httpClientAdapter = _FakeAdapter(200, <String, Object?>{'ok': true});
     final client = DioApiClient(
       baseUrl: 'https://api.example.invalid',
       dio: dio,
@@ -49,9 +48,8 @@ void main() {
   });
 
   test('maps non-JSON body to NetworkFailure', () async {
-    final dio = Dio(
-      BaseOptions(baseUrl: 'https://api.example.invalid'),
-    )..httpClientAdapter = _FakeAdapter(200, <String>['not', 'a', 'map']);
+    final dio = Dio(BaseOptions(baseUrl: 'https://api.example.invalid'))
+      ..httpClientAdapter = _FakeAdapter(200, <String>['not', 'a', 'map']);
     final client = DioApiClient(
       baseUrl: 'https://api.example.invalid',
       dio: dio,
@@ -64,9 +62,8 @@ void main() {
   });
 
   test('maps HTTP 500 DioException to NetworkFailure', () async {
-    final dio = Dio(
-      BaseOptions(baseUrl: 'https://api.example.invalid'),
-    )..httpClientAdapter = _FakeAdapter(500, <String, Object?>{'e': 1});
+    final dio = Dio(BaseOptions(baseUrl: 'https://api.example.invalid'))
+      ..httpClientAdapter = _FakeAdapter(500, <String, Object?>{'e': 1});
     final client = DioApiClient(
       baseUrl: 'https://api.example.invalid',
       dio: dio,

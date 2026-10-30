@@ -1,4 +1,3 @@
-
 /// Layout spacing scale (dp).
 abstract final class AppSpacing {
   static const double xs = 4;

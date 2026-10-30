@@ -8,11 +8,8 @@ enum AppEnv {
   static AppEnv parse(String raw) {
     return AppEnv.values.firstWhere(
       (env) => env.name == raw,
-      orElse: () => throw ArgumentError.value(
-        raw,
-        'APP_ENV',
-        'Expected dev|prod',
-      ),
+      orElse: () =>
+          throw ArgumentError.value(raw, 'APP_ENV', 'Expected dev|prod'),
     );
   }
 
@@ -24,7 +21,7 @@ enum AppEnv {
   /// Placeholder base URL; real backends must be injected per environment and
   /// never committed as secrets.
   String get apiBaseUrl => const String.fromEnvironment(
-        'API_BASE_URL',
-        defaultValue: 'https://api.example.invalid',
-      );
+    'API_BASE_URL',
+    defaultValue: 'https://api.example.invalid',
+  );
 }

@@ -26,10 +26,7 @@ class _FailingHostApi extends shell_api.ShellHostApi {
 const String _flutterApiChannel =
     'dev.flutter.pigeon.native_bridge.ShellFlutterApi.onNativeScreenResult';
 
-void _pushResult({
-  required bool confirmed,
-  required String message,
-}) {
+void _pushResult({required bool confirmed, required String message}) {
   final binding = TestDefaultBinaryMessengerBinding.instance;
   unawaited(
     binding.defaultBinaryMessenger.handlePlatformMessage(

@@ -54,6 +54,7 @@
 | DEC-013 | Android baseline：**compileSdk 36 / targetSdk 36 / minSdk 24 / JDK 17**；原生演示页用 **Jetpack Compose**（BOM 2026.09.00） | 与 Flutter 3.47.9 默认值一致；Compose 是现代原生 UI 基座 | Flutter 3.47.9 模板为 AGP 9.1.0 + Kotlin 2.4.0（AGP 内置 Kotlin）；Compose 编译器插件版本必须等于模板 Kotlin 版本；Gradle 以模板 wrapper 为准 |
 | DEC-014 | 文档分层：`00` 范围/决策、`01` 架构、`02` 桥接契约、`03` 实施计划、`04` 验收；规范写入根 `AGENTS.md`；生成代码与 `pubspec.lock` 一律提交 | flash 模型可按阶段执行；CI 可检查 codegen 漂移 | 文档变更必须与代码同提交；不得出现未记录的架构改动 |
 | DEC-019 | `core/router/app_router.dart` 允许 import feature 页面；`check_imports.sh` 对 R3 显式放行该文件 | `01` §3 将 router 放在 `core/router/`，而 R3 禁止 core→features；路由的职责就是把路径映射到页面，二者冲突。取「文档树优先 + 检查脚本显式例外」，例外面最小化（仅此一个文件，且仅 R3） | 其余 core 代码仍禁止 import features |
+| DEC-020 | `dart format` 页宽统一 **80**（03 §1.2 初稿写 100） | very_good_analysis 11 的 `lines_longer_than_80_chars` 与 formatter.page_width 100 互相矛盾，80 列是 lint 唯一兼容值；AGENTS 禁止关规则 | 根 analysis_options.yaml 已改为 80 |
 | DEC-017 | Compose BOM 使用 **2025.09.01**（而非版本矩阵初稿的 2026.09.00），其余 DEC-013 值不变 | BOM 2026.09.00 解析出的 `material-ripple-android:1.12.1`、`foundation-android:1.12.1` 等要求 compileSdk ≥37，而 DEC-013 锁定 compileSdk 36 且 AGP 9.1.0 最高支持 36；Gradle 构建实测失败 | 保持 compileSdk 36；material3/ui 由 BOM 2025.09.01 解析（Compose 1.9.x 线）；activity-compose 1.13.0、coroutines 1.11.0 维持不变 |
 | DEC-018 | iOS 生成物路径：`packages/native_bridge/ios/native_bridge/Sources/native_bridge/Generated/ShellApi.g.swift`（SPM 模板） | Flutter 3.47.9 插件模板使用 SPM 布局（podspec source_files 覆盖 `native_bridge/Sources/native_bridge/**/*`） | tool/gen.sh 用该路径变量固化 |
 

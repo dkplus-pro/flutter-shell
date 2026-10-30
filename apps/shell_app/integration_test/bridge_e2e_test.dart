@@ -10,9 +10,11 @@ void main() {
     final info = await bridge.getSystemInfo();
     expect(info.platform, 'android');
     expect(info.osVersion, contains('API '));
-    final ticks = await bridge.ticks().take(2).toList().timeout(
-          const Duration(seconds: 6),
-        );
+    final ticks = await bridge
+        .ticks()
+        .take(2)
+        .toList()
+        .timeout(const Duration(seconds: 6));
     expect(ticks.length, 2);
     expect(ticks.first, 0);
   });

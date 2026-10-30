@@ -30,11 +30,7 @@ class BridgeDemoPage extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.bridgeDemoTitle)),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
-        children: const [
-          _SystemInfoCard(),
-          _TickerCard(),
-          _NativeScreenCard(),
-        ],
+        children: const [_SystemInfoCard(), _TickerCard(), _NativeScreenCard()],
       ),
     );
   }
@@ -102,9 +98,7 @@ class _InfoRow extends StatelessWidget {
             width: 110,
             child: Text(label, style: theme.textTheme.bodySmall),
           ),
-          Expanded(
-            child: Text(value, style: theme.textTheme.bodyMedium),
-          ),
+          Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
         ],
       ),
     );
@@ -179,9 +173,9 @@ class _NativeScreenCardState extends ConsumerState<_NativeScreenCard> {
       );
     } on Exception catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.errorTitle}: $error')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('${l10n.errorTitle}: $error')));
       }
     } finally {
       if (mounted) {

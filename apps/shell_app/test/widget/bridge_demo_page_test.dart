@@ -95,15 +95,14 @@ void main() {
 
 class _StubHostApi extends shell_api.ShellHostApi {
   @override
-  Future<shell_api.SystemInfo> getSystemInfo() async =>
-      shell_api.SystemInfo(
-        platform: 'android',
-        osVersion: 'Android 16 (API 36)',
-        deviceModel: 'Pixel 7',
-        manufacturer: 'Google',
-        appVersion: '1.0.0',
-        buildNumber: '42',
-      );
+  Future<shell_api.SystemInfo> getSystemInfo() async => shell_api.SystemInfo(
+    platform: 'android',
+    osVersion: 'Android 16 (API 36)',
+    deviceModel: 'Pixel 7',
+    manufacturer: 'Google',
+    appVersion: '1.0.0',
+    buildNumber: '42',
+  );
 
   @override
   Future<bool> openNativeScreen(String title, String message) async => true;
