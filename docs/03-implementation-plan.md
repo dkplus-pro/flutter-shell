@@ -212,7 +212,7 @@ analyzer:
     - "**/lib/src/generated/**"
 
 formatter:
-  page_width: 100
+  page_width: 80   # DEC-020：与 very_good_analysis 的 80 字符 lint 对齐
 
 linter:
   rules:
@@ -442,7 +442,7 @@ fvm dart run pigeon \
   --swift_out "ios/<iOS 源码目录>/Generated/ShellApi.g.swift"
 ```
 
-`<iOS 源码目录>` 按 P1 模板实际结构确定（CocoaPods 通常 `ios/Classes/`，SPM 通常 `ios/Sources/native_bridge/`）；在 `tool/gen.sh` 中用变量固化并在 evidence 记录，不要硬编码猜测。
+iOS 源码目录按 P1 模板实际结构确定；实际为 SPM 布局 `ios/native_bridge/Sources/native_bridge/Generated/`（DEC-018），已固化在 `tool/gen.sh`。
 
 检查生成物：`ShellHostApi`、`TickStreamApi`/`TicksStreamHandler`、`ShellFlutterApi`、`SystemInfo`、`NativeScreenResult`、`FlutterError`、`PigeonEventSink`（Kotlin 生成包为 `com.dk.fluttershell.bridge.generated`）。**记录实际类名到 evidence。**
 

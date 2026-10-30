@@ -74,7 +74,7 @@ abstract class ShellFlutterApi {
 | --- | --- | --- |
 | Dart | `packages/native_bridge/lib/src/generated/shell_api.g.dart` | 禁止手改，提交 |
 | Kotlin | `packages/native_bridge/android/src/main/kotlin/com/dk/fluttershell/bridge/generated/ShellApi.g.kt` | 包名 `com.dk.fluttershell.bridge.generated`，提交 |
-| Swift | `packages/native_bridge/ios/<iOS 源码目录>/Generated/ShellApi.g.swift` | 本轮只生成 + 桩实现，不编译，提交；源码目录按模板实际结构确定（CocoaPods 通常 `Classes/`，SPM 通常 `Sources/native_bridge/`），P1 记录并回填本表 |
+| Swift | `packages/native_bridge/ios/native_bridge/Sources/native_bridge/Generated/ShellApi.g.swift` | 本轮只生成 + 桩实现，不编译，提交；SPM 模板实际路径（DEC-018） |
 
 ### 2.2 生成命令
 
@@ -90,7 +90,7 @@ fvm dart run pigeon \
   --swift_out "ios/<iOS 源码目录>/Generated/ShellApi.g.swift"
 ```
 
-`<iOS 源码目录>` 在 P1/P3 按 `flutter create` 的实际模板确定（CocoaPods 或 SPM），由 `tool/gen.sh` 用变量固化，并记录到 evidence 与本表；不要凭本示例猜测。
+Swift 输出路径按 `flutter create` 插件 SPM 模板实际结构确定并已固化在 `tool/gen.sh`（DEC-018）。
 
 注意：
 

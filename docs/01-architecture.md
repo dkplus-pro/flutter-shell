@@ -137,7 +137,7 @@ flutter-shell/
 │       │   ├── src/main/res/values/themes.xml
 │       │   └── src/test/kotlin/com/dk/fluttershell/bridge/SystemInfoMapperTest.kt
 │       └── ios/
-│           └── <iOS 源码目录>/{NativeBridgePlugin.swift, Generated/ShellApi.g.swift}
+│           └── native_bridge/Sources/native_bridge/{NativeBridgePlugin.swift, Generated/ShellApi.g.swift}
 ```
 
 说明：
@@ -350,7 +350,7 @@ sequenceDiagram
   - HostApi 方法抛 `PigeonError(code: "UNIMPLEMENTED", ...)`；
   - 事件流注册一个立即报错的 handler；
   - FlutterApi 代理不需要在桩阶段调用。
-- Podspec 的 `source_files` 必须覆盖 `Classes/**/*`，包含 `Generated/`。
+- 插件使用 SPM 布局（DEC-018）：podspec `source_files` 为 `native_bridge/Sources/native_bridge/**/*`，覆盖 `Generated/`。
 - **本轮不执行 `pod install`、不编译、不运行、不进 CI**；`04-acceptance.md` 只做文件存在性检查。任何“iOS 可用”的表述都属于不合格交付。
 
 ## 14. 性能策略
@@ -480,7 +480,7 @@ flutter build apk --release \
 
 ## 19. 已知限制与技术债
 
-1. iOS 仅结构桩，未编译未运行。
+1. iOS 仅结构桩，未编译未运行（生成路径见 DEC-018）。
 2. GitHub Actions 未在远程实际执行（无远程仓库）。
 3. `NativeResultBus` 为进程级单例，仅支持单 Flutter engine。
 4. 原生演示页与回传属演示资产，接真实原生能力时需替换或迁移。

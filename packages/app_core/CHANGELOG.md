@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- Initial shell infrastructure: env, logging, error model, network/storage abstractions.
