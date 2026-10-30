@@ -1,0 +1,14 @@
+name: flutter_shell_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+workspace:
+  - apps/shell_app
+  - packages/app_core
+  - packages/app_ui
+  - packages/native_bridge
+
+dev_dependencies:
+  very_good_analysis: 11.0.0

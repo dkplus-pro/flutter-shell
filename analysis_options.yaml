@@ -1,0 +1,14 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/l10n/generated/**"
+    - "**/lib/src/generated/**"
+
+formatter:
+  page_width: 100
+
+linter:
+  rules:
+    public_member_api_docs: false

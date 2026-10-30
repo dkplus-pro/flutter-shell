@@ -1,0 +1,31 @@
+name: fluttershell
+description: "Flutter shell app: composable host for pages, routing and native bridge demo."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  app_core:
+    path: ../../packages/app_core
+  app_ui:
+    path: ../../packages/app_ui
+  native_bridge:
+    path: ../../packages/native_bridge
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

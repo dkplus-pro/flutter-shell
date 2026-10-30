@@ -1,0 +1,27 @@
+name: native_bridge
+description: "Pigeon-based Flutter <-> native bridge plugin (Android implemented, iOS UNIMPLEMENTED stub)."
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: '>=3.3.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.dk.fluttershell.bridge
+        pluginClass: NativeBridgePlugin
+      ios:
+        pluginClass: NativeBridgePlugin

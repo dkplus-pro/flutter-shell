@@ -1,0 +1,15 @@
+.fvm/
+.dart_tool/
+build/
+coverage/
+**/android/local.properties
+**/android/key.properties
+*.jks
+*.keystore
+**/ios/Pods/
+**/ios/.symlinks/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+.DS_Store
+.idea/
+*.iml
