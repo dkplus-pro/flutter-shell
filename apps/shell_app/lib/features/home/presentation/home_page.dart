@@ -1,11 +1,11 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:fluttershell/core/router/app_router.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
-/// Baseline home page. Shows the hello copy; the bridge demo entry button is
-/// added when the bridge page lands (P4).
+/// Baseline home page: hello copy plus the entry to the bridge demo.
 class HomePage extends ConsumerWidget {
   const new({super.key});
 
@@ -29,6 +29,11 @@ class HomePage extends ConsumerWidget {
                 l10n.helloSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              AppPrimaryButton(
+                label: l10n.openBridgeDemo,
+                onPressed: () => context.push(AppRoutes.bridgeDemo),
               ),
             ],
           ),

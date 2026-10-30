@@ -103,7 +103,7 @@ fvm dart run pigeon \
 | 契约 | Dart | Kotlin | Swift |
 | --- | --- | --- | --- |
 | `ShellHostApi` | 具体类 `ShellHostApi` | 接口 + `ShellHostApi.setUp(messenger, api)` | protocol + setup |
-| `TickStreamApi` | 类 `TickStreamApi`，实例方法 `Stream<int> ticks()` | `TicksStreamHandler`（继承后实现 `onListen/onCancel`） | `TicksStreamHandler` |
+| `TickStreamApi` | 顶层函数 `Stream<int> ticks({String instanceName})`（Pigeon 29 实际生成形态） | `TicksStreamHandler`（继承后实现 `onListen/onCancel`） | `TicksStreamHandler` |
 | `ShellFlutterApi` | 抽象类 + `ShellFlutterApi.setUp(impl)` | 类 `ShellFlutterApi(messenger)`，方法为 `suspend` | 类 + 异步方法 |
 | `SystemInfo` | 不可变数据类 | data class（`Long`/`String`） | struct |
 | `NativeScreenResult` | 不可变数据类 | data class（`Boolean`/`String`） | struct |

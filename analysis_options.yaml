@@ -5,6 +5,7 @@ analyzer:
     - "**/*.g.dart"
     - "**/l10n/generated/**"
     - "**/lib/src/generated/**"
+    - "**/pigeons/**"
 
 formatter:
   page_width: 100

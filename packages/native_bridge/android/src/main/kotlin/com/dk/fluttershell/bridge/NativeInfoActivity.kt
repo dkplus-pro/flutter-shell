@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,9 @@ class NativeInfoActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val title = intent.getStringExtra(EXTRA_TITLE).orEmpty()
         val message = intent.getStringExtra(EXTRA_MESSAGE).orEmpty()
+        onBackPressedDispatcher.addCallback(this) {
+            finishWithResult(confirmed = false)
+        }
         setContent {
             MaterialTheme {
                 val nativeConfirm = stringResource(R.string.native_confirm)
