@@ -1,38 +1,77 @@
 package com.dk.fluttershell.bridge
 
+import android.app.Activity
+import android.util.Log
+import com.dk.fluttershell.bridge.generated.ShellFlutterApi
+import com.dk.fluttershell.bridge.generated.ShellHostApi
+import com.dk.fluttershell.bridge.generated.TicksStreamHandler
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 
-/** NativeBridgePlugin */
+/// Registers the Pigeon-generated APIs on the engine and forwards native
+/// screen results back to Dart. Also owns the Activity reference through
+/// [ActivityAware]; no static Activity references are kept.
 class NativeBridgePlugin :
     FlutterPlugin,
-    MethodCallHandler {
-    // The MethodChannel that will the communication between Flutter and native Android
-    //
-    // This local reference serves to register the plugin with the Flutter Engine and unregister it
-    // when the Flutter Engine is detached from the Activity
-    private lateinit var channel: MethodChannel
+    ActivityAware {
+    private var activity: Activity? = null
+    private var hostApi: ShellHostApiImpl? = null
+    private var ticksHandler: TicksStreamHandlerImpl? = null
+    private var ticksChannel: com.dk.fluttershell.bridge.generated.TicksEventChannel? = null
+    private var resultDispatcher: NativeResultDispatcher? = null
+    private var dispatcherScope: CoroutineScope? = null
 
-    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "native_bridge")
-        channel.setMethodCallHandler(this)
-    }
+    override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        val context = binding.applicationContext
+        hostApi = ShellHostApiImpl(
+            contextProvider = { context },
+            activityProvider = { activity },
+        )
+        ShellHostApi.setUp(binding.binaryMessenger, hostApi)
 
-    override fun onMethodCall(
-        call: MethodCall,
-        result: Result
-    ) {
-        if (call.method == "getPlatformVersion") {
-            result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else {
-            result.notImplemented()
-        }
+        ticksHandler = TicksStreamHandlerImpl()
+        ticksChannel = TicksStreamHandler.register(binding.binaryMessenger, ticksHandler!!)
+
+        dispatcherScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        resultDispatcher = NativeResultDispatcher(
+            flutterApi = ShellFlutterApi(binding.binaryMessenger),
+            scope = dispatcherScope!!,
+        )
+        NativeResultBus.install(resultDispatcher!!)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+        ShellHostApi.setUp(binding.binaryMessenger, null)
+        ticksChannel?.setStreamHandler(null)
+        ticksChannel = null
+        ticksHandler?.dispose()
+        ticksHandler = null
+        resultDispatcher?.cancel()
+        resultDispatcher = null
+        dispatcherScope?.cancel()
+        dispatcherScope = null
+        NativeResultBus.uninstall()
+        hostApi = null
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        activity = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        activity = null
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        activity = binding.activity
+    }
+
+    override fun onDetachedFromActivity() {
+        activity = null
     }
 }
