@@ -1,12 +1,11 @@
+import 'package:app_ui/src/theme/app_tokens.dart';
 import 'package:flutter/material.dart';
-
-import '../theme/app_tokens.dart';
 
 /// Card used to group a titled section of content on a page.
 ///
 /// [title] and [child] are caller-provided; the card carries no copy itself.
 class AppSectionCard extends StatelessWidget {
-  const AppSectionCard({required this.title, required this.child, super.key});
+  const new({required this.title, required this.child, super.key});
 
   final String title;
   final Widget child;
@@ -16,7 +15,9 @@ class AppSectionCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(

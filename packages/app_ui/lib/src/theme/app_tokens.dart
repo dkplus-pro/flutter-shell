@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 /// Layout spacing scale (dp).
 abstract final class AppSpacing {

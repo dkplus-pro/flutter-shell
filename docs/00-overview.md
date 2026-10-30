@@ -54,6 +54,9 @@
 | DEC-013 | Android baseline：**compileSdk 36 / targetSdk 36 / minSdk 24 / JDK 17**；原生演示页用 **Jetpack Compose**（BOM 2026.09.00） | 与 Flutter 3.47.9 默认值一致；Compose 是现代原生 UI 基座 | Flutter 3.47.9 模板为 AGP 9.1.0 + Kotlin 2.4.0（AGP 内置 Kotlin）；Compose 编译器插件版本必须等于模板 Kotlin 版本；Gradle 以模板 wrapper 为准 |
 | DEC-014 | 文档分层：`00` 范围/决策、`01` 架构、`02` 桥接契约、`03` 实施计划、`04` 验收；规范写入根 `AGENTS.md`；生成代码与 `pubspec.lock` 一律提交 | flash 模型可按阶段执行；CI 可检查 codegen 漂移 | 文档变更必须与代码同提交；不得出现未记录的架构改动 |
 
+| DEC-015 | `build_runner` 使用 **2.16.2**（而非版本矩阵初稿的 2.17.1） | `build_runner >=2.17.1` 依赖 `build >=5`，与 `riverpod_generator 4.0.9`（`build >=3 <5`）不可解析；pub 解析结果取 2.16.2 | 后续升级 build_runner 需先确认 riverpod_generator 的 build 约束 |
+| DEC-016 | Dart 未命名构造统一使用声明式构造语法 `const new(...)` / `new _(...)`，命名构造仍用 `ClassName.name` | very_good_analysis 11.0.0 的 `unnecessary_type_name_in_constructor` 强制该风格；其自动修复对经典写法产出错误代码，已人工验证新语法在 Dart 3.13 合法 | 文档 03/AGENTS 中的示例代码片段（`const AppFailure(...)` 等）按此约定执行 |
+
 ## 5. 版本矩阵（2026-10-31 实测查询）
 
 > 这些版本是 P0/P1 的输入。若 `pub get` 出现不可解析冲突，**停止并记录**，只允许按 pub 解析结果调整并在本文追加决策；禁止静默降级或猜测版本。
@@ -68,7 +71,7 @@
 | flutter_riverpod | 3.4.3 | 运行时 |
 | riverpod_annotation | 4.0.7 | 依赖 `riverpod 3.4.3` |
 | riverpod_generator | 4.0.9 | 依赖 `riverpod_annotation 4.0.7` |
-| build_runner | 2.17.1 | dev |
+| build_runner | 2.16.2 | dev（DEC-015 调整） |
 | go_router | 18.1.2 | |
 | dio | 5.11.1 | 仅占位网络实现 |
 | shared_preferences | 2.5.6 | 仅占位存储实现 |

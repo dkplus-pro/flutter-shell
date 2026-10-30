@@ -1,10 +1,9 @@
+import 'package:native_bridge/native_bridge_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-import 'native_bridge_method_channel.dart';
 
 abstract class NativeBridgePlatform extends PlatformInterface {
   /// Constructs a NativeBridgePlatform.
-  NativeBridgePlatform() : super(token: _token);
+  new() : super(token: _token);
 
   static final Object _token = Object();
 

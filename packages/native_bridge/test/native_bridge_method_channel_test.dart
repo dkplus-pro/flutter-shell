@@ -5,12 +5,12 @@ import 'package:native_bridge/native_bridge_method_channel.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelNativeBridge platform = MethodChannelNativeBridge();
-  const MethodChannel channel = MethodChannel('native_bridge');
+  final platform = MethodChannelNativeBridge();
+  const channel = MethodChannel('native_bridge');
 
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        .setMockMethodCallHandler(channel, (methodCall) async {
           return '42';
         });
   });

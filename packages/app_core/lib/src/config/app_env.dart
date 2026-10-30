@@ -8,7 +8,11 @@ enum AppEnv {
   static AppEnv parse(String raw) {
     return AppEnv.values.firstWhere(
       (env) => env.name == raw,
-      orElse: () => throw ArgumentError.value(raw, 'APP_ENV', 'Expected dev|prod'),
+      orElse: () => throw ArgumentError.value(
+        raw,
+        'APP_ENV',
+        'Expected dev|prod',
+      ),
     );
   }
 

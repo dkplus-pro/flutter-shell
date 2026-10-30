@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  plugin_platform_interface: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

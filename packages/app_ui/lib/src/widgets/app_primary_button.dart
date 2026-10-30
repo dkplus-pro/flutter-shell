@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///
 /// Accepts data and callbacks only; labels come from the caller (l10n).
 class AppPrimaryButton extends StatelessWidget {
-  const AppPrimaryButton({required this.label, this.onPressed, super.key});
+  const new({required this.label, this.onPressed, super.key});
 
   final String label;
   final VoidCallback? onPressed;
