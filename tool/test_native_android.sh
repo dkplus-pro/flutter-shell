@@ -16,4 +16,6 @@ if [ ! -f apps/shell_app/android/local.properties ]; then
 fi
 
 cd apps/shell_app/android
-./gradlew testDebugUnitTest
+# 只跑自有模块，避免第三方插件（如 shared_preferences_android）的 Robolectric 测试
+# 依赖 Java 21 而拖垮 CI。
+./gradlew :app:testDebugUnitTest :native_bridge:testDebugUnitTest

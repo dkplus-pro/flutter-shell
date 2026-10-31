@@ -691,7 +691,7 @@ fi
 - `check_imports.sh`：实现 R1–R4（见 `01` 第 4 节）；使用 `rg`，找不到 `rg` 时用 `grep -R` 等价实现；扫描时排除 `*.g.dart`/生成目录；违例打印文件/行号并退出 1。
 - `check.sh`：格式化手写 Dart（用 `find` 生成文件列表，排除 `*.g.dart`、`src/generated`、`l10n/generated`；不要直接对包目录跑 `dart format`，否则会格式化生成物）→ `check_imports.sh` → 四个包逐一 `flutter analyze --fatal-infos`。
 - `test.sh`：对存在 `test/` 的包执行 `flutter test`。
-- `test_native_android.sh`：若 `apps/shell_app/android/local.properties` 不存在，先执行 `fvm flutter build apk --debug` 生成 Flutter SDK 路径；然后 `cd apps/shell_app/android && ./gradlew testDebugUnitTest`。
+- `test_native_android.sh`：若 `apps/shell_app/android/local.properties` 不存在，先执行 `fvm flutter build apk --debug` 生成 Flutter SDK 路径；然后 `cd apps/shell_app/android && ./gradlew :app:testDebugUnitTest :native_bridge:testDebugUnitTest`。只跑自有模块，避免第三方插件的 Robolectric 测试（SDK 36+ 需 Java 21）拖垮 CI。
 - `build_android.sh [--release]`：debug 注入 `APP_ENV=dev`；release 注入 `APP_ENV=prod`，带 `--split-per-abi --obfuscate --split-debug-info=build/symbols`。
 - `run_android.sh [device]`：默认 `emulator-5554`，`flutter run`。
 - `e2e_android.sh [device]`：`flutter test integration_test/bridge_e2e_test.dart -d <device>`。
