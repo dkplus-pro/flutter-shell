@@ -201,17 +201,30 @@ GuestProfile  { roomNo: "1208", guestName }   // mock 常量，不持久化
 
 ## 9. 视觉规范（D9：华住会风格，紫金 + 灰白）
 
-> 以下色值为实施起点，允许微调，但需在 `app_ui` 以 token 形式扩展（如 `HotelColors`），不允许在页面内散落硬编码色值。
+> 视觉令牌已按 docs/06 重设计更新（2026-11-02），D9 决策不变。以下为现行生效的令牌表（来源 `docs/06-hotel-ui-restyle-plan.md` §2.1，实现于 `packages/app_ui` `HotelColors` / `HotelDimens` / `HotelTypography`），不允许在页面内散落硬编码色值。
 
-| Token | 值（起点） | 用途 |
+| Token | 值 | 用途 |
 | --- | --- | --- |
-| 主色·紫 | `#4C3B8F` | 用户气泡、主按钮、选中态、底部导航选中 |
-| 点缀·金 | `#C9A25E` | 房号徽标、状态徽标、星星、分隔线点缀 |
-| 背景 | `#F5F6F8` | 聊天区背景（灰白） |
-| 表面 | `#FFFFFF` | 客服气泡、卡片、面板 |
-| 文本主/次 | `#1F2126` / `#8A8F99` | 标题/正文与辅助文案 |
+| `primary` | `#5747C6` | 主色：用户气泡、CTA、选中态、导航选中 |
+| `primaryDeep` | `#4638AC` | CTA 渐变深端、按压态 |
+| `primarySoft` | `#ECE8FB` | 选中 chip 底、图标软底 |
+| `bg` | `#F4F5F7` | 页面/聊天区背景（冷灰，无紫染） |
+| `surface` | `#FFFFFF` | 卡片、气泡、面板、弹层 |
+| `textPrimary` | `#191B20` | 标题/正文 |
+| `textSecondary` | `#9AA0A8` | 辅助文案、时间戳、未选中导航 |
+| `textHint` | `#B9BDC6` | 输入占位 |
+| `divider` | `#EEEEF1` | 0.5px 分割线、AppBar 底 hairline |
+| `statusPlaced` | `#5747C6` | 已下单/已预约 |
+| `statusDelivering` | `#F5A623` | 配送中 |
+| `statusDelivered` | `#34B36B` | 已送达 |
+| `statusNeutral` | `#8E939C` | 待确认/已评价 |
+| `promoRed` | `#FF5148` | 徽标点缀（新、评价红点） |
+| `starGold` | `#F0A835` | 星级填充 |
+| `inputPill` | `#F2F3F5` | 输入胶囊底 |
+| `tileGray` | `#F4F5F7` | 图标块、面板 tile 底 |
 
-- 卡片圆角 16、气泡圆角 16（发送侧右下角 4）；状态徽标圆角胶囊。
+- 状态胶囊统一「10% 色底 + 实色文字」，`hotelOrderSheetStatusColor` 为唯一色源。
+- 字体层级用系统字重表达（`titleL` 20/w700、`title` 17/w700、`body` 16/w400、`sub` 13/w400、`navLabel` 11）；卡片圆角 16、面板顶角 20、CTA/胶囊全圆、图标块 10、气泡 16（无尾巴）；全局 `elevation=0`，分割线 0.5px `divider`。
 - 动效：卡片状态切换 200ms fade+size、面板展开 200ms、新消息插入隐式动画；星星点击有缩放反馈。
 - 可访问性：全部可点区域 ≥48dp；气泡文本与背景对比度达标；图标带 `Semantics`/tooltip；底部导航与 AppBar 文案进 ARB。
 

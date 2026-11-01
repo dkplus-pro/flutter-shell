@@ -1,6 +1,6 @@
 # 06 · 酒店 Demo 视觉重设计方案（对齐华住 App 设计语言）
 
-> 状态：**待确认**（2026-11-02）
+> 状态：**已确认并实施（2026-11-02）**
 > 背景：v0 走查截图暴露出明显 Material 3 模板感（默认 NavigationBar、stock ListTile 弹层、fromSeed 紫灰底色）。产品提供华住会 App 5 张参考截图，要求按该风格重做视觉。
 > 参考图：`docs/evidence/images/reference-huazhu/`（chat / home / profile / member / services）。**仅提取设计语言（配色/布局/组件形态），不使用其 logo、吉祥物、文案、图片素材。**
 > 范围：仅 presentation 与主题层；意图引擎、状态机、持久化、provider API 一律不动。组件对外签名（`ReplyTypewriter` / `showHotelOrderSheet` / `StarRatingBar`）保持不变。
@@ -79,11 +79,13 @@
 
 ## 4. 实施阶段
 
-| 阶段 | 内容 | 文件面 |
-| --- | --- | --- |
-| P1 换肤（必做） | 主题/令牌（§2）、自绘导航（§3.1）、聊天页（§3.2 除欢迎卡）、面板小卡化+截断修复、订单卡与弹层（§3.3） | `app_ui` 3 个 token/theme 文件、`app.dart`、`core/shell/*`、hotel presentation ~8 文件、ARB |
-| P2 欢迎卡（建议） | 猜您想问卡：预设问题数据 + widget + 点击发送接线 + 测试 | hotel data/presentation 新增 1–2 文件、chat page 接线、ARB、测试 |
-| P3 占位页 mock（可选） | 首页/我的风格化装饰 | 2 个 presentation 文件、ARB |
+> 三档均已完成（2026-11-02）：P1 由壳轨 `571c702` + 聊天轨 `3cc3e15` 两轨并行实施（合并 `b719a5f`），P2/P3 随对应轨落地；验收见 `docs/evidence/hotel-demo.md` restyle 章节。
+
+| 阶段 | 内容 | 文件面 | 状态 |
+| --- | --- | --- | --- |
+| P1 换肤（必做） | 主题/令牌（§2）、自绘导航（§3.1）、聊天页（§3.2 除欢迎卡）、面板小卡化+截断修复、订单卡与弹层（§3.3） | `app_ui` 3 个 token/theme 文件、`app.dart`、`core/shell/*`、hotel presentation ~8 文件、ARB | ✅ 完成 |
+| P2 欢迎卡（建议） | 猜您想问卡：预设问题数据 + widget + 点击发送接线 + 测试 | hotel data/presentation 新增 1–2 文件、chat page 接线、ARB、测试 | ✅ 完成 |
+| P3 占位页 mock（可选） | 首页/我的风格化装饰 | 2 个 presentation 文件、ARB | ✅ 完成 |
 
 ## 5. 测试与文档影响
 
