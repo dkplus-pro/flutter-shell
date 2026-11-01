@@ -83,6 +83,18 @@ while read -r line; do
         *) fail "$line" ;;
       esac
       ;;
+    apps/shell_app/lib/features/hotel/*)
+      case "$offender" in
+        *features/hotel/*) ;;
+        *) fail "$line" ;;
+      esac
+      ;;
+    apps/shell_app/lib/features/profile/*)
+      case "$offender" in
+        *features/profile/*) ;;
+        *) fail "$line" ;;
+      esac
+      ;;
     *) fail "$line" ;;
   esac
 done < <(scan "features/")
