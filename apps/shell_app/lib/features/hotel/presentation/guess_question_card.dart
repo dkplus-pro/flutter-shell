@@ -9,7 +9,7 @@ enum _GuessCategory { delivery, qa, booking }
 /// wording is aligned with the scripted intent keywords (docs/06 §3.2:
 /// sending a row must hit the intent engine in both locales).
 class _GuessQuestion {
-  const _GuessQuestion(this.category, this.text);
+  const new(this.category, this.text);
 
   final _GuessCategory category;
   final String Function(AppLocalizations l10n) text;
@@ -17,20 +17,11 @@ class _GuessQuestion {
 
 final List<_GuessQuestion> _questions = <_GuessQuestion>[
   // Delivery: one question per amenity plus two rotation extras.
-  _GuessQuestion(
-    _GuessCategory.delivery,
-    (l10n) => l10n.faqSlippersDeliver,
-  ),
-  _GuessQuestion(
-    _GuessCategory.delivery,
-    (l10n) => l10n.faqToiletriesDeliver,
-  ),
+  _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqSlippersDeliver),
+  _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqToiletriesDeliver),
   _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqTowelsDeliver),
   _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqWaterDeliver),
-  _GuessQuestion(
-    _GuessCategory.delivery,
-    (l10n) => l10n.faqSlippersExchange,
-  ),
+  _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqSlippersExchange),
   _GuessQuestion(_GuessCategory.delivery, (l10n) => l10n.faqTowelsBath),
   // Q&A: Wi-Fi and breakfast, one extra each.
   _GuessQuestion(_GuessCategory.qa, (l10n) => l10n.faqWifiPassword),
@@ -53,7 +44,7 @@ const int _batchSize = 4;
 /// sends the question as the guest into the normal intent flow. The card is
 /// pure presentation state — never persisted.
 class GuessQuestionCard extends StatefulWidget {
-  const GuessQuestionCard({required this.onSelect, super.key});
+  const new({required this.onSelect, super.key});
 
   /// Called with the preset question text to send as the guest.
   final ValueChanged<String> onSelect;
@@ -106,7 +97,11 @@ class _GuessQuestionCardState extends State<GuessQuestionCard> {
             spacing: AppSpacing.sm,
             runSpacing: AppSpacing.sm,
             children: [
-              _buildChip(l10n, _GuessCategory.delivery, l10n.guessCategoryDelivery),
+              _buildChip(
+                l10n,
+                _GuessCategory.delivery,
+                l10n.guessCategoryDelivery,
+              ),
               _buildChip(l10n, _GuessCategory.qa, l10n.guessCategoryQa),
               _buildChip(
                 l10n,

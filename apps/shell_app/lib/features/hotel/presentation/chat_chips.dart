@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// guest, so options must stay parseable by the slot parser. Styled as
 /// grey capsules matching the reference chip language (docs/06 §1).
 class ChatChips extends StatelessWidget {
-  const ChatChips({required this.options, required this.onSelect, super.key});
+  const new({required this.options, required this.onSelect, super.key});
 
   final List<String> options;
   final ValueChanged<String> onSelect;

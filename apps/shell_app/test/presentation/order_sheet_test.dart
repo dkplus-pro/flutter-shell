@@ -125,10 +125,18 @@ void main() {
     expect(find.text('Extra towels'), findsNothing);
   });
 
-  test('status colors follow the PRD 9 palette families', () {
+  test('status colors follow the docs/06 §2.1 palette', () {
     expect(
       hotelOrderSheetStatusColor(HotelOrderSheetStatus.delivering),
-      const Color(0xFFC9A25E),
+      const Color(0xFFF5A623),
+    );
+    expect(
+      hotelOrderSheetStatusColor(HotelOrderSheetStatus.delivered),
+      const Color(0xFF34B36B),
+    );
+    expect(
+      hotelOrderSheetStatusColor(HotelOrderSheetStatus.pending),
+      const Color(0xFF8E939C),
     );
     expect(
       hotelOrderSheetStatusColor(HotelOrderSheetStatus.placed),

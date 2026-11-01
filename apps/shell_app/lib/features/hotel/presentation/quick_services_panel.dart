@@ -8,7 +8,7 @@ import 'package:fluttershell/l10n/generated/app_localizations.dart';
 /// circles; labels scale down with [FittedBox] instead of truncating.
 /// Selecting an entry sends the matching preset message as the guest.
 class QuickServicesPanel extends StatelessWidget {
-  const QuickServicesPanel({required this.onSelect, super.key});
+  const new({required this.onSelect, super.key});
 
   final ValueChanged<String> onSelect;
 
@@ -71,7 +71,7 @@ class QuickServicesPanel extends StatelessWidget {
 }
 
 class _QuickItem extends StatelessWidget {
-  const _QuickItem({
+  const new({
     required this.icon,
     required this.label,
     required this.preset,

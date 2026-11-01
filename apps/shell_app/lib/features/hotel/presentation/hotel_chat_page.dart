@@ -21,7 +21,7 @@ import 'package:fluttershell/l10n/generated/app_localizations.dart';
 /// AI concierge chat page: the "Services" tab (PRD 5, D4), restyled per
 /// docs/06 §3.2 (white centered app bar, grey pills, capsule input bar).
 class HotelChatPage extends ConsumerStatefulWidget {
-  const HotelChatPage({super.key});
+  const new({super.key});
 
   @override
   ConsumerState<HotelChatPage> createState() => _HotelChatPageState();
@@ -126,7 +126,8 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
       return false;
     }
     final first = messages.first;
-    return first.kind == MessageKind.text && first.role == MessageRole.concierge;
+    return first.kind == MessageKind.text &&
+        first.role == MessageRole.concierge;
   }
 
   @override
@@ -376,7 +377,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
 /// (PRD 6.2). Fresh concierge replies render through the typewriter reveal
 /// (D5); restored history and finished reveals render as plain text.
 class ChatMessageList extends StatelessWidget {
-  const ChatMessageList({
+  const new({
     required this.messages,
     required this.orders,
     required this.roomNo,
