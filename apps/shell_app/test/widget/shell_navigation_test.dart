@@ -1,20 +1,43 @@
+import 'package:app_core/app_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fluttershell/app.dart';
+import 'package:fluttershell/core/logging/log_providers.dart';
+import 'package:fluttershell/core/storage/storage_providers.dart';
+
+import '../hotel/fake_key_value_store.dart';
 
 /// Main-shell widget tests: tab navigation, placeholders and the chat page
-/// static path. The real [ShellApp] provides router, theme and l10n.
+/// static path. The real [ShellApp] provides router, theme and l10n; the
+/// logger and store are overridden because bootstrap does not run here.
 Widget _wrap() {
-  return const ProviderScope(child: ShellApp());
+  return ProviderScope(
+    overrides: [
+      keyValueStoreProvider.overrideWithValue(FakeKeyValueStore()),
+      appLoggerProvider.overrideWithValue(AppLogger.create(isProd: true)),
+    ],
+    child: const ShellApp(),
+  );
+}
+
+/// Pumps the shell past the async session restore. Deliberately avoids
+/// pumpAndSettle: the chat session is async and the typing indicator
+/// animates indefinitely while a reply is in flight.
+Future<void> pumpShell(WidgetTester tester) async {
+  await tester.pumpWidget(_wrap());
+  await tester.pump();
+  await tester.pump(const Duration(seconds: 1));
+}
+
+/// Advances the fake clock past the concierge typing delay so the queued
+/// reply has been applied.
+Future<void> pumpReply(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(seconds: 2));
 }
 
 void main() {
-  Future<void> pumpShell(WidgetTester tester) async {
-    await tester.pumpWidget(_wrap());
-    await tester.pumpAndSettle();
-  }
-
   testWidgets('shell lands on the services tab with the chat page', (
     tester,
   ) async {
@@ -64,7 +87,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField), 'Hello there');
     await tester.tap(find.byTooltip('Send'));
-    await tester.pumpAndSettle();
+    await pumpReply(tester);
 
     expect(find.text('Hello there'), findsOneWidget);
   });
@@ -81,7 +104,7 @@ void main() {
     expect(find.text('Wake-up call'), findsOneWidget);
 
     await tester.tap(find.text('Slippers'));
-    await tester.pumpAndSettle();
+    await pumpReply(tester);
 
     expect(
       find.text('I need some disposable slippers delivered to my room.'),

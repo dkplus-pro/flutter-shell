@@ -166,4 +166,158 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSendSemantic => 'Send';
+
+  @override
+  String chatAskQuantity(String item, String unit) {
+    return 'Sure, how many $unit of $item would you like?';
+  }
+
+  @override
+  String get chatQuantityInvalid =>
+      'Please reply with a quantity between 1 and 9, for example \"2\".';
+
+  @override
+  String get chatCancelAck =>
+      'No problem, I have cancelled that. Anything else I can help with?';
+
+  @override
+  String get chatAskWakeupTime =>
+      'Sure, what time should the wake-up call be? For example: tomorrow 07:00.';
+
+  @override
+  String get chatAskLateCheckoutTime =>
+      'Sure, until what time would you like to check out late?';
+
+  @override
+  String get chatTimeChipsPrompt =>
+      'Sorry, I did not catch the time. Pick one below or type it, for example 07:00.';
+
+  @override
+  String chatWifiAnswer(String ssid, String password) {
+    return 'The guest Wi-Fi network is $ssid, password $password. (demo data)';
+  }
+
+  @override
+  String get chatBreakfastAnswer =>
+      'Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.';
+
+  @override
+  String get chatFallback =>
+      'Sorry, I am still a demo concierge and did not understand that. Tap + to see everything I can do.';
+
+  @override
+  String get chatTyping => 'Concierge is typing…';
+
+  @override
+  String get amenitySlippers => 'Disposable slippers';
+
+  @override
+  String get amenityToiletries => 'Toiletries set';
+
+  @override
+  String get amenityTowels => 'Fresh towels';
+
+  @override
+  String get amenityWater => 'Bottled water';
+
+  @override
+  String get unitSlippers => 'pairs';
+
+  @override
+  String get unitToiletries => 'sets';
+
+  @override
+  String get unitTowels => 'pieces';
+
+  @override
+  String get unitWater => 'bottles';
+
+  @override
+  String get orderWakeupTitle => 'Wake-up call';
+
+  @override
+  String get orderLateCheckoutTitle => 'Late check-out';
+
+  @override
+  String orderDeliverTo(String room) {
+    return 'Deliver to room $room';
+  }
+
+  @override
+  String get orderConfirmButton => 'Confirm order';
+
+  @override
+  String get orderReserveButton => 'Confirm reservation';
+
+  @override
+  String orderQuantityLabel(int count) {
+    return 'Quantity ×$count';
+  }
+
+  @override
+  String get orderStatusPlaced => 'Placed';
+
+  @override
+  String get orderStatusDelivering => 'Delivering';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String orderStatusRated(int stars) {
+    return 'Rated · $stars stars';
+  }
+
+  @override
+  String get orderStatusReserved => 'Reserved';
+
+  @override
+  String get orderProgressPlaced => 'Staff notified.';
+
+  @override
+  String orderProgressDelivering(String room) {
+    return 'On the way to room $room.';
+  }
+
+  @override
+  String get orderProgressDelivered => 'Delivered, enjoy!';
+
+  @override
+  String get orderProgressReserved => 'Reserved. We will arrange it on time.';
+
+  @override
+  String orderWakeupSummary(String day, String time, String room) {
+    return '$day $time wake-up call · room $room';
+  }
+
+  @override
+  String orderLateCheckoutSummary(String time) {
+    return 'Late check-out until $time';
+  }
+
+  @override
+  String get dayToday => 'Today';
+
+  @override
+  String get dayTomorrow => 'Tomorrow';
+
+  @override
+  String get ratingPrompt => 'How was the delivery? Tap a star to rate.';
+
+  @override
+  String ratingStarSemantic(int stars) {
+    return 'Rate $stars stars';
+  }
+
+  @override
+  String get orderStepperMinusSemantic => 'Decrease quantity';
+
+  @override
+  String get orderStepperPlusSemantic => 'Increase quantity';
+
+  @override
+  String get ordersSheetTitle => 'Current orders';
+
+  @override
+  String get ordersEmpty => 'No orders yet';
 }

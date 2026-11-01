@@ -57,27 +57,30 @@ final class HotelGuestProfileProvider
 
 String _$hotelGuestProfileHash() => r'138bee8894b976261e0c3251312bd6bbeb67793f';
 
-/// Chat session controller.
+/// Chat session controller: transcript, concierge reply queue, order state
+/// machine and KeyValueStore persistence.
 ///
-/// keepAlive: the transcript, the concierge reply queue and the order status
-/// timers must survive tab switches and full-page pushes (bridge demo);
-/// persistence is written from here so state also survives restarts.
+/// keepAlive: the transcript, the reply queue and the order timers must
+/// survive tab switches and pushes; persistence is written from here so the
+/// session also survives restarts (PRD D10).
 
 @ProviderFor(HotelChatController)
 final hotelChatControllerProvider = HotelChatControllerProvider._();
 
-/// Chat session controller.
+/// Chat session controller: transcript, concierge reply queue, order state
+/// machine and KeyValueStore persistence.
 ///
-/// keepAlive: the transcript, the concierge reply queue and the order status
-/// timers must survive tab switches and full-page pushes (bridge demo);
-/// persistence is written from here so state also survives restarts.
+/// keepAlive: the transcript, the reply queue and the order timers must
+/// survive tab switches and pushes; persistence is written from here so the
+/// session also survives restarts (PRD D10).
 final class HotelChatControllerProvider
-    extends $NotifierProvider<HotelChatController, HotelChatState> {
-  /// Chat session controller.
+    extends $AsyncNotifierProvider<HotelChatController, HotelChatState> {
+  /// Chat session controller: transcript, concierge reply queue, order state
+  /// machine and KeyValueStore persistence.
   ///
-  /// keepAlive: the transcript, the concierge reply queue and the order status
-  /// timers must survive tab switches and full-page pushes (bridge demo);
-  /// persistence is written from here so state also survives restarts.
+  /// keepAlive: the transcript, the reply queue and the order timers must
+  /// survive tab switches and pushes; persistence is written from here so the
+  /// session also survives restarts (PRD D10).
   HotelChatControllerProvider._()
     : super(
         from: null,
@@ -95,36 +98,29 @@ final class HotelChatControllerProvider
   @$internal
   @override
   HotelChatController create() => HotelChatController();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(HotelChatState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<HotelChatState>(value),
-    );
-  }
 }
 
 String _$hotelChatControllerHash() =>
-    r'e1ce505a9c8db3a1e9506afc690ab42990a28f7b';
+    r'2946c078fcc2ab32d35da53dc0a4c53c4b360daf';
 
-/// Chat session controller.
+/// Chat session controller: transcript, concierge reply queue, order state
+/// machine and KeyValueStore persistence.
 ///
-/// keepAlive: the transcript, the concierge reply queue and the order status
-/// timers must survive tab switches and full-page pushes (bridge demo);
-/// persistence is written from here so state also survives restarts.
+/// keepAlive: the transcript, the reply queue and the order timers must
+/// survive tab switches and pushes; persistence is written from here so the
+/// session also survives restarts (PRD D10).
 
-abstract class _$HotelChatController extends $Notifier<HotelChatState> {
-  HotelChatState build();
+abstract class _$HotelChatController extends $AsyncNotifier<HotelChatState> {
+  FutureOr<HotelChatState> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<HotelChatState, HotelChatState>;
+    final ref = this.ref as $Ref<AsyncValue<HotelChatState>, HotelChatState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<HotelChatState, HotelChatState>,
-              HotelChatState,
+              AnyNotifier<AsyncValue<HotelChatState>, HotelChatState>,
+              AsyncValue<HotelChatState>,
               Object?,
               Object?
             >;

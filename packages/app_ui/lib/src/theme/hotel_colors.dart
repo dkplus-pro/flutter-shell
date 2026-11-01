@@ -22,4 +22,11 @@ abstract final class HotelColors {
 
   /// Secondary/hint text.
   static const Color textSecondary = Color(0xFF8A8F99);
+
+  /// Delivered/success state badge.
+  static const Color statusDelivered = Color(0xFF3E8E5A);
+
+  /// Star fill (gold) and rating accents reuse [gold]; the stars use a
+  /// slightly deeper tone for contrast on white cards.
+  static const Color star = Color(0xFFB8860B);
 }

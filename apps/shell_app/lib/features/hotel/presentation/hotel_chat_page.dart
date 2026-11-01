@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttershell/features/hotel/application/hotel_chat_providers.dart';
 import 'package:fluttershell/features/hotel/data/chat_message.dart';
+import 'package:fluttershell/features/hotel/data/hotel_order.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_bubble.dart';
+import 'package:fluttershell/features/hotel/presentation/chat_chips.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_time_format.dart';
+import 'package:fluttershell/features/hotel/presentation/order_card.dart';
 import 'package:fluttershell/features/hotel/presentation/quick_services_panel.dart';
 import 'package:fluttershell/features/hotel/presentation/reply_text.dart';
+import 'package:fluttershell/features/hotel/presentation/typing_indicator.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
 /// AI concierge chat page: the "Services" tab (PRD 5, D4).
@@ -96,9 +100,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final room = ref.watch(hotelGuestProfileProvider).roomNo;
-    final messages = ref.watch(
-      hotelChatControllerProvider.select((state) => state.messages),
-    );
+    final chat = ref.watch(hotelChatControllerProvider);
     ref.listen(hotelChatControllerProvider, (_, _) {
       _scrollToBottom();
     });
@@ -109,9 +111,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: ChatMessageList(messages: messages, controller: _scroll),
-            ),
+            Expanded(child: _buildBody(l10n, chat)),
             AnimatedSize(
               duration: const Duration(milliseconds: 200),
               alignment: Alignment.bottomCenter,
@@ -122,6 +122,41 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
             _buildInputBar(l10n),
           ],
         ),
+      ),
+    );
+  }
+
+  /// AsyncValue handling for the restored session: loading spinner, error
+  /// view with retry, then the transcript.
+  Widget _buildBody(AppLocalizations l10n, AsyncValue<HotelChatState> chat) {
+    return chat.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(l10n.errorTitle),
+            const SizedBox(height: AppSpacing.sm),
+            TextButton(
+              onPressed: () => ref.invalidate(hotelChatControllerProvider),
+              child: Text(l10n.retry),
+            ),
+          ],
+        ),
+      ),
+      data: (state) => ChatMessageList(
+        messages: state.messages,
+        orders: state.orders,
+        roomNo: ref.watch(hotelGuestProfileProvider).roomNo,
+        controller: _scroll,
+        typing: state.typing,
+        onConfirm: (orderId, quantity) => ref
+            .read(hotelChatControllerProvider.notifier)
+            .confirmOrder(orderId, quantity: quantity),
+        onRate: (orderId, stars) => ref
+            .read(hotelChatControllerProvider.notifier)
+            .rateOrder(orderId, stars),
+        onChipSelect: _sendText,
       ),
     );
   }
@@ -231,12 +266,29 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   }
 }
 
-/// Transcript list with the day separator and inline timestamps (D12).
+/// Transcript list with the day separator, inline timestamps (D12) and the
+/// typing indicator while a reply is in flight (PRD 6.2).
 class ChatMessageList extends StatelessWidget {
-  const new({required this.messages, required this.controller, super.key});
+  const new({
+    required this.messages,
+    required this.orders,
+    required this.roomNo,
+    required this.controller,
+    required this.typing,
+    required this.onConfirm,
+    required this.onRate,
+    required this.onChipSelect,
+    super.key,
+  });
 
   final List<ChatMessage> messages;
+  final Map<String, HotelOrder> orders;
+  final String roomNo;
   final ScrollController controller;
+  final bool typing;
+  final void Function(String orderId, int quantity) onConfirm;
+  final void Function(String orderId, int stars) onRate;
+  final ValueChanged<String> onChipSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -263,6 +315,9 @@ class ChatMessageList extends StatelessWidget {
       entries.add(_buildEntry(context, l10n, message));
       previous = message;
     }
+    if (typing) {
+      entries.add(const TypingIndicator());
+    }
     return ListView.builder(
       controller: controller,
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -281,15 +336,40 @@ class ChatMessageList extends StatelessWidget {
     AppLocalizations l10n,
     ChatMessage message,
   ) {
-    final text = switch (message.role) {
-      MessageRole.guest => message.text ?? '',
-      MessageRole.concierge => _resolveConciergeText(l10n, message),
-    };
-    return ChatBubble(
-      role: message.role,
-      text: text,
-      avatarSemanticLabel: l10n.conciergeAvatarSemantic,
-    );
+    switch (message.kind) {
+      case MessageKind.order:
+        final order = orders[message.orderId];
+        if (order == null) {
+          return const SizedBox.shrink();
+        }
+        return OrderCard(
+          order: order,
+          roomNo: roomNo,
+          onConfirm: onConfirm,
+          onRate: onRate,
+        );
+      case MessageKind.chips:
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ChatAvatar(semanticLabel: l10n.conciergeAvatarSemantic),
+            const SizedBox(width: AppSpacing.sm),
+            Flexible(
+              child: ChatChips(options: message.chips, onSelect: onChipSelect),
+            ),
+          ],
+        );
+      case MessageKind.text:
+        final text = switch (message.role) {
+          MessageRole.guest => message.text ?? '',
+          MessageRole.concierge => _resolveConciergeText(l10n, message),
+        };
+        return ChatBubble(
+          role: message.role,
+          text: text,
+          avatarSemanticLabel: l10n.conciergeAvatarSemantic,
+        );
+    }
   }
 
   String _resolveConciergeText(AppLocalizations l10n, ChatMessage message) {
