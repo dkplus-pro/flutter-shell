@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 /// Hotel demo palette (PRD 05 §9, D9: purple-gold accent on grey-white).
 ///
 /// Starting values from the PRD; pages must reference these tokens instead
-/// of hardcoding colors inline.
+/// of hardcoding colors inline. The status tokens are shared by the chat
+/// order card and the order sheet so both surfaces stay in sync.
 abstract final class HotelColors {
   /// Primary purple: guest bubbles, primary actions, selected states.
   static const Color primary = Color(0xFF4C3B8F);
+
+  /// Light purple accent for confirmed states (placed/reserved badges).
+  static const Color statusPlaced = Color(0xFF7C5CBF);
 
   /// Gold accent: room badge, status badges, stars, separators.
   static const Color gold = Color(0xFFC9A25E);
@@ -26,7 +30,12 @@ abstract final class HotelColors {
   /// Delivered/success state badge.
   static const Color statusDelivered = Color(0xFF3E8E5A);
 
-  /// Star fill (gold) and rating accents reuse [gold]; the stars use a
-  /// slightly deeper tone for contrast on white cards.
+  /// Neutral grey status (pending/rated entries).
+  static const Color statusNeutral = textSecondary;
+
+  /// Star fill on white cards (deeper than [gold] for contrast).
   static const Color star = Color(0xFFB8860B);
+
+  /// Unfilled star outline.
+  static const Color starEmpty = Color(0xFFC7C7CC);
 }

@@ -1,11 +1,5 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-
-/// Gold accent used for filled stars (PRD 9, `#C9A25E`).
-///
-/// Local stopgap constant until `HotelColors` tokens land in `app_ui`.
-const Color _starGold = Color(0xFFC9A25E);
-
-const Color _starEmpty = Color(0xFFC7C7CC);
 
 /// Tap-to-scale pulse amplitude for a tapped star.
 const double _pulsePeakScale = 1.25;
@@ -141,7 +135,7 @@ class _TappableStarState extends State<_TappableStar>
           child: Icon(
             widget.filled ? Icons.star : Icons.star_border,
             size: widget.size,
-            color: widget.filled ? _starGold : _starEmpty,
+            color: widget.filled ? HotelColors.star : HotelColors.starEmpty,
           ),
         ),
       ),

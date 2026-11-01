@@ -83,7 +83,7 @@ String orderTitle(AppLocalizations l10n, HotelOrder order) {
 /// Status badge label.
 String orderStatusLabel(AppLocalizations l10n, HotelOrder order) {
   return switch (order.status) {
-    OrderStatus.pending => '',
+    OrderStatus.pending => l10n.orderStatusPending,
     OrderStatus.placed => l10n.orderStatusPlaced,
     OrderStatus.delivering => l10n.orderStatusDelivering,
     OrderStatus.delivered => l10n.orderStatusDelivered,

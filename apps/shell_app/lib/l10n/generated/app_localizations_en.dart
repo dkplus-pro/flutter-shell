@@ -255,6 +255,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get orderStatusPending => 'Pending';
+
+  @override
   String get orderStatusPlaced => 'Placed';
 
   @override
@@ -308,6 +311,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String ratingStarSemantic(int stars) {
     return 'Rate $stars stars';
   }
+
+  @override
+  String get ratingBarSemantic => 'Service rating. Tap a star to rate.';
 
   @override
   String get orderStepperMinusSemantic => 'Decrease quantity';

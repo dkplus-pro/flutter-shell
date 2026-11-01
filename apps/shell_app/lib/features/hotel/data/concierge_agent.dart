@@ -113,7 +113,7 @@ const _intentKeywords = <Intent, List<String>>{
   Intent.water: ['矿泉水', '饮用水', '水', 'water'],
   Intent.wifi: ['wifi', 'wi-fi', '密码', '无线网', 'wireless', 'password'],
   Intent.breakfast: ['早餐', '早饭', 'breakfast'],
-  Intent.wakeup: ['叫醒', '叫我起床', 'wake-up', 'wakeup', 'wake up'],
+  Intent.wakeup: ['叫醒', '叫我起床', 'wake-up', 'wakeup', 'wake up', 'wake me up'],
   Intent.lateCheckout: [
     '延迟退房',
     '退房',

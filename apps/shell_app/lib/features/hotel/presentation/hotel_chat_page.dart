@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +9,9 @@ import 'package:fluttershell/features/hotel/data/hotel_order.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_bubble.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_chips.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_time_format.dart';
+import 'package:fluttershell/features/hotel/presentation/concierge_copy.dart';
 import 'package:fluttershell/features/hotel/presentation/order_card.dart';
+import 'package:fluttershell/features/hotel/presentation/order_sheet.dart';
 import 'package:fluttershell/features/hotel/presentation/quick_services_panel.dart';
 import 'package:fluttershell/features/hotel/presentation/reply_text.dart';
 import 'package:fluttershell/features/hotel/presentation/typing_indicator.dart';
@@ -76,11 +80,28 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     setState(() => _panelOpen = false);
   }
 
-  void _showOrdersPlaceholder() {
+  /// Opens the read-only order sheet (D11). Rows refresh live while the
+  /// sheet stays open through the [showHotelOrderSheet] items builder.
+  void _showOrderSheet() {
     final l10n = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(l10n.placeholderNotAvailable)));
+    final room = ref.read(hotelGuestProfileProvider).roomNo;
+    unawaited(
+      showHotelOrderSheet(
+        context,
+        items: _sheetItems(
+          l10n,
+          ref.read(hotelChatControllerProvider).value,
+          room,
+        ),
+        title: l10n.ordersSheetTitle,
+        emptyText: l10n.ordersEmpty,
+        liveItems: (ref) => _sheetItems(
+          l10n,
+          ref.watch(hotelChatControllerProvider).value,
+          room,
+        ),
+      ),
+    );
   }
 
   void _scrollToBottom() {
@@ -150,6 +171,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
         roomNo: ref.watch(hotelGuestProfileProvider).roomNo,
         controller: _scroll,
         typing: state.typing,
+        freshReplyIds: state.freshReplyIds,
         onConfirm: (orderId, quantity) => ref
             .read(hotelChatControllerProvider.notifier)
             .confirmOrder(orderId, quantity: quantity),
@@ -157,8 +179,63 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
             .read(hotelChatControllerProvider.notifier)
             .rateOrder(orderId, stars),
         onChipSelect: _sendText,
+        onReplyPlayed: (messageId) => ref
+            .read(hotelChatControllerProvider.notifier)
+            .markReplyPlayed(messageId),
       ),
     );
+  }
+
+  /// Maps session orders to read-only sheet rows (D11), newest first.
+  List<HotelOrderSheetItem> _sheetItems(
+    AppLocalizations l10n,
+    HotelChatState? state,
+    String room,
+  ) {
+    if (state == null) {
+      return const <HotelOrderSheetItem>[];
+    }
+    final orders = state.orders.values.toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return [
+      for (final order in orders)
+        HotelOrderSheetItem(
+          id: order.id,
+          title: _sheetTitle(l10n, order),
+          subtitle: order.kind == OrderKind.amenity
+              ? l10n.orderDeliverTo(room)
+              : orderTitle(l10n, order),
+          statusLabel: orderStatusLabel(l10n, order),
+          status: _sheetStatus(order.status),
+          timeText: ChatTimeFormat.hm(order.createdAt),
+          icon: orderIcon(order),
+        ),
+    ];
+  }
+
+  String _sheetTitle(AppLocalizations l10n, HotelOrder order) {
+    if (order.kind != OrderKind.amenity) {
+      return orderSlotSummary(l10n, order, _roomOf(order));
+    }
+    final amenity = order.amenity;
+    if (amenity == null) {
+      return orderTitle(l10n, order);
+    }
+    return '${amenityName(l10n, amenity)} ×${order.quantity}';
+  }
+
+  // The room number is the demo-constant guest binding (D8).
+  String _roomOf(HotelOrder order) => '1208';
+
+  HotelOrderSheetStatus _sheetStatus(OrderStatus status) {
+    return switch (status) {
+      OrderStatus.pending => HotelOrderSheetStatus.pending,
+      OrderStatus.placed => HotelOrderSheetStatus.placed,
+      OrderStatus.delivering => HotelOrderSheetStatus.delivering,
+      OrderStatus.delivered => HotelOrderSheetStatus.delivered,
+      OrderStatus.reserved => HotelOrderSheetStatus.reserved,
+      OrderStatus.rated => HotelOrderSheetStatus.rated,
+    };
   }
 
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n, String room) {
@@ -196,7 +273,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
         IconButton(
           icon: const Icon(Icons.receipt_long_outlined),
           tooltip: l10n.hotelOrdersTooltip,
-          onPressed: _showOrdersPlaceholder,
+          onPressed: _showOrderSheet,
         ),
       ],
     );
@@ -267,7 +344,9 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
 }
 
 /// Transcript list with the day separator, inline timestamps (D12) and the
-/// typing indicator while a reply is in flight (PRD 6.2).
+/// typing indicator while a reply is in flight (PRD 6.2). Fresh concierge
+/// replies render through the typewriter reveal (D5); restored history and
+/// finished reveals render as plain text.
 class ChatMessageList extends StatelessWidget {
   const new({
     required this.messages,
@@ -275,9 +354,11 @@ class ChatMessageList extends StatelessWidget {
     required this.roomNo,
     required this.controller,
     required this.typing,
+    required this.freshReplyIds,
     required this.onConfirm,
     required this.onRate,
     required this.onChipSelect,
+    required this.onReplyPlayed,
     super.key,
   });
 
@@ -286,9 +367,13 @@ class ChatMessageList extends StatelessWidget {
   final String roomNo;
   final ScrollController controller;
   final bool typing;
+
+  /// Reply ids that arrived live this session and still play their reveal.
+  final Set<String> freshReplyIds;
   final void Function(String orderId, int quantity) onConfirm;
   final void Function(String orderId, int stars) onRate;
   final ValueChanged<String> onChipSelect;
+  final ValueChanged<String> onReplyPlayed;
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +440,18 @@ class ChatMessageList extends StatelessWidget {
             ChatAvatar(semanticLabel: l10n.conciergeAvatarSemantic),
             const SizedBox(width: AppSpacing.sm),
             Flexible(
-              child: ChatChips(options: message.chips, onSelect: onChipSelect),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildConciergeText(
+                    l10n,
+                    message,
+                    key: ValueKey('chips-${message.id}'),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  ChatChips(options: message.chips, onSelect: onChipSelect),
+                ],
+              ),
             ),
           ],
         );
@@ -364,12 +460,48 @@ class ChatMessageList extends StatelessWidget {
           MessageRole.guest => message.text ?? '',
           MessageRole.concierge => _resolveConciergeText(l10n, message),
         };
+        if (message.role == MessageRole.concierge) {
+          return _buildConciergeText(
+            l10n,
+            message,
+            key: ValueKey('text-${message.id}'),
+          );
+        }
         return ChatBubble(
           role: message.role,
           text: text,
           avatarSemanticLabel: l10n.conciergeAvatarSemantic,
         );
     }
+  }
+
+  /// Concierge text bubble: typewriter reveal while the reply is fresh
+  /// (keyed per message so a finished reveal never replays), plain text
+  /// once played or when restored from persistence.
+  Widget _buildConciergeText(
+    AppLocalizations l10n,
+    ChatMessage message, {
+    required Key key,
+  }) {
+    final text = _resolveConciergeText(l10n, message);
+    final isFresh = freshReplyIds.contains(message.id);
+    return ChatBubble(
+      key: key,
+      role: MessageRole.concierge,
+      text: text,
+      avatarSemanticLabel: l10n.conciergeAvatarSemantic,
+      content: isFresh
+          ? ReplyTypewriter(
+              text: text,
+              style: const TextStyle(
+                color: HotelColors.textPrimary,
+                height: 1.4,
+                fontSize: 15,
+              ),
+              onCompleted: () => onReplyPlayed(message.id),
+            )
+          : null,
+    );
   }
 
   String _resolveConciergeText(AppLocalizations l10n, ChatMessage message) {

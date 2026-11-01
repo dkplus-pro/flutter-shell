@@ -246,6 +246,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get orderStatusPending => '待确认';
+
+  @override
   String get orderStatusPlaced => '已下单';
 
   @override
@@ -299,6 +302,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String ratingStarSemantic(int stars) {
     return '评 $stars 星';
   }
+
+  @override
+  String get ratingBarSemantic => '服务评分，点按星星打分';
 
   @override
   String get orderStepperMinusSemantic => '减少数量';

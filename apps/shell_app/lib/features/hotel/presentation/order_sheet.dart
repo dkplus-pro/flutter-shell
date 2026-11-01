@@ -1,42 +1,53 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Visual accent used for a status pill in the order sheet (PRD 9):
-/// purple primary for newly placed/reserved, gold for in-delivery, green for
-/// delivered and neutral grey for rated.
-///
-/// Local stopgap constants until `HotelColors` tokens land in `app_ui`;
-/// gold follows PRD 9 (`#C9A25E`).
-const Color _orderPurple = Color(0xFF7C5CBF);
-const Color _orderGold = Color(0xFFC9A25E);
-const Color _orderGreen = Color(0xFF2E9E6B);
-const Color _orderGrey = Color(0xFF8E8E93);
+/// Builds the sheet rows from live state; called on every relevant provider
+/// change while the sheet is open so statuses stay in sync with the chat
+/// cards (D11). The caller watches its providers inside the builder.
+typedef HotelOrderSheetItemsBuilder = List<HotelOrderSheetItem> Function(
+  WidgetRef ref,
+);
 
 /// Lifecycle of a hotel order/service entry shown in the order sheet.
-enum HotelOrderSheetStatus { placed, delivering, delivered, reserved, rated }
+///
+/// `pending` covers not-yet-confirmed order cards; it renders with the
+/// neutral grey family so the demo palette stays at four families (PRD 9).
+enum HotelOrderSheetStatus {
+  pending,
+  placed,
+  delivering,
+  delivered,
+  reserved,
+  rated,
+}
 
 /// Pill background opacity applied to [hotelOrderSheetStatusColor].
 const double _pillBackgroundAlpha = 0.12;
 
-/// Accent color for a [HotelOrderSheetStatus], following PRD 9: purple primary
-/// for placed/reserved, gold accent for in-delivery, green for delivered and a
-/// neutral grey for rated entries.
+/// Accent color for a [HotelOrderSheetStatus], from the `HotelColors` tokens
+/// (PRD 9): light purple for placed/reserved, gold for in-delivery, green
+/// for delivered and neutral grey for pending/rated entries.
 Color hotelOrderSheetStatusColor(HotelOrderSheetStatus status) {
   switch (status) {
+    case HotelOrderSheetStatus.pending:
+    case HotelOrderSheetStatus.rated:
+      return HotelColors.statusNeutral;
     case HotelOrderSheetStatus.placed:
     case HotelOrderSheetStatus.reserved:
-      return _orderPurple;
+      return HotelColors.statusPlaced;
     case HotelOrderSheetStatus.delivering:
-      return _orderGold;
+      return HotelColors.gold;
     case HotelOrderSheetStatus.delivered:
-      return _orderGreen;
-    case HotelOrderSheetStatus.rated:
-      return _orderGrey;
+      return HotelColors.statusDelivered;
   }
 }
 
 /// Fallback icon for a [HotelOrderSheetStatus] when the item carries no icon.
 IconData _statusIcon(HotelOrderSheetStatus status) {
   switch (status) {
+    case HotelOrderSheetStatus.pending:
+      return Icons.schedule;
     case HotelOrderSheetStatus.placed:
       return Icons.receipt_long;
     case HotelOrderSheetStatus.delivering:
@@ -91,12 +102,15 @@ class HotelOrderSheetItem {
 /// Shows the hotel order bottom sheet (PRD 6.3, D11).
 ///
 /// The sheet is a read-only modal: rows cannot be tapped and closing the sheet
-/// simply pops the route. Returns when the sheet has been dismissed.
+/// simply pops the route. Returns when the sheet has been dismissed. Pass
+/// [liveItems] to keep the rows in sync with the caller's state while the
+/// sheet is open; without it [items] is a static snapshot.
 Future<void> showHotelOrderSheet(
   BuildContext context, {
   required List<HotelOrderSheetItem> items,
   required String title,
   required String emptyText,
+  HotelOrderSheetItemsBuilder? liveItems,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -104,8 +118,12 @@ Future<void> showHotelOrderSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
     isScrollControlled: true,
-    builder: (context) =>
-        _HotelOrderSheetView(items: items, title: title, emptyText: emptyText),
+    builder: (context) => _HotelOrderSheetView(
+      items: items,
+      title: title,
+      emptyText: emptyText,
+      liveItems: liveItems,
+    ),
   );
 }
 
@@ -114,14 +132,21 @@ class _HotelOrderSheetView extends StatelessWidget {
     required this.items,
     required this.title,
     required this.emptyText,
+    this.liveItems,
   });
 
   final List<HotelOrderSheetItem> items;
   final String title;
   final String emptyText;
+  final HotelOrderSheetItemsBuilder? liveItems;
 
   @override
   Widget build(BuildContext context) {
+    final rows = liveItems == null
+        ? _rows(context, items)
+        : Consumer(
+            builder: (context, ref, _) => _rows(context, liveItems!(ref)),
+          );
     return SafeArea(
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -141,24 +166,25 @@ class _HotelOrderSheetView extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F1F24),
+                    color: HotelColors.textPrimary,
                   ),
                 ),
               ),
             ),
-            Flexible(
-              child: items.isEmpty
-                  ? _OrderSheetEmpty(emptyText: emptyText)
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          for (final item in items) _OrderSheetRow(item: item),
-                        ],
-                      ),
-                    ),
-            ),
+            Flexible(child: rows),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _rows(BuildContext context, List<HotelOrderSheetItem> current) {
+    if (current.isEmpty) {
+      return _OrderSheetEmpty(emptyText: emptyText);
+    }
+    return SingleChildScrollView(
+      child: Column(
+        children: [for (final item in current) _OrderSheetRow(item: item)],
       ),
     );
   }
@@ -173,7 +199,7 @@ class _DragHandle extends StatelessWidget {
       width: 36,
       height: 4,
       decoration: BoxDecoration(
-        color: const Color(0xFFC7C7CC),
+        color: HotelColors.starEmpty,
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -195,13 +221,16 @@ class _OrderSheetEmpty extends StatelessWidget {
           Icon(
             Icons.receipt_long,
             size: 40,
-            color: _orderGrey.withValues(alpha: 0.6),
+            color: HotelColors.textSecondary.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 12),
           Text(
             emptyText,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: _orderGrey),
+            style: const TextStyle(
+              fontSize: 14,
+              color: HotelColors.textSecondary,
+            ),
           ),
         ],
       ),
@@ -238,7 +267,7 @@ class _OrderSheetRow extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F1F24),
+                    color: HotelColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -248,7 +277,7 @@ class _OrderSheetRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF6B6B70),
+                    color: HotelColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -256,7 +285,7 @@ class _OrderSheetRow extends StatelessWidget {
                   item.timeText,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF8E8E93),
+                    color: HotelColors.textSecondary,
                   ),
                 ),
               ],

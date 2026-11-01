@@ -33,6 +33,7 @@ class HotelChatState {
     required this.orders,
     this.typing = false,
     this.pending,
+    this.freshReplyIds = const <String>{},
   });
 
   final List<ChatMessage> messages;
@@ -48,12 +49,22 @@ class HotelChatState {
   /// orders only, an interrupted flow restarts).
   final PendingSlot? pending;
 
-  HotelChatState withMessage(ChatMessage message) {
+  /// Concierge reply ids that arrived live this session and have not played
+  /// their typewriter reveal yet (PRD D5). Restored history is never in this
+  /// set, so it renders as plain text; not persisted.
+  final Set<String> freshReplyIds;
+
+  bool isFreshReply(String messageId) => freshReplyIds.contains(messageId);
+
+  HotelChatState withMessage(ChatMessage message, {bool freshReply = false}) {
     return HotelChatState(
       messages: [...messages, message],
       orders: orders,
       typing: typing,
       pending: pending,
+      freshReplyIds: freshReply
+          ? {...freshReplyIds, message.id}
+          : freshReplyIds,
     );
   }
 
@@ -63,6 +74,7 @@ class HotelChatState {
       orders: orders,
       typing: typing,
       pending: pending,
+      freshReplyIds: freshReplyIds,
     );
   }
 
@@ -72,6 +84,7 @@ class HotelChatState {
       orders: orders,
       typing: typing,
       pending: pending,
+      freshReplyIds: freshReplyIds,
     );
   }
 
@@ -81,6 +94,17 @@ class HotelChatState {
       orders: {...orders, order.id: order},
       typing: typing,
       pending: pending,
+      freshReplyIds: freshReplyIds,
+    );
+  }
+
+  HotelChatState withoutFreshReply(String messageId) {
+    return HotelChatState(
+      messages: messages,
+      orders: orders,
+      typing: typing,
+      pending: pending,
+      freshReplyIds: {...freshReplyIds}..remove(messageId),
     );
   }
 }
@@ -119,18 +143,22 @@ class HotelChatController extends _$HotelChatController {
   }
 
   HotelChatState _seedWelcome() {
-    return HotelChatState(
-      messages: [
-        ChatMessage(
-          id: _nextId('welcome'),
-          role: MessageRole.concierge,
-          kind: MessageKind.text,
-          reply: ScriptedReply.welcome,
-          params: <String, String>{'room': _room},
-          createdAt: _clock.now(),
-        ),
-      ],
-      orders: const <String, HotelOrder>{},
+    // The welcome plays its typewriter reveal on first launch only; a
+    // restart restores it from the store as plain history.
+    return const HotelChatState(
+      messages: <ChatMessage>[],
+      orders: <String, HotelOrder>{},
+    ).withMessage(_welcomeMessage(), freshReply: true);
+  }
+
+  ChatMessage _welcomeMessage() {
+    return ChatMessage(
+      id: _nextId('welcome'),
+      role: MessageRole.concierge,
+      kind: MessageKind.text,
+      reply: ScriptedReply.welcome,
+      params: <String, String>{'room': _room},
+      createdAt: _clock.now(),
     );
   }
 
@@ -317,6 +345,7 @@ class HotelChatController extends _$HotelChatController {
               params: params,
               createdAt: _clock.now(),
             ),
+            freshReply: true,
           );
         case ChipsAction(:final reply, :final params, :final options):
           next = next.withMessage(
@@ -329,6 +358,7 @@ class HotelChatController extends _$HotelChatController {
               chips: options,
               createdAt: _clock.now(),
             ),
+            freshReply: true,
           );
         case CreateOrderAction():
           final order = HotelOrder(
@@ -359,6 +389,16 @@ class HotelChatController extends _$HotelChatController {
   }
 
   // -- Infrastructure ----------------------------------------------------
+
+  /// Marks a concierge reply as fully revealed; the presentation swaps the
+  /// typewriter for plain text afterwards. Transient only — no persist.
+  void markReplyPlayed(String messageId) {
+    final current = state.value;
+    if (current == null || !current.freshReplyIds.contains(messageId)) {
+      return;
+    }
+    state = AsyncData(current.withoutFreshReply(messageId));
+  }
 
   void _update(HotelChatState next) {
     state = AsyncData(next);

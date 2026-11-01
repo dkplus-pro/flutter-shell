@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttershell/features/hotel/data/amenity_catalog.dart';
 import 'package:fluttershell/features/hotel/data/hotel_order.dart';
 import 'package:fluttershell/features/hotel/presentation/concierge_copy.dart';
+import 'package:fluttershell/features/hotel/presentation/star_rating_bar.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
 /// Icon for an amenity or reservation order (mock catalog, PRD 8).
@@ -23,14 +24,16 @@ IconData orderIcon(HotelOrder order) {
   };
 }
 
+/// Status badge accent; mirrors the order sheet so both surfaces stay in
+/// sync through the same [HotelColors] tokens (PRD 6.3/9).
 Color _statusColor(HotelOrder order) {
   return switch (order.status) {
-    OrderStatus.pending => HotelColors.gold,
-    OrderStatus.placed => HotelColors.gold,
-    OrderStatus.delivering => HotelColors.primary,
+    OrderStatus.pending => HotelColors.statusNeutral,
+    OrderStatus.placed => HotelColors.statusPlaced,
+    OrderStatus.delivering => HotelColors.gold,
     OrderStatus.delivered => HotelColors.statusDelivered,
-    OrderStatus.rated => HotelColors.textSecondary,
-    OrderStatus.reserved => HotelColors.gold,
+    OrderStatus.rated => HotelColors.statusNeutral,
+    OrderStatus.reserved => HotelColors.statusPlaced,
   };
 }
 
@@ -257,8 +260,8 @@ class _OrderCardState extends State<OrderCard> {
     );
   }
 
-  /// Minimal inline star row (D12): five tappable stars, one tap submits.
-  /// Will be replaced by the polished component in a later integration.
+  /// Star rating row shown after delivery (D12): one tap submits via
+  /// [StarRatingBar]; the controller enforces the once-only rule.
   Widget _buildRatingRow(AppLocalizations l10n, HotelOrder order) {
     return Padding(
       padding: const EdgeInsets.only(top: AppSpacing.xs),
@@ -272,23 +275,11 @@ class _OrderCardState extends State<OrderCard> {
               fontSize: 13,
             ),
           ),
-          Row(
-            children: [
-              for (var stars = 1; stars <= 5; stars++)
-                GestureDetector(
-                  onTap: () => widget.onRate(order.id, stars),
-                  child: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: Icon(
-                      Icons.star_border,
-                      size: 26,
-                      color: HotelColors.star,
-                      semanticLabel: l10n.ratingStarSemantic(stars),
-                    ),
-                  ),
-                ),
-            ],
+          StarRatingBar(
+            rating: order.rating ?? 0,
+            enabled: order.status == OrderStatus.delivered,
+            onRated: (stars) => widget.onRate(order.id, stars),
+            semanticsLabel: l10n.ratingBarSemantic,
           ),
         ],
       ),

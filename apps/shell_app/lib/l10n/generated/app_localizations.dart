@@ -530,6 +530,12 @@ abstract class AppLocalizations {
   /// **'Quantity ×{count}'**
   String orderQuantityLabel(int count);
 
+  /// Status badge of a not-yet-confirmed order card
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get orderStatusPending;
+
   /// Status badge after confirmation (PRD 6.3)
   ///
   /// In en, this message translates to:
@@ -619,6 +625,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rate {stars} stars'**
   String ratingStarSemantic(int stars);
+
+  /// Semantics label of the whole star rating bar (D12)
+  ///
+  /// In en, this message translates to:
+  /// **'Service rating. Tap a star to rate.'**
+  String get ratingBarSemantic;
 
   /// Semantics label of the quantity stepper minus button
   ///

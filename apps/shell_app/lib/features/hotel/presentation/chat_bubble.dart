@@ -32,6 +32,7 @@ class ChatBubble extends StatelessWidget {
     required this.role,
     required this.text,
     this.avatarSemanticLabel = '',
+    this.content,
     super.key,
   });
 
@@ -40,6 +41,10 @@ class ChatBubble extends StatelessWidget {
 
   /// Accessibility label for the concierge avatar placeholder.
   final String avatarSemanticLabel;
+
+  /// Optional concierge bubble content rendered instead of [text] (e.g. the
+  /// typewriter reveal). Guest bubbles always render [text].
+  final Widget? content;
 
   @override
   Widget build(BuildContext context) {
@@ -97,14 +102,16 @@ class ChatBubble extends StatelessWidget {
                 ),
               ],
             ),
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: HotelColors.textPrimary,
-                height: 1.4,
-                fontSize: 15,
-              ),
-            ),
+            child:
+                content ??
+                Text(
+                  text,
+                  style: const TextStyle(
+                    color: HotelColors.textPrimary,
+                    height: 1.4,
+                    fontSize: 15,
+                  ),
+                ),
           ),
         ),
       ],
