@@ -35,7 +35,12 @@ class QuickServicesPanel extends StatelessWidget {
         childAspectRatio: 1.1,
         children: [
           for (final (icon, label, preset) in entries)
-            _QuickItem(icon: icon, label: label, preset: preset, onSelect: onSelect),
+            _QuickItem(
+              icon: icon,
+              label: label,
+              preset: preset,
+              onSelect: onSelect,
+            ),
         ],
       ),
     );
@@ -48,7 +53,6 @@ class _QuickItem extends StatelessWidget {
     required this.label,
     required this.preset,
     required this.onSelect,
-    super.key,
   });
 
   final IconData icon;

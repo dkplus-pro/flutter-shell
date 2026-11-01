@@ -144,10 +144,7 @@ class _SeparatorLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      color: HotelColors.gold.withValues(alpha: 0.4),
-    );
+    return Container(height: 1, color: HotelColors.gold.withValues(alpha: 0.4));
   }
 }
 
@@ -163,10 +160,7 @@ class ChatTimestamp extends StatelessWidget {
     return Center(
       child: Text(
         label,
-        style: const TextStyle(
-          color: HotelColors.textSecondary,
-          fontSize: 12,
-        ),
+        style: const TextStyle(color: HotelColors.textSecondary, fontSize: 12),
       ),
     );
   }

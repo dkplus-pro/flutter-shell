@@ -59,4 +59,109 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get retry => '重试';
+
+  @override
+  String get homeTab => '首页';
+
+  @override
+  String get serviceTab => '服务';
+
+  @override
+  String get profileTab => '我的';
+
+  @override
+  String get profileTitle => '我的';
+
+  @override
+  String get profileCenterTitle => '我的';
+
+  @override
+  String get profileCenterSubtitle => '个人信息后续将在这里展示。';
+
+  @override
+  String get placeholderNotAvailable => '该功能暂未开发';
+
+  @override
+  String get hotelChatTitle => 'AI 客服';
+
+  @override
+  String hotelRoomBadge(String room, String guest) {
+    return '$room 房 · $guest';
+  }
+
+  @override
+  String get hotelMockGuestName => '张先生';
+
+  @override
+  String get hotelOrdersTooltip => '查看订单';
+
+  @override
+  String chatWelcome(String room) {
+    return '您好，我是 $room 房的智能管家小智，可以为您送物品、解答问题、设置叫醒～点右下角 + 可查看全部服务。';
+  }
+
+  @override
+  String chatTodayMarker(String date) {
+    return '今天 $date';
+  }
+
+  @override
+  String get conciergeAvatarSemantic => '客服头像';
+
+  @override
+  String get quickPanelSemantic => '快捷服务';
+
+  @override
+  String get quickSlippers => '拖鞋';
+
+  @override
+  String get quickToiletries => '洗漱用品';
+
+  @override
+  String get quickTowels => '毛巾';
+
+  @override
+  String get quickWater => '饮用水';
+
+  @override
+  String get quickWakeup => '叫醒服务';
+
+  @override
+  String get quickLateCheckout => '延迟退房';
+
+  @override
+  String get quickWifi => 'WiFi 密码';
+
+  @override
+  String get quickBreakfast => '早餐时间';
+
+  @override
+  String get presetSlippers => '我需要送几双一次性拖鞋到房间。';
+
+  @override
+  String get presetToiletries => '请给我送一套洗漱用品。';
+
+  @override
+  String get presetTowels => '请给我送几条干净毛巾。';
+
+  @override
+  String get presetWater => '请给我送几瓶饮用水。';
+
+  @override
+  String get presetWakeup => '我想设置叫醒服务。';
+
+  @override
+  String get presetLateCheckout => '我想申请延迟退房。';
+
+  @override
+  String get presetWifi => 'WiFi 密码是多少？';
+
+  @override
+  String get presetBreakfast => '早餐时间是几点？';
+
+  @override
+  String get chatInputHint => '输入消息…';
+
+  @override
+  String get chatSendSemantic => '发送';
 }

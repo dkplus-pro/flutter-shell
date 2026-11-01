@@ -76,9 +76,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(content: Text(l10n.placeholderNotAvailable)),
-      );
+      ..showSnackBar(SnackBar(content: Text(l10n.placeholderNotAvailable)));
   }
 
   void _scrollToBottom() {
@@ -260,9 +258,7 @@ class ChatMessageList extends StatelessWidget {
       if (previous != null &&
           previous.role == message.role &&
           gap > const Duration(minutes: 5)) {
-        entries.add(
-          ChatTimestamp(label: ChatTimeFormat.hm(message.createdAt)),
-        );
+        entries.add(ChatTimestamp(label: ChatTimeFormat.hm(message.createdAt)));
       }
       entries.add(_buildEntry(context, l10n, message));
       previous = message;
@@ -296,10 +292,7 @@ class ChatMessageList extends StatelessWidget {
     );
   }
 
-  String _resolveConciergeText(
-    AppLocalizations l10n,
-    ChatMessage message,
-  ) {
+  String _resolveConciergeText(AppLocalizations l10n, ChatMessage message) {
     final reply = message.reply;
     if (reply == null) {
       return '';
