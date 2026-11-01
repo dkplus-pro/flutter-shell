@@ -1,41 +1,63 @@
 import 'package:flutter/material.dart';
 
-/// Hotel demo palette (PRD 05 §9, D9: purple-gold accent on grey-white).
+/// Hotel demo palette (docs/06 §2.1, restyled to the reference design:
+/// blue-purple primary on a cool grey background with pure white surfaces).
 ///
-/// Starting values from the PRD; pages must reference these tokens instead
-/// of hardcoding colors inline. The status tokens are shared by the chat
-/// order card and the order sheet so both surfaces stay in sync.
+/// Pages must reference these tokens instead of hardcoding colors inline.
+/// The status tokens are shared by the chat order card and the order sheet
+/// through `hotelOrderSheetStatusColor` so both surfaces stay in sync.
 abstract final class HotelColors {
-  /// Primary purple: guest bubbles, primary actions, selected states.
-  static const Color primary = Color(0xFF4C3B8F);
+  /// Primary purple: guest bubbles, CTAs, selected states, navigation.
+  static const Color primary = Color(0xFF5747C6);
 
-  /// Light purple accent for confirmed states (placed/reserved badges).
-  static const Color statusPlaced = Color(0xFF7C5CBF);
+  /// Deep purple: CTA gradient end, pressed states.
+  static const Color primaryDeep = Color(0xFF4638AC);
 
-  /// Gold accent: room badge, status badges, stars, separators.
-  static const Color gold = Color(0xFFC9A25E);
+  /// Soft purple: selected chip background, icon soft fills.
+  static const Color primarySoft = Color(0xFFECE8FB);
 
-  /// Chat area background (grey-white).
-  static const Color chatBackground = Color(0xFFF5F6F8);
+  /// Page and chat area background (cool grey, no purple tint).
+  static const Color bg = Color(0xFFF4F5F7);
 
-  /// Cards and concierge bubbles.
+  /// Cards, bubbles, panels and the order sheet.
   static const Color surface = Color(0xFFFFFFFF);
 
-  /// Title/body text.
-  static const Color textPrimary = Color(0xFF1F2126);
+  /// Titles and body copy.
+  static const Color textPrimary = Color(0xFF191B20);
 
-  /// Secondary/hint text.
-  static const Color textSecondary = Color(0xFF8A8F99);
+  /// Secondary copy, timestamps, unselected navigation.
+  static const Color textSecondary = Color(0xFF9AA0A8);
 
-  /// Delivered/success state badge.
-  static const Color statusDelivered = Color(0xFF3E8E5A);
+  /// Input placeholder text.
+  static const Color textHint = Color(0xFFB9BDC6);
 
-  /// Neutral grey status (pending/rated entries).
-  static const Color statusNeutral = textSecondary;
+  /// 0.5px dividers and the app-bar bottom hairline.
+  static const Color divider = Color(0xFFEEEEF1);
 
-  /// Star fill on white cards (deeper than [gold] for contrast).
-  static const Color star = Color(0xFFB8860B);
+  /// Placed / reserved status accent.
+  static const Color statusPlaced = Color(0xFF5747C6);
+
+  /// Delivering status accent.
+  static const Color statusDelivering = Color(0xFFF5A623);
+
+  /// Delivered status accent.
+  static const Color statusDelivered = Color(0xFF34B36B);
+
+  /// Pending / rated neutral status accent.
+  static const Color statusNeutral = Color(0xFF8E939C);
+
+  /// Red accents: badges and dot markers.
+  static const Color promoRed = Color(0xFFFF5148);
+
+  /// Filled star color on white cards.
+  static const Color starGold = Color(0xFFF0A835);
 
   /// Unfilled star outline.
   static const Color starEmpty = Color(0xFFC7C7CC);
+
+  /// Input capsule background.
+  static const Color inputPill = Color(0xFFF2F3F5);
+
+  /// Icon blocks and panel tile backgrounds.
+  static const Color tileGray = Color(0xFFF4F5F7);
 }

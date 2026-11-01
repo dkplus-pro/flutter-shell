@@ -7,5 +7,7 @@ library;
 export 'src/theme/app_theme.dart';
 export 'src/theme/app_tokens.dart';
 export 'src/theme/hotel_colors.dart';
+export 'src/theme/hotel_dimens.dart';
+export 'src/theme/hotel_typography.dart';
 export 'src/widgets/app_primary_button.dart';
 export 'src/widgets/app_section_card.dart';

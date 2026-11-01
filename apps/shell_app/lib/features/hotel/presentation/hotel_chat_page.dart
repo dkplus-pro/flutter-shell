@@ -10,6 +10,7 @@ import 'package:fluttershell/features/hotel/presentation/chat_bubble.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_chips.dart';
 import 'package:fluttershell/features/hotel/presentation/chat_time_format.dart';
 import 'package:fluttershell/features/hotel/presentation/concierge_copy.dart';
+import 'package:fluttershell/features/hotel/presentation/guess_question_card.dart';
 import 'package:fluttershell/features/hotel/presentation/order_card.dart';
 import 'package:fluttershell/features/hotel/presentation/order_sheet.dart';
 import 'package:fluttershell/features/hotel/presentation/quick_services_panel.dart';
@@ -17,9 +18,10 @@ import 'package:fluttershell/features/hotel/presentation/reply_text.dart';
 import 'package:fluttershell/features/hotel/presentation/typing_indicator.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
-/// AI concierge chat page: the "Services" tab (PRD 5, D4).
+/// AI concierge chat page: the "Services" tab (PRD 5, D4), restyled per
+/// docs/06 §3.2 (white centered app bar, grey pills, capsule input bar).
 class HotelChatPage extends ConsumerStatefulWidget {
-  const new({super.key});
+  const HotelChatPage({super.key});
 
   @override
   ConsumerState<HotelChatPage> createState() => _HotelChatPageState();
@@ -85,15 +87,12 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   void _showOrderSheet() {
     final l10n = AppLocalizations.of(context);
     final room = ref.read(hotelGuestProfileProvider).roomNo;
+    final state = ref.read(hotelChatControllerProvider).value;
     unawaited(
       showHotelOrderSheet(
         context,
-        items: _sheetItems(
-          l10n,
-          ref.read(hotelChatControllerProvider).value,
-          room,
-        ),
-        title: l10n.ordersSheetTitle,
+        items: _sheetItems(l10n, state, room),
+        title: l10n.ordersSheetTitleWithCount(state?.orders.length ?? 0),
         emptyText: l10n.ordersEmpty,
         liveItems: (ref) => _sheetItems(
           l10n,
@@ -117,6 +116,19 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     });
   }
 
+  /// The guess-question welcome card (docs/06 §3.2, P2) shows only while the
+  /// transcript is just the seeded welcome: no guest turn yet. Presentation
+  /// state only — nothing is persisted, and the first guest message (from any
+  /// source) removes it.
+  bool _shouldShowGuessCard(HotelChatState? state) {
+    final messages = state?.messages;
+    if (messages == null || messages.length != 1) {
+      return false;
+    }
+    final first = messages.first;
+    return first.kind == MessageKind.text && first.role == MessageRole.concierge;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -127,9 +139,10 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     });
 
     return Scaffold(
-      backgroundColor: HotelColors.chatBackground,
+      backgroundColor: HotelColors.bg,
       appBar: _buildAppBar(l10n, room),
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             Expanded(child: _buildBody(l10n, chat)),
@@ -172,6 +185,8 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
         controller: _scroll,
         typing: state.typing,
         freshReplyIds: state.freshReplyIds,
+        showGuessCard: _shouldShowGuessCard(state),
+        onGuessSelect: _sendText,
         onConfirm: (orderId, quantity) => ref
             .read(hotelChatControllerProvider.notifier)
             .confirmOrder(orderId, quantity: quantity),
@@ -238,6 +253,8 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     };
   }
 
+  /// White app bar with the centered title and the room pill collapsed to
+  /// the title's right (docs/06 §3.2).
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n, String room) {
     final badge = l10n.hotelRoomBadge(room, l10n.hotelMockGuestName);
     return AppBar(
@@ -251,18 +268,18 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.sm,
-                vertical: 2,
+                vertical: 3,
               ),
               decoration: BoxDecoration(
-                color: HotelColors.gold.withValues(alpha: 0.16),
-                borderRadius: BorderRadius.circular(999),
+                color: HotelColors.inputPill,
+                borderRadius: BorderRadius.circular(HotelDimens.capsuleRadius),
               ),
               child: Text(
                 badge,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: HotelColors.primary,
-                  fontWeight: FontWeight.w600,
+                  color: HotelColors.textSecondary,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -272,6 +289,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.receipt_long_outlined),
+          color: HotelColors.textPrimary,
           tooltip: l10n.hotelOrdersTooltip,
           onPressed: _showOrderSheet,
         ),
@@ -279,82 +297,94 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     );
   }
 
+  /// 52dp grey capsule holding the input field, the always-present add
+  /// button and the send arrow that appears only for non-empty input
+  /// (docs/06 §3.2).
   Widget _buildInputBar(AppLocalizations l10n) {
     return Container(
       color: HotelColors.surface,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: AppSpacing.xs,
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.md,
+        AppSpacing.sm,
       ),
       child: SafeArea(
         top: false,
-        child: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                _panelOpen ? Icons.close : Icons.add_circle_outline,
-                color: HotelColors.primary,
-              ),
-              tooltip: l10n.quickPanelSemantic,
-              onPressed: _togglePanel,
-            ),
-            Expanded(
-              child: TextField(
-                controller: _input,
-                focusNode: _inputFocus,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => _sendFromInput(),
-                decoration: InputDecoration(
-                  hintText: l10n.chatInputHint,
-                  isDense: true,
-                  filled: true,
-                  fillColor: HotelColors.chatBackground,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: 10,
+        child: Container(
+          height: HotelDimens.inputPillHeight,
+          padding: const EdgeInsets.only(left: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: HotelColors.inputPill,
+            borderRadius: BorderRadius.circular(HotelDimens.capsuleRadius),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _input,
+                  focusNode: _inputFocus,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (_) => _sendFromInput(),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: HotelColors.textPrimary,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
+                  decoration: InputDecoration(
+                    hintText: l10n.chatInputHint,
+                    hintStyle: const TextStyle(
+                      fontSize: 15,
+                      color: HotelColors.textHint,
+                    ),
+                    border: InputBorder.none,
                   ),
                 ),
               ),
-            ),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: _input,
-              builder: (context, value, _) {
-                final enabled = value.text.trim().isNotEmpty;
-                return IconButton(
-                  icon: Icon(
-                    Icons.send,
-                    color: enabled
-                        ? HotelColors.primary
-                        : HotelColors.textSecondary,
-                  ),
-                  tooltip: l10n.chatSendSemantic,
-                  onPressed: enabled ? _sendFromInput : null,
-                );
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  _panelOpen ? Icons.close : Icons.add_circle_outline,
+                  color: HotelColors.textPrimary,
+                ),
+                tooltip: l10n.quickPanelSemantic,
+                onPressed: _togglePanel,
+              ),
+              ValueListenableBuilder<TextEditingValue>(
+                valueListenable: _input,
+                builder: (context, value, _) {
+                  final enabled = value.text.trim().isNotEmpty;
+                  if (!enabled) {
+                    return const SizedBox.shrink();
+                  }
+                  return IconButton(
+                    icon: const Icon(Icons.arrow_upward),
+                    color: HotelColors.primary,
+                    tooltip: l10n.chatSendSemantic,
+                    onPressed: _sendFromInput,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-/// Transcript list with the day separator, inline timestamps (D12) and the
-/// typing indicator while a reply is in flight (PRD 6.2). Fresh concierge
-/// replies render through the typewriter reveal (D5); restored history and
-/// finished reveals render as plain text.
+/// Transcript list with the whole-timestamp separator (docs/06 §3.2), inline
+/// timestamps (D12) and the typing indicator while a reply is in flight
+/// (PRD 6.2). Fresh concierge replies render through the typewriter reveal
+/// (D5); restored history and finished reveals render as plain text.
 class ChatMessageList extends StatelessWidget {
-  const new({
+  const ChatMessageList({
     required this.messages,
     required this.orders,
     required this.roomNo,
     required this.controller,
     required this.typing,
     required this.freshReplyIds,
+    required this.showGuessCard,
+    required this.onGuessSelect,
     required this.onConfirm,
     required this.onRate,
     required this.onChipSelect,
@@ -370,6 +400,10 @@ class ChatMessageList extends StatelessWidget {
 
   /// Reply ids that arrived live this session and still play their reveal.
   final Set<String> freshReplyIds;
+
+  /// Whether the guess-question welcome card is still active (docs/06 §3.2).
+  final bool showGuessCard;
+  final ValueChanged<String> onGuessSelect;
   final void Function(String orderId, int quantity) onConfirm;
   final void Function(String orderId, int stars) onRate;
   final ValueChanged<String> onChipSelect;
@@ -381,11 +415,7 @@ class ChatMessageList extends StatelessWidget {
     final entries = <Widget>[];
     if (messages.isNotEmpty) {
       entries.add(
-        ChatDateSeparator(
-          label: l10n.chatTodayMarker(
-            ChatTimeFormat.day(messages.first.createdAt),
-          ),
-        ),
+        ChatDateSeparator(label: ChatTimeFormat.full(messages.first.createdAt)),
       );
     }
     ChatMessage? previous;
@@ -398,6 +428,14 @@ class ChatMessageList extends StatelessWidget {
         entries.add(ChatTimestamp(label: ChatTimeFormat.hm(message.createdAt)));
       }
       entries.add(_buildEntry(context, l10n, message));
+      if (previous == null && showGuessCard) {
+        entries.add(
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.sm),
+            child: GuessQuestionCard(onSelect: onGuessSelect),
+          ),
+        );
+      }
       previous = message;
     }
     if (typing) {
@@ -493,11 +531,7 @@ class ChatMessageList extends StatelessWidget {
       content: isFresh
           ? ReplyTypewriter(
               text: text,
-              style: const TextStyle(
-                color: HotelColors.textPrimary,
-                height: 1.4,
-                fontSize: 15,
-              ),
+              style: HotelTypography.body,
               onCompleted: () => onReplyPlayed(message.id),
             )
           : null,

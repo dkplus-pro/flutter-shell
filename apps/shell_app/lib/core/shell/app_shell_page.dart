@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershell/core/shell/app_bottom_nav_bar.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-/// Bottom navigation shell hosting the three main tabs (PRD 4).
+/// Bottom navigation shell hosting the three main tabs. The stock
+/// `NavigationBar` was replaced by the self-drawn [AppBottomNavBar]
+/// (docs/06 §3.1); the centered service tab renders its selected icon
+/// inside the 44dp purple circle.
 class AppShellPage extends StatelessWidget {
-  const new({required this.navigationShell, super.key});
+  const AppShellPage({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 
@@ -13,32 +17,30 @@ class AppShellPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) {
+      bottomNavigationBar: AppBottomNavBar(
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) {
           navigationShell.goBranch(
             index,
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
+        items: [
+          AppBottomNavItem(
+            icon: Icons.home_outlined,
+            selectedIcon: Icons.home,
             label: l10n.homeTab,
-            tooltip: l10n.homeTab,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.forum_outlined),
-            selectedIcon: const Icon(Icons.forum),
+          AppBottomNavItem(
+            icon: Icons.headset_mic_outlined,
+            selectedIcon: Icons.headset_mic,
             label: l10n.serviceTab,
-            tooltip: l10n.serviceTab,
+            circleWhenSelected: true,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
+          AppBottomNavItem(
+            icon: Icons.person_outline,
+            selectedIcon: Icons.person,
             label: l10n.profileTab,
-            tooltip: l10n.profileTab,
           ),
         ],
       ),

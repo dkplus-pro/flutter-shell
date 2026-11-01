@@ -2,10 +2,13 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
-/// 2x4 quick-service grid shown above the input bar (PRD 6.4, D7). Selecting
-/// an entry sends the matching preset message as the guest.
+/// Quick-service panel shown above the input bar (PRD 6.4, D7), restyled per
+/// docs/06 §3.2: white card with 20-radius top corners, a "quick services"
+/// section title and small `tileGray` tiles whose icons sit on `primarySoft`
+/// circles; labels scale down with [FittedBox] instead of truncating.
+/// Selecting an entry sends the matching preset message as the guest.
 class QuickServicesPanel extends StatelessWidget {
-  const new({required this.onSelect, super.key});
+  const QuickServicesPanel({required this.onSelect, super.key});
 
   final ValueChanged<String> onSelect;
 
@@ -24,23 +27,43 @@ class QuickServicesPanel extends StatelessWidget {
     ];
     return Container(
       width: double.infinity,
-      color: HotelColors.surface,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: GridView.count(
-        crossAxisCount: 4,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: AppSpacing.sm,
-        crossAxisSpacing: AppSpacing.sm,
-        childAspectRatio: 1.1,
+      decoration: const BoxDecoration(
+        color: HotelColors.surface,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(HotelDimens.panelTopRadius),
+        ),
+      ),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.lg,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (final (icon, label, preset) in entries)
-            _QuickItem(
-              icon: icon,
-              label: label,
-              preset: preset,
-              onSelect: onSelect,
-            ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Text(l10n.quickPanelTitle, style: HotelTypography.titleL),
+          ),
+          GridView.count(
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: AppSpacing.sm,
+            crossAxisSpacing: AppSpacing.sm,
+            childAspectRatio: 1.1,
+            children: [
+              for (final (icon, label, preset) in entries)
+                _QuickItem(
+                  icon: icon,
+                  label: label,
+                  preset: preset,
+                  onSelect: onSelect,
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -48,7 +71,7 @@ class QuickServicesPanel extends StatelessWidget {
 }
 
 class _QuickItem extends StatelessWidget {
-  const new({
+  const _QuickItem({
     required this.icon,
     required this.label,
     required this.preset,
@@ -67,21 +90,37 @@ class _QuickItem extends StatelessWidget {
       label: label,
       child: InkWell(
         onTap: () => onSelect(preset),
-        borderRadius: BorderRadius.circular(AppRadius.sm),
-        child: Padding(
+        borderRadius: BorderRadius.circular(HotelDimens.tileRadius),
+        child: Container(
+          decoration: BoxDecoration(
+            color: HotelColors.tileGray,
+            borderRadius: BorderRadius.circular(HotelDimens.tileRadius),
+          ),
           padding: const EdgeInsets.all(AppSpacing.xs),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 26, color: HotelColors.primary),
+              Container(
+                width: 32,
+                height: 32,
+                decoration: const BoxDecoration(
+                  color: HotelColors.primarySoft,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 18, color: HotelColors.primary),
+              ),
               const SizedBox(height: AppSpacing.xs),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: HotelColors.textPrimary,
+              // Scale instead of ellipsis so entries like "Late check-out"
+              // stay fully visible (docs/06 §3.2).
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: HotelColors.textPrimary,
+                  ),
                 ),
               ),
             ],

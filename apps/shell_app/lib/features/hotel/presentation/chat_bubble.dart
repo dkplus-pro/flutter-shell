@@ -2,9 +2,10 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershell/features/hotel/data/chat_message.dart';
 
-/// Grey-white concierge avatar placeholder.
+/// White concierge avatar with a hairline border and the purple headset
+/// line icon (docs/06 §3.2; no mascot artwork).
 class ChatAvatar extends StatelessWidget {
-  const new({required this.semanticLabel, super.key});
+  const ChatAvatar({required this.semanticLabel, super.key});
 
   final String semanticLabel;
 
@@ -12,12 +13,17 @@ class ChatAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: semanticLabel,
-      child: CircleAvatar(
-        radius: 16,
-        backgroundColor: HotelColors.gold.withValues(alpha: 0.2),
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: HotelColors.surface,
+          shape: BoxShape.circle,
+          border: Border.all(color: HotelColors.divider, width: 0.5),
+        ),
         child: const Icon(
-          Icons.support_agent,
-          size: 18,
+          Icons.headset_mic_outlined,
+          size: 16,
           color: HotelColors.primary,
         ),
       ),
@@ -27,8 +33,9 @@ class ChatAvatar extends StatelessWidget {
 
 /// A single message bubble. Guest messages sit right on the purple primary
 /// color; concierge messages sit left on a white surface next to the avatar.
+/// Both are 16-radius rounded rectangles without tails (docs/06 §3.2).
 class ChatBubble extends StatelessWidget {
-  const new({
+  const ChatBubble({
     required this.role,
     required this.text,
     this.avatarSemanticLabel = '',
@@ -59,20 +66,11 @@ class ChatBubble extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: const BoxDecoration(
             color: HotelColors.primary,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(4),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
-              height: 1.4,
-              fontSize: 15,
-            ),
+            style: HotelTypography.body.copyWith(color: Colors.white),
           ),
         ),
       );
@@ -86,32 +84,13 @@ class ChatBubble extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(maxWidth: maxWidth),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: HotelColors.surface,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(4),
-                topRight: Radius.circular(16),
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 4,
-                  offset: const Offset(0, 1),
-                ),
-              ],
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             child:
                 content ??
-                Text(
-                  text,
-                  style: const TextStyle(
-                    color: HotelColors.textPrimary,
-                    height: 1.4,
-                    fontSize: 15,
-                  ),
-                ),
+                Text(text, style: HotelTypography.body),
           ),
         ),
       ],
@@ -119,46 +98,10 @@ class ChatBubble extends StatelessWidget {
   }
 }
 
-/// Day separator line ("today …") above the first message.
+/// Whole timestamp separator above the first message
+/// (`yyyy-MM-dd HH:mm`, docs/06 §3.2): plain centered grey copy, no lines.
 class ChatDateSeparator extends StatelessWidget {
-  const new({required this.label, super.key});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(child: _SeparatorLine()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-          child: Text(
-            label,
-            style: const TextStyle(
-              color: HotelColors.textSecondary,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        const Expanded(child: _SeparatorLine()),
-      ],
-    );
-  }
-}
-
-class _SeparatorLine extends StatelessWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(height: 1, color: HotelColors.gold.withValues(alpha: 0.4));
-  }
-}
-
-/// Inline `HH:mm` timestamp between two same-side messages more than five
-/// minutes apart.
-class ChatTimestamp extends StatelessWidget {
-  const new({required this.label, super.key});
+  const ChatDateSeparator({required this.label, super.key});
 
   final String label;
 
@@ -167,7 +110,25 @@ class ChatTimestamp extends StatelessWidget {
     return Center(
       child: Text(
         label,
-        style: const TextStyle(color: HotelColors.textSecondary, fontSize: 12),
+        style: HotelTypography.sub.copyWith(fontSize: 12),
+      ),
+    );
+  }
+}
+
+/// Inline `HH:mm` timestamp between two same-side messages more than five
+/// minutes apart.
+class ChatTimestamp extends StatelessWidget {
+  const ChatTimestamp({required this.label, super.key});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        label,
+        style: HotelTypography.sub.copyWith(fontSize: 12),
       ),
     );
   }

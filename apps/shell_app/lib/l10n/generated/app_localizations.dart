@@ -104,18 +104,6 @@ abstract class AppLocalizations {
   /// **'Shell'**
   String get appTitle;
 
-  /// Greeting shown on the home page
-  ///
-  /// In en, this message translates to:
-  /// **'Hello World'**
-  String get helloWorld;
-
-  /// Subtitle under the greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Flutter shell baseline page'**
-  String get helloSubtitle;
-
   /// Button that opens the bridge demo page
   ///
   /// In en, this message translates to:
@@ -206,24 +194,6 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get profileTab;
 
-  /// App bar title of the profile placeholder page
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get profileTitle;
-
-  /// Centered title on the profile placeholder page
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get profileCenterTitle;
-
-  /// Centered subtitle on the profile placeholder page
-  ///
-  /// In en, this message translates to:
-  /// **'Personal information will show up here later.'**
-  String get profileCenterSubtitle;
-
   /// Toast shown when tapping a placeholder page or deferred action
   ///
   /// In en, this message translates to:
@@ -259,12 +229,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello, I am XiaoZhi, the smart butler for room {room}. I can deliver items, answer questions and set wake-up calls. Tap + to see all services.'**
   String chatWelcome(String room);
-
-  /// Day separator line above the first message
-  ///
-  /// In en, this message translates to:
-  /// **'Today {date}'**
-  String chatTodayMarker(String date);
 
   /// Semantics label for the concierge avatar placeholder
   ///
@@ -644,17 +608,221 @@ abstract class AppLocalizations {
   /// **'Increase quantity'**
   String get orderStepperPlusSemantic;
 
-  /// Title of the orders bottom sheet opened from the app bar (D11)
+  /// Title of the orders bottom sheet with the live entry count (D11, docs/06 §3.3)
   ///
   /// In en, this message translates to:
-  /// **'Current orders'**
-  String get ordersSheetTitle;
+  /// **'Current orders · {count}'**
+  String ordersSheetTitleWithCount(int count);
 
   /// Empty state of the orders bottom sheet
   ///
   /// In en, this message translates to:
   /// **'No orders yet'**
   String get ordersEmpty;
+
+  /// Section title of the quick services panel (docs/06 §3.2)
+  ///
+  /// In en, this message translates to:
+  /// **'Quick services'**
+  String get quickPanelTitle;
+
+  /// Title of the guess-question welcome card (docs/06 §3.2)
+  ///
+  /// In en, this message translates to:
+  /// **'You may ask'**
+  String get guessCardTitle;
+
+  /// Category chip of the guess card: item delivery questions
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get guessCategoryDelivery;
+
+  /// Category chip of the guess card: information questions
+  ///
+  /// In en, this message translates to:
+  /// **'Q&A'**
+  String get guessCategoryQa;
+
+  /// Category chip of the guess card: reservation questions
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get guessCategoryBooking;
+
+  /// Refresh action at the bottom of the guess card
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get guessRefresh;
+
+  /// Guess card preset question; wording matches the slippers intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'How do I get two pairs of slippers delivered?'**
+  String get faqSlippersDeliver;
+
+  /// Guess card preset question; wording matches the toiletries intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can you bring me a toiletries set?'**
+  String get faqToiletriesDeliver;
+
+  /// Guess card preset question; wording matches the towels intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Could you bring a few more towels?'**
+  String get faqTowelsDeliver;
+
+  /// Guess card preset question; wording matches the water intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Please deliver two bottles of water to my room.'**
+  String get faqWaterDeliver;
+
+  /// Guess card rotation extra; wording matches the slippers intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can I exchange the slippers for another size?'**
+  String get faqSlippersExchange;
+
+  /// Guess card rotation extra; wording matches the towels intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Please also bring some bath towels.'**
+  String get faqTowelsBath;
+
+  /// Guess card preset question; wording matches the wifi intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Wi-Fi password?'**
+  String get faqWifiPassword;
+
+  /// Guess card preset question; wording matches the breakfast intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'What time does breakfast start?'**
+  String get faqBreakfastTime;
+
+  /// Guess card rotation extra; wording matches the wifi intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'How do I join the wireless network?'**
+  String get faqWifiConnect;
+
+  /// Guess card rotation extra; wording matches the breakfast intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Where is breakfast served?'**
+  String get faqBreakfastFloor;
+
+  /// Guess card preset question; wording matches the wake-up intent and the time slot parser
+  ///
+  /// In en, this message translates to:
+  /// **'Set a wake-up call for 07:00 tomorrow, please.'**
+  String get faqWakeupSetup;
+
+  /// Guess card preset question; wording matches the wake-up intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'I would like to set up a wake-up call.'**
+  String get faqWakeupGeneral;
+
+  /// Guess card preset question; wording matches the late check-out intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can I request a late checkout?'**
+  String get faqLateCheckoutAsk;
+
+  /// Guess card preset question; wording matches the late check-out intent and the time slot parser
+  ///
+  /// In en, this message translates to:
+  /// **'I would like a late checkout at 14:00 tomorrow.'**
+  String get faqLateCheckoutTime;
+
+  /// Greeting on the home gradient header (docs/06 §3.4)
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon, {guest}'**
+  String homeGreeting(String guest);
+
+  /// Hint inside the decorative home search capsule
+  ///
+  /// In en, this message translates to:
+  /// **'Search hotel services'**
+  String get homeSearchHint;
+
+  /// Label of the decorative full-round search button
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get homeSearchButton;
+
+  /// Section title of the home icon grid card
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel services'**
+  String get homeServicesTitle;
+
+  /// Decorative home grid tile: item delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Item delivery'**
+  String get homeTileDeliver;
+
+  /// Decorative home grid tile: wake-up call
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up call'**
+  String get homeTileWakeup;
+
+  /// Decorative home grid tile: late check-out
+  ///
+  /// In en, this message translates to:
+  /// **'Late check-out'**
+  String get homeTileLateCheckout;
+
+  /// Decorative home grid tile: my orders
+  ///
+  /// In en, this message translates to:
+  /// **'My orders'**
+  String get homeTileOrders;
+
+  /// Title of the profile member-style banner (demo copy, docs/06 §3.4)
+  ///
+  /// In en, this message translates to:
+  /// **'Shell Plus'**
+  String get profileMemberTitle;
+
+  /// Subtitle of the profile member-style banner
+  ///
+  /// In en, this message translates to:
+  /// **'Demo member benefits'**
+  String get profileMemberSubtitle;
+
+  /// Decorative profile grid tile: my orders
+  ///
+  /// In en, this message translates to:
+  /// **'My orders'**
+  String get profileTileOrders;
+
+  /// Decorative profile grid tile: favorites
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get profileTileFavorites;
+
+  /// Decorative profile grid tile: settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileTileSettings;
+
+  /// Decorative profile grid tile: contact support
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get profileTileSupport;
 }
 
 class _AppLocalizationsDelegate

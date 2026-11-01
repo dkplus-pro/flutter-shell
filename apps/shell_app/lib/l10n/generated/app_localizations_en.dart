@@ -13,12 +13,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Shell';
 
   @override
-  String get helloWorld => 'Hello World';
-
-  @override
-  String get helloSubtitle => 'Flutter shell baseline page';
-
-  @override
   String get openBridgeDemo => 'Open bridge demo';
 
   @override
@@ -70,16 +64,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileTab => 'Profile';
 
   @override
-  String get profileTitle => 'Profile';
-
-  @override
-  String get profileCenterTitle => 'Profile';
-
-  @override
-  String get profileCenterSubtitle =>
-      'Personal information will show up here later.';
-
-  @override
   String get placeholderNotAvailable => 'This feature is not available yet.';
 
   @override
@@ -99,11 +83,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String chatWelcome(String room) {
     return 'Hello, I am XiaoZhi, the smart butler for room $room. I can deliver items, answer questions and set wake-up calls. Tap + to see all services.';
-  }
-
-  @override
-  String chatTodayMarker(String date) {
-    return 'Today $date';
   }
 
   @override
@@ -322,8 +301,118 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderStepperPlusSemantic => 'Increase quantity';
 
   @override
-  String get ordersSheetTitle => 'Current orders';
+  String ordersSheetTitleWithCount(int count) {
+    return 'Current orders · $count';
+  }
 
   @override
   String get ordersEmpty => 'No orders yet';
+
+  @override
+  String get quickPanelTitle => 'Quick services';
+
+  @override
+  String get guessCardTitle => 'You may ask';
+
+  @override
+  String get guessCategoryDelivery => 'Delivery';
+
+  @override
+  String get guessCategoryQa => 'Q&A';
+
+  @override
+  String get guessCategoryBooking => 'Booking';
+
+  @override
+  String get guessRefresh => 'Show more';
+
+  @override
+  String get faqSlippersDeliver =>
+      'How do I get two pairs of slippers delivered?';
+
+  @override
+  String get faqToiletriesDeliver => 'Can you bring me a toiletries set?';
+
+  @override
+  String get faqTowelsDeliver => 'Could you bring a few more towels?';
+
+  @override
+  String get faqWaterDeliver =>
+      'Please deliver two bottles of water to my room.';
+
+  @override
+  String get faqSlippersExchange =>
+      'Can I exchange the slippers for another size?';
+
+  @override
+  String get faqTowelsBath => 'Please also bring some bath towels.';
+
+  @override
+  String get faqWifiPassword => 'What is the Wi-Fi password?';
+
+  @override
+  String get faqBreakfastTime => 'What time does breakfast start?';
+
+  @override
+  String get faqWifiConnect => 'How do I join the wireless network?';
+
+  @override
+  String get faqBreakfastFloor => 'Where is breakfast served?';
+
+  @override
+  String get faqWakeupSetup => 'Set a wake-up call for 07:00 tomorrow, please.';
+
+  @override
+  String get faqWakeupGeneral => 'I would like to set up a wake-up call.';
+
+  @override
+  String get faqLateCheckoutAsk => 'Can I request a late checkout?';
+
+  @override
+  String get faqLateCheckoutTime =>
+      'I would like a late checkout at 14:00 tomorrow.';
+
+  @override
+  String homeGreeting(String guest) {
+    return 'Good afternoon, $guest';
+  }
+
+  @override
+  String get homeSearchHint => 'Search hotel services';
+
+  @override
+  String get homeSearchButton => 'Search';
+
+  @override
+  String get homeServicesTitle => 'Hotel services';
+
+  @override
+  String get homeTileDeliver => 'Item delivery';
+
+  @override
+  String get homeTileWakeup => 'Wake-up call';
+
+  @override
+  String get homeTileLateCheckout => 'Late check-out';
+
+  @override
+  String get homeTileOrders => 'My orders';
+
+  @override
+  String get profileMemberTitle => 'Shell Plus';
+
+  @override
+  String get profileMemberSubtitle => 'Demo member benefits';
+
+  @override
+  String get profileTileOrders => 'My orders';
+
+  @override
+  String get profileTileFavorites => 'Favorites';
+
+  @override
+  String get profileTileSettings => 'Settings';
+
+  @override
+  String get profileTileSupport => 'Contact support';
 }

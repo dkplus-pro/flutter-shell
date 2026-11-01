@@ -13,12 +13,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get appTitle => 'Shell';
 
   @override
-  String get helloWorld => '你好，世界';
-
-  @override
-  String get helloSubtitle => 'Flutter 壳工程基线页面';
-
-  @override
   String get openBridgeDemo => '进入桥接演示';
 
   @override
@@ -70,15 +64,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileTab => '我的';
 
   @override
-  String get profileTitle => '我的';
-
-  @override
-  String get profileCenterTitle => '我的';
-
-  @override
-  String get profileCenterSubtitle => '个人信息后续将在这里展示。';
-
-  @override
   String get placeholderNotAvailable => '该功能暂未开发';
 
   @override
@@ -98,11 +83,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String chatWelcome(String room) {
     return '您好，我是 $room 房的智能管家小智，可以为您送物品、解答问题、设置叫醒～点右下角 + 可查看全部服务。';
-  }
-
-  @override
-  String chatTodayMarker(String date) {
-    return '今天 $date';
   }
 
   @override
@@ -313,8 +293,114 @@ class AppLocalizationsZh extends AppLocalizations {
   String get orderStepperPlusSemantic => '增加数量';
 
   @override
-  String get ordersSheetTitle => '本次订单';
+  String ordersSheetTitleWithCount(int count) {
+    return '本次订单 · $count';
+  }
 
   @override
   String get ordersEmpty => '暂无订单';
+
+  @override
+  String get quickPanelTitle => '快捷服务';
+
+  @override
+  String get guessCardTitle => '猜您想问';
+
+  @override
+  String get guessCategoryDelivery => '配送';
+
+  @override
+  String get guessCategoryQa => '问答';
+
+  @override
+  String get guessCategoryBooking => '预约';
+
+  @override
+  String get guessRefresh => '换一换';
+
+  @override
+  String get faqSlippersDeliver => '怎么送两双拖鞋到房间？';
+
+  @override
+  String get faqToiletriesDeliver => '能送一套洗漱用品吗？';
+
+  @override
+  String get faqTowelsDeliver => '可以多送几条毛巾吗？';
+
+  @override
+  String get faqWaterDeliver => '请送两瓶饮用水到房间。';
+
+  @override
+  String get faqSlippersExchange => '拖鞋尺码不合适可以换吗？';
+
+  @override
+  String get faqTowelsBath => '浴巾也一起送来好吗？';
+
+  @override
+  String get faqWifiPassword => 'Wi-Fi 密码是什么？';
+
+  @override
+  String get faqBreakfastTime => '早餐几点开始？';
+
+  @override
+  String get faqWifiConnect => '无线网怎么连接？';
+
+  @override
+  String get faqBreakfastFloor => '早饭在几层餐厅？';
+
+  @override
+  String get faqWakeupSetup => '明早 7 点叫醒怎么设？';
+
+  @override
+  String get faqWakeupGeneral => '帮我设置一个叫醒服务。';
+
+  @override
+  String get faqLateCheckoutAsk => '可以延迟退房吗？';
+
+  @override
+  String get faqLateCheckoutTime => '我想明天 14:00 退房。';
+
+  @override
+  String homeGreeting(String guest) {
+    return '下午好，$guest';
+  }
+
+  @override
+  String get homeSearchHint => '搜索酒店服务';
+
+  @override
+  String get homeSearchButton => '查询';
+
+  @override
+  String get homeServicesTitle => '酒店服务';
+
+  @override
+  String get homeTileDeliver => '送物服务';
+
+  @override
+  String get homeTileWakeup => '叫醒服务';
+
+  @override
+  String get homeTileLateCheckout => '延迟退房';
+
+  @override
+  String get homeTileOrders => '我的订单';
+
+  @override
+  String get profileMemberTitle => 'Shell Plus';
+
+  @override
+  String get profileMemberSubtitle => '演示会员权益';
+
+  @override
+  String get profileTileOrders => '我的订单';
+
+  @override
+  String get profileTileFavorites => '我的收藏';
+
+  @override
+  String get profileTileSettings => '设置';
+
+  @override
+  String get profileTileSupport => '联系客服';
 }

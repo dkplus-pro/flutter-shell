@@ -41,12 +41,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
             ),
             decoration: const BoxDecoration(
               color: HotelColors.surface,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4),
-                topRight: Radius.circular(16),
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             child: AnimatedBuilder(
               animation: _controller,

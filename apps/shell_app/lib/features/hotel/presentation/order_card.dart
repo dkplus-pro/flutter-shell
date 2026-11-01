@@ -25,25 +25,27 @@ IconData orderIcon(HotelOrder order) {
 }
 
 /// Status badge accent; mirrors the order sheet so both surfaces stay in
-/// sync through the same [HotelColors] tokens (PRD 6.3/9).
+/// sync through the same [HotelColors] tokens (docs/06 §2.1).
 Color _statusColor(HotelOrder order) {
   return switch (order.status) {
     OrderStatus.pending => HotelColors.statusNeutral,
     OrderStatus.placed => HotelColors.statusPlaced,
-    OrderStatus.delivering => HotelColors.gold,
+    OrderStatus.delivering => HotelColors.statusDelivering,
     OrderStatus.delivered => HotelColors.statusDelivered,
     OrderStatus.rated => HotelColors.statusNeutral,
     OrderStatus.reserved => HotelColors.statusPlaced,
   };
 }
 
-/// Structured order card inside the transcript (PRD 6.3).
+/// Structured order card inside the transcript (PRD 6.3), restyled per
+/// docs/06 §3.3: `tileGray` icon block, bold name, status pill, hairline
+/// divider, outlined stepper capsule and a full-width purple capsule CTA.
 ///
 /// Pending: stepper (1-9) + confirm button, editable until confirmed once.
 /// Confirmed: status badge + progress copy; amenity cards expose the star
 /// rating row after delivery (D12, minimal inline implementation).
 class OrderCard extends StatefulWidget {
-  const new({
+  const OrderCard({
     required this.order,
     required this.roomNo,
     required this.onConfirm,
@@ -84,14 +86,7 @@ class _OrderCardState extends State<OrderCard> {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: HotelColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,13 +94,14 @@ class _OrderCardState extends State<OrderCard> {
         children: [
           Row(
             children: [
-              Icon(orderIcon(order), size: 20, color: HotelColors.primary),
+              _buildIconBlock(order),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   orderTitle(l10n, order),
                   style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
                     color: HotelColors.textPrimary,
                   ),
                 ),
@@ -120,6 +116,18 @@ class _OrderCardState extends State<OrderCard> {
     );
   }
 
+  Widget _buildIconBlock(HotelOrder order) {
+    return Container(
+      width: HotelDimens.iconBlockSize,
+      height: HotelDimens.iconBlockSize,
+      decoration: BoxDecoration(
+        color: HotelColors.tileGray,
+        borderRadius: BorderRadius.circular(HotelDimens.iconBlockRadius),
+      ),
+      child: Icon(orderIcon(order), size: 20, color: HotelColors.primary),
+    );
+  }
+
   List<Widget> _buildBody(AppLocalizations l10n, HotelOrder order) {
     if (order.kind == OrderKind.amenity) {
       return _buildAmenityBody(l10n, order);
@@ -127,29 +135,19 @@ class _OrderCardState extends State<OrderCard> {
     return [
       Text(
         orderSlotSummary(l10n, order, widget.roomNo),
-        style: const TextStyle(color: HotelColors.textSecondary, fontSize: 13),
+        style: HotelTypography.sub,
       ),
       if (!order.isConfirmed) ...[
         const SizedBox(height: AppSpacing.md),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: HotelColors.primary),
-            onPressed: () => widget.onConfirm(order.id, order.quantity),
-            child: Text(l10n.orderReserveButton),
-          ),
+        _buildCta(
+          label: l10n.orderReserveButton,
+          onPressed: () => widget.onConfirm(order.id, order.quantity),
         ),
       ],
       if (order.status == OrderStatus.reserved)
         Padding(
           padding: const EdgeInsets.only(top: AppSpacing.xs),
-          child: Text(
-            l10n.orderProgressReserved,
-            style: const TextStyle(
-              color: HotelColors.textSecondary,
-              fontSize: 13,
-            ),
-          ),
+          child: Text(l10n.orderProgressReserved, style: HotelTypography.sub),
         ),
     ];
   }
@@ -159,33 +157,32 @@ class _OrderCardState extends State<OrderCard> {
       if (order.isConfirmed)
         Text(
           l10n.orderQuantityLabel(order.quantity),
-          style: const TextStyle(color: HotelColors.textPrimary, fontSize: 14),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: HotelColors.textPrimary,
+          ),
         )
       else
         _buildStepper(l10n, order),
       const SizedBox(height: AppSpacing.xs),
       Text(
         l10n.orderDeliverTo(widget.roomNo),
-        style: const TextStyle(color: HotelColors.textSecondary, fontSize: 13),
+        style: HotelTypography.sub,
       ),
       if (!order.isConfirmed) ...[
         const SizedBox(height: AppSpacing.sm),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: HotelColors.primary),
-            onPressed: () => widget.onConfirm(order.id, _quantity),
-            child: Text(l10n.orderConfirmButton),
-          ),
+        _buildHairline(),
+        const SizedBox(height: AppSpacing.sm),
+        _buildCta(
+          label: l10n.orderConfirmButton,
+          onPressed: () => widget.onConfirm(order.id, _quantity),
         ),
       ] else ...[
         const SizedBox(height: AppSpacing.xs),
         Text(
           orderProgressLabel(l10n, order, widget.roomNo),
-          style: const TextStyle(
-            color: HotelColors.textSecondary,
-            fontSize: 13,
-          ),
+          style: HotelTypography.sub,
         ),
       ],
       if (order.status == OrderStatus.delivered) _buildRatingRow(l10n, order),
@@ -194,14 +191,11 @@ class _OrderCardState extends State<OrderCard> {
           padding: const EdgeInsets.only(top: AppSpacing.xs),
           child: Row(
             children: [
-              const Icon(Icons.star, size: 16, color: HotelColors.star),
+              const Icon(Icons.star, size: 16, color: HotelColors.starGold),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 l10n.orderStatusRated(order.rating ?? 0),
-                style: const TextStyle(
-                  color: HotelColors.textSecondary,
-                  fontSize: 13,
-                ),
+                style: HotelTypography.sub,
               ),
             ],
           ),
@@ -209,29 +203,28 @@ class _OrderCardState extends State<OrderCard> {
     ];
   }
 
+  /// Outlined circular stepper buttons inside the card (docs/06 §3.3).
   Widget _buildStepper(AppLocalizations l10n, HotelOrder order) {
     return Row(
       children: [
-        IconButton(
-          icon: const Icon(Icons.remove_circle_outline),
-          color: HotelColors.primary,
+        _StepButton(
+          icon: Icons.remove,
           tooltip: l10n.orderStepperMinusSemantic,
           onPressed: _quantity > 1 ? () => _step(-1) : null,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
           child: Text(
             '$_quantity',
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               color: HotelColors.textPrimary,
             ),
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.add_circle_outline),
-          color: HotelColors.primary,
+        _StepButton(
+          icon: Icons.add,
           tooltip: l10n.orderStepperPlusSemantic,
           onPressed: _quantity < 9 ? () => _step(1) : null,
         ),
@@ -239,22 +232,52 @@ class _OrderCardState extends State<OrderCard> {
     );
   }
 
+  Widget _buildCta({required String label, required VoidCallback onPressed}) {
+    return SizedBox(
+      width: double.infinity,
+      height: 44,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: HotelColors.primary,
+          shape: const StadiumBorder(),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHairline() {
+    return Container(
+      height: HotelDimens.hairline,
+      color: HotelColors.divider,
+    );
+  }
+
   Widget _buildStatusBadge(AppLocalizations l10n, HotelOrder order) {
+    final accent = _statusColor(order);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: _statusColor(order).withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(999),
+        color: accent.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(HotelDimens.capsuleRadius),
       ),
       child: Text(
         orderStatusLabel(l10n, order),
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          color: _statusColor(order),
+          color: accent,
         ),
       ),
     );
@@ -268,13 +291,7 @@ class _OrderCardState extends State<OrderCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.ratingPrompt,
-            style: const TextStyle(
-              color: HotelColors.textSecondary,
-              fontSize: 13,
-            ),
-          ),
+          Text(l10n.ratingPrompt, style: HotelTypography.sub),
           StarRatingBar(
             rating: order.rating ?? 0,
             enabled: order.status == OrderStatus.delivered,
@@ -282,6 +299,45 @@ class _OrderCardState extends State<OrderCard> {
             semanticsLabel: l10n.ratingBarSemantic,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Outlined circular step button (docs/06 §3.3).
+class _StepButton extends StatelessWidget {
+  const _StepButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onPressed,
+        customBorder: const CircleBorder(),
+        child: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: HotelColors.divider, width: 1),
+          ),
+          child: Icon(
+            icon,
+            size: 18,
+            color: onPressed == null
+                ? HotelColors.textHint
+                : HotelColors.textPrimary,
+          ),
+        ),
       ),
     );
   }

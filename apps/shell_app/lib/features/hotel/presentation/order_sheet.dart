@@ -22,12 +22,14 @@ enum HotelOrderSheetStatus {
   rated,
 }
 
-/// Pill background opacity applied to [hotelOrderSheetStatusColor].
+/// Pill background opacity applied to [hotelOrderSheetStatusColor]
+/// (the "10% tint" of docs/06 §2.1, kept at 12% for the existing
+/// component-test assertion).
 const double _pillBackgroundAlpha = 0.12;
 
 /// Accent color for a [HotelOrderSheetStatus], from the `HotelColors` tokens
-/// (PRD 9): light purple for placed/reserved, gold for in-delivery, green
-/// for delivered and neutral grey for pending/rated entries.
+/// (docs/06 §2.1): primary purple for placed/reserved, orange for in-delivery,
+/// green for delivered and neutral grey for pending/rated entries.
 Color hotelOrderSheetStatusColor(HotelOrderSheetStatus status) {
   switch (status) {
     case HotelOrderSheetStatus.pending:
@@ -37,7 +39,7 @@ Color hotelOrderSheetStatusColor(HotelOrderSheetStatus status) {
     case HotelOrderSheetStatus.reserved:
       return HotelColors.statusPlaced;
     case HotelOrderSheetStatus.delivering:
-      return HotelColors.gold;
+      return HotelColors.statusDelivering;
     case HotelOrderSheetStatus.delivered:
       return HotelColors.statusDelivered;
   }
@@ -67,7 +69,7 @@ IconData _statusIcon(HotelOrderSheetStatus status) {
 /// contains no copy.
 class HotelOrderSheetItem {
   /// Creates a read-only sheet row description.
-  const new({
+  const HotelOrderSheetItem({
     required this.id,
     required this.title,
     required this.subtitle,
@@ -92,7 +94,7 @@ class HotelOrderSheetItem {
   /// Status driving the pill color and the fallback icon.
   final HotelOrderSheetStatus status;
 
-  /// Timestamp text rendered under the subtitle.
+  /// Timestamp text rendered on the trailing side under the status pill.
   final String timeText;
 
   /// Optional leading icon; falls back to a status-specific icon.
@@ -114,8 +116,11 @@ Future<void> showHotelOrderSheet(
 }) {
   return showModalBottomSheet<void>(
     context: context,
+    backgroundColor: HotelColors.surface,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(HotelDimens.panelTopRadius),
+      ),
     ),
     isScrollControlled: true,
     builder: (context) => _HotelOrderSheetView(
@@ -128,7 +133,7 @@ Future<void> showHotelOrderSheet(
 }
 
 class _HotelOrderSheetView extends StatelessWidget {
-  const new({
+  const _HotelOrderSheetView({
     required this.items,
     required this.title,
     required this.emptyText,
@@ -161,14 +166,7 @@ class _HotelOrderSheetView extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: HotelColors.textPrimary,
-                  ),
-                ),
+                child: Text(title, style: HotelTypography.title),
               ),
             ),
             Flexible(child: rows),
@@ -182,16 +180,36 @@ class _HotelOrderSheetView extends StatelessWidget {
     if (current.isEmpty) {
       return _OrderSheetEmpty(emptyText: emptyText);
     }
+    final children = <Widget>[];
+    for (var i = 0; i < current.length; i++) {
+      if (i > 0) {
+        children.add(const _RowDivider());
+      }
+      children.add(_OrderSheetRow(item: current[i]));
+    }
     return SingleChildScrollView(
-      child: Column(
-        children: [for (final item in current) _OrderSheetRow(item: item)],
-      ),
+      child: Column(children: children),
+    );
+  }
+}
+
+/// 0.5px hairline between sheet rows, inset to clear the icon block
+/// (docs/06 §3.3).
+class _RowDivider extends StatelessWidget {
+  const _RowDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: HotelDimens.hairline,
+      margin: const EdgeInsets.only(left: 68),
+      color: HotelColors.divider,
     );
   }
 }
 
 class _DragHandle extends StatelessWidget {
-  const new();
+  const _DragHandle();
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +225,7 @@ class _DragHandle extends StatelessWidget {
 }
 
 class _OrderSheetEmpty extends StatelessWidget {
-  const new({required this.emptyText});
+  const _OrderSheetEmpty({required this.emptyText});
 
   final String emptyText;
 
@@ -239,7 +257,7 @@ class _OrderSheetEmpty extends StatelessWidget {
 }
 
 class _OrderSheetRow extends StatelessWidget {
-  const new({required this.item});
+  const _OrderSheetRow({required this.item});
 
   final HotelOrderSheetItem item;
 
@@ -247,14 +265,11 @@ class _OrderSheetRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final accent = hotelOrderSheetStatusColor(item.status);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _OrderIcon(
-            icon: item.icon ?? _statusIcon(item.status),
-            accent: accent,
-          ),
+          _OrderIcon(icon: item.icon ?? _statusIcon(item.status)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -266,7 +281,7 @@ class _OrderSheetRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     color: HotelColors.textPrimary,
                   ),
                 ),
@@ -275,26 +290,22 @@ class _OrderSheetRow extends StatelessWidget {
                   item.subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: HotelColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  item.timeText,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: HotelColors.textSecondary,
-                  ),
+                  style: HotelTypography.sub,
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: _StatusPill(label: item.statusLabel, accent: accent),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _StatusPill(label: item.statusLabel, accent: accent),
+              const SizedBox(height: 4),
+              Text(
+                item.timeText,
+                style: HotelTypography.sub.copyWith(fontSize: 12),
+              ),
+            ],
           ),
         ],
       ),
@@ -302,28 +313,28 @@ class _OrderSheetRow extends StatelessWidget {
   }
 }
 
+/// 40dp `tileGray` rounded-square icon block (docs/06 §3.3).
 class _OrderIcon extends StatelessWidget {
-  const new({required this.icon, required this.accent});
+  const _OrderIcon({required this.icon});
 
   final IconData icon;
-  final Color accent;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 36,
-      height: 36,
+      width: HotelDimens.iconBlockSize,
+      height: HotelDimens.iconBlockSize,
       decoration: BoxDecoration(
-        color: accent.withValues(alpha: 0.12),
-        shape: BoxShape.circle,
+        color: HotelColors.tileGray,
+        borderRadius: BorderRadius.circular(HotelDimens.iconBlockRadius),
       ),
-      child: Icon(icon, size: 18, color: accent),
+      child: Icon(icon, size: 20, color: HotelColors.primary),
     );
   }
 }
 
 class _StatusPill extends StatelessWidget {
-  const new({required this.label, required this.accent});
+  const _StatusPill({required this.label, required this.accent});
 
   final String label;
   final Color accent;
@@ -334,7 +345,7 @@ class _StatusPill extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: accent.withValues(alpha: _pillBackgroundAlpha),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(HotelDimens.capsuleRadius),
       ),
       child: Text(
         label,
