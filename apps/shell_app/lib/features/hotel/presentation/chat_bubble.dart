@@ -5,7 +5,7 @@ import 'package:fluttershell/features/hotel/data/chat_message.dart';
 /// White concierge avatar with a hairline border and the purple headset
 /// line icon (docs/06 §3.2; no mascot artwork).
 class ChatAvatar extends StatelessWidget {
-  const ChatAvatar({required this.semanticLabel, super.key});
+  const new({required this.semanticLabel, super.key});
 
   final String semanticLabel;
 
@@ -35,7 +35,7 @@ class ChatAvatar extends StatelessWidget {
 /// color; concierge messages sit left on a white surface next to the avatar.
 /// Both are 16-radius rounded rectangles without tails (docs/06 §3.2).
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({
+  const new({
     required this.role,
     required this.text,
     this.avatarSemanticLabel = '',
@@ -88,9 +88,7 @@ class ChatBubble extends StatelessWidget {
               color: HotelColors.surface,
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
-            child:
-                content ??
-                Text(text, style: HotelTypography.body),
+            child: content ?? Text(text, style: HotelTypography.body),
           ),
         ),
       ],
@@ -101,17 +99,14 @@ class ChatBubble extends StatelessWidget {
 /// Whole timestamp separator above the first message
 /// (`yyyy-MM-dd HH:mm`, docs/06 §3.2): plain centered grey copy, no lines.
 class ChatDateSeparator extends StatelessWidget {
-  const ChatDateSeparator({required this.label, super.key});
+  const new({required this.label, super.key});
 
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        label,
-        style: HotelTypography.sub.copyWith(fontSize: 12),
-      ),
+      child: Text(label, style: HotelTypography.sub.copyWith(fontSize: 12)),
     );
   }
 }
@@ -119,17 +114,14 @@ class ChatDateSeparator extends StatelessWidget {
 /// Inline `HH:mm` timestamp between two same-side messages more than five
 /// minutes apart.
 class ChatTimestamp extends StatelessWidget {
-  const ChatTimestamp({required this.label, super.key});
+  const new({required this.label, super.key});
 
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        label,
-        style: HotelTypography.sub.copyWith(fontSize: 12),
-      ),
+      child: Text(label, style: HotelTypography.sub.copyWith(fontSize: 12)),
     );
   }
 }

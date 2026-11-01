@@ -45,7 +45,7 @@ Color _statusColor(HotelOrder order) {
 /// Confirmed: status badge + progress copy; amenity cards expose the star
 /// rating row after delivery (D12, minimal inline implementation).
 class OrderCard extends StatefulWidget {
-  const OrderCard({
+  const new({
     required this.order,
     required this.roomNo,
     required this.onConfirm,
@@ -166,10 +166,7 @@ class _OrderCardState extends State<OrderCard> {
       else
         _buildStepper(l10n, order),
       const SizedBox(height: AppSpacing.xs),
-      Text(
-        l10n.orderDeliverTo(widget.roomNo),
-        style: HotelTypography.sub,
-      ),
+      Text(l10n.orderDeliverTo(widget.roomNo), style: HotelTypography.sub),
       if (!order.isConfirmed) ...[
         const SizedBox(height: AppSpacing.sm),
         _buildHairline(),
@@ -255,10 +252,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   Widget _buildHairline() {
-    return Container(
-      height: HotelDimens.hairline,
-      color: HotelColors.divider,
-    );
+    return Container(height: HotelDimens.hairline, color: HotelColors.divider);
   }
 
   Widget _buildStatusBadge(AppLocalizations l10n, HotelOrder order) {
@@ -306,7 +300,7 @@ class _OrderCardState extends State<OrderCard> {
 
 /// Outlined circular step button (docs/06 §3.3).
 class _StepButton extends StatelessWidget {
-  const _StepButton({
+  const new({
     required this.icon,
     required this.tooltip,
     required this.onPressed,
@@ -328,7 +322,7 @@ class _StepButton extends StatelessWidget {
           height: 32,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: HotelColors.divider, width: 1),
+            border: Border.all(color: HotelColors.divider),
           ),
           child: Icon(
             icon,

@@ -69,7 +69,7 @@ IconData _statusIcon(HotelOrderSheetStatus status) {
 /// contains no copy.
 class HotelOrderSheetItem {
   /// Creates a read-only sheet row description.
-  const HotelOrderSheetItem({
+  const new({
     required this.id,
     required this.title,
     required this.subtitle,
@@ -133,7 +133,7 @@ Future<void> showHotelOrderSheet(
 }
 
 class _HotelOrderSheetView extends StatelessWidget {
-  const _HotelOrderSheetView({
+  const new({
     required this.items,
     required this.title,
     required this.emptyText,
@@ -187,16 +187,14 @@ class _HotelOrderSheetView extends StatelessWidget {
       }
       children.add(_OrderSheetRow(item: current[i]));
     }
-    return SingleChildScrollView(
-      child: Column(children: children),
-    );
+    return SingleChildScrollView(child: Column(children: children));
   }
 }
 
 /// 0.5px hairline between sheet rows, inset to clear the icon block
 /// (docs/06 §3.3).
 class _RowDivider extends StatelessWidget {
-  const _RowDivider();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +207,7 @@ class _RowDivider extends StatelessWidget {
 }
 
 class _DragHandle extends StatelessWidget {
-  const _DragHandle();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +223,7 @@ class _DragHandle extends StatelessWidget {
 }
 
 class _OrderSheetEmpty extends StatelessWidget {
-  const _OrderSheetEmpty({required this.emptyText});
+  const new({required this.emptyText});
 
   final String emptyText;
 
@@ -257,7 +255,7 @@ class _OrderSheetEmpty extends StatelessWidget {
 }
 
 class _OrderSheetRow extends StatelessWidget {
-  const _OrderSheetRow({required this.item});
+  const new({required this.item});
 
   final HotelOrderSheetItem item;
 
@@ -315,7 +313,7 @@ class _OrderSheetRow extends StatelessWidget {
 
 /// 40dp `tileGray` rounded-square icon block (docs/06 §3.3).
 class _OrderIcon extends StatelessWidget {
-  const _OrderIcon({required this.icon});
+  const new({required this.icon});
 
   final IconData icon;
 
@@ -334,7 +332,7 @@ class _OrderIcon extends StatelessWidget {
 }
 
 class _StatusPill extends StatelessWidget {
-  const _StatusPill({required this.label, required this.accent});
+  const new({required this.label, required this.accent});
 
   final String label;
   final Color accent;

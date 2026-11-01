@@ -135,7 +135,7 @@ class _TappableStarState extends State<_TappableStar>
           child: Icon(
             widget.filled ? Icons.star : Icons.star_border,
             size: widget.size,
-            color: widget.filled ? HotelColors.star : HotelColors.starEmpty,
+            color: widget.filled ? HotelColors.starGold : HotelColors.starEmpty,
           ),
         ),
       ),
