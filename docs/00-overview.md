@@ -60,6 +60,7 @@
 
 | DEC-015 | `build_runner` 使用 **2.16.2**（而非版本矩阵初稿的 2.17.1） | `build_runner >=2.17.1` 依赖 `build >=5`，与 `riverpod_generator 4.0.9`（`build >=3 <5`）不可解析；pub 解析结果取 2.16.2 | 后续升级 build_runner 需先确认 riverpod_generator 的 build 约束 |
 | DEC-016 | Dart 未命名构造统一使用声明式构造语法 `const new(...)` / `new _(...)`，命名构造仍用 `ClassName.name` | very_good_analysis 11.0.0 的 `unnecessary_type_name_in_constructor` 强制该风格；其自动修复对经典写法产出错误代码，已人工验证新语法在 Dart 3.13 合法 | 文档 03/AGENTS 中的示例代码片段（`const AppFailure(...)` 等）按此约定执行 |
+| DEC-021 | 新增 **酒店 AI 客服 Agent Demo**（需求与验收口径见 `docs/05-hotel-agent-demo-prd.md`，决策 D1–D12）：`apps/shell_app` 内新增 `features/hotel`（3 tab 壳、聊天页、脚本化意图引擎 `ScriptedConciergeAgent`、订单卡状态机、打字机回复、订单弹层、星级评价），会话经 `app_core` `KeyValueStore` 持久化；全部文案进 ARB（en/zh），配色以 `app_ui` `HotelColors` token 下沉 | 在壳工程上按扩展手册验证「可复用底座 + 增量业务」路径；纯 Demo（零网络、零桥接调用），`ConciergeAgent` 接口为未来接真实 LLM 预留 | 遵守 AGENTS 全套规范（不新增 pub 依赖、不改 Pigeon 契约）；订单恢复取简策略（在途即落已送达）；验收证据见 `docs/evidence/hotel-demo.md` |
 
 ## 5. 版本矩阵（2026-10-31 实测查询）
 

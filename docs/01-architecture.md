@@ -89,11 +89,17 @@ flutter-shell/
 │       │   │   └── storage/storage_providers.dart
 │       │   ├── features/
 │       │   │   ├── home/presentation/home_page.dart
-│       │   │   └── bridge_demo/
-│       │   │       ├── application/bridge_demo_providers.dart
-│       │   │       └── presentation/bridge_demo_page.dart
+│       │   │   ├── bridge_demo/
+│       │   │   │   ├── application/bridge_demo_providers.dart
+│       │   │   │   └── presentation/bridge_demo_page.dart
+│       │   │   └── hotel/                # 酒店 AI 客服 Demo（DEC-021，PRD 05）
+│       │   │       ├── application/{hotel_chat_providers.dart, hotel_clock.dart}
+│       │   │       ├── data/{chat_message.dart, concierge_agent.dart, hotel_order.dart, …}
+│       │   │       └── presentation/{hotel_chat_page.dart, order_card.dart, order_sheet.dart, …}
 │       │   └── l10n/{app_en.arb, app_zh.arb, generated/}
-│       ├── test/widget/home_page_test.dart
+│       ├── test/widget/{home_page_test.dart, shell_navigation_test.dart, hotel_chat_flow_test.dart}
+│       ├── test/hotel/                   # 意图引擎 / 状态机 / 持久化单测
+│       ├── test/presentation/            # 打字机 / 订单弹层 / 星级组件测试
 │       ├── integration_test/bridge_e2e_test.dart
 │       ├── android/                # :app，Flutter template + Compose 插件声明
 │       └── ios/                    # 脚手架保留，本轮不验收
@@ -477,6 +483,16 @@ flutter build apk --release \
 
 - 需同时改 Gradle、CI、构建脚本、文档与签名策略；
 - 先写决策，不在业务 PR 中夹带。
+
+### 18.7 已按本手册登记的 feature / 页面
+
+| Feature / 页面 | 路由 | 登记 | 验收 |
+| --- | --- | --- | --- |
+| `home`（Hello 占位页，tap 出「暂未开发」） | `/` | 依 §18.1 | P2 证据 |
+| `bridge_demo`（桥接演示页） | `/bridge`（顶层路由） | 依 §18.1 + §18.2 | P3/P4 证据 |
+| `profile`（我的占位页，tap 出「暂未开发」） | `/profile` | 依 §18.1 | 酒店证据 |
+| `hotel`·AI 客服聊天页（3 tab 壳默认落地「服务」tab；`StatefulShellRoute.indexedStack` 三分支） | `/service` | 依 §18.1，需求见 `05-hotel-agent-demo-prd.md`（DEC-021） | `docs/evidence/hotel-demo.md` |
+
 
 ## 19. 已知限制与技术债
 
