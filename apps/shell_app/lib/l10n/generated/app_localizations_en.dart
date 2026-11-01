@@ -148,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String chatAskQuantity(String item, String unit) {
-    return 'Sure, how many $unit of $item would you like?';
+    return 'Sure, how many $item would you like?';
   }
 
   @override

@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// Concierge asks the quantity slot for an amenity (PRD 7.1)
   ///
   /// In en, this message translates to:
-  /// **'Sure, how many {unit} of {item} would you like?'**
+  /// **'Sure, how many {item} would you like?'**
   String chatAskQuantity(String item, String unit);
 
   /// Re-ask when the quantity slot cannot be parsed

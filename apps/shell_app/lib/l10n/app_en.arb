@@ -196,7 +196,7 @@
   "@chatSendSemantic": {
     "description": "Semantics label for the chat send button"
   },
-  "chatAskQuantity": "Sure, how many {unit} of {item} would you like?",
+  "chatAskQuantity": "Sure, how many {item} would you like?",
   "@chatAskQuantity": {
     "description": "Concierge asks the quantity slot for an amenity (PRD 7.1)",
     "placeholders": {
