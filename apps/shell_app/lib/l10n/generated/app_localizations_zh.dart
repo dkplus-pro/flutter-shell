@@ -405,5 +405,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileTileSupport => '联系客服';
 
   @override
+  String get profileMemberHint => '演示资料页 · 仅装饰';
+
+  @override
   String get helloSubtitle => 'Flutter 壳工程基线页面';
 }

@@ -52,10 +52,6 @@ abstract final class HotelColors {
   /// Filled star color on white cards.
   static const Color starGold = Color(0xFFF0A835);
 
-  /// Alias of [starGold]. The star rating bar references this shorter name;
-  /// the value stays the single docs/06 §2.1 `starGold` token.
-  static const Color star = starGold;
-
   /// Unfilled star outline.
   static const Color starEmpty = Color(0xFFC7C7CC);
 

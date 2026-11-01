@@ -824,6 +824,12 @@ abstract class AppLocalizations {
   /// **'Contact support'**
   String get profileTileSupport;
 
+  /// Subline under the mock guest name on the decorative profile page.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo profile · decorative only'**
+  String get profileMemberHint;
+
   /// Message payload of the native screen round-trip on the bridge demo page
   ///
   /// In en, this message translates to:

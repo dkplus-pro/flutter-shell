@@ -121,5 +121,9 @@
   "profileTileFavorites": "我的收藏",
   "profileTileSettings": "设置",
   "profileTileSupport": "联系客服",
+  "profileMemberHint": "演示资料页 · 仅装饰",
+  "@profileMemberHint": {
+    "description": "Subline under the mock guest name on the decorative profile page."
+  },
   "helloSubtitle": "Flutter 壳工程基线页面"
 }

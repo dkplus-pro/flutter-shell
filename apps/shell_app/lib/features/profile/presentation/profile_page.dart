@@ -1,19 +1,16 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttershell/features/hotel/application/hotel_chat_providers.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
 /// Profile tab restyled as a decorative mock (docs/06 §3.4, P3): avatar +
 /// name header, a member-card style gradient banner and an icon grid — all
 /// purely visual. Tapping anywhere shows the "not available yet" toast.
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends StatelessWidget {
   const new({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final room = ref.watch(hotelGuestProfileProvider).roomNo;
     return Scaffold(
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -22,7 +19,7 @@ class ProfilePage extends ConsumerWidget {
           child: ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
             children: [
-              _ProfileHeader(l10n: l10n, room: room),
+              const _ProfileHeader(),
               const SizedBox(height: AppSpacing.md),
               _MemberBanner(l10n: l10n),
               const SizedBox(height: AppSpacing.md),
@@ -48,16 +45,14 @@ class ProfilePage extends ConsumerWidget {
   }
 }
 
-/// Avatar + name + room badge header (mock guest binding, D8).
+/// Avatar + mock guest name header (docs/06 §3.4). The room binding stays in
+/// the hotel chat header (PRD D8); this decorative page shows no room data.
 class _ProfileHeader extends StatelessWidget {
-  const new({required this.l10n, required this.room});
-
-  final AppLocalizations l10n;
-  final String room;
+  const new();
 
   @override
   Widget build(BuildContext context) {
-    final badge = l10n.hotelRoomBadge(room, l10n.hotelMockGuestName);
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       child: Row(
@@ -82,7 +77,7 @@ class _ProfileHeader extends StatelessWidget {
               children: [
                 Text(l10n.hotelMockGuestName, style: HotelTypography.title),
                 const SizedBox(height: 2),
-                Text(badge, style: HotelTypography.sub),
+                Text(l10n.profileMemberHint, style: HotelTypography.sub),
               ],
             ),
           ),

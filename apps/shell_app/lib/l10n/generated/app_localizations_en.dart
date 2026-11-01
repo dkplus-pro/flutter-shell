@@ -417,5 +417,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileTileSupport => 'Contact support';
 
   @override
+  String get profileMemberHint => 'Demo profile · decorative only';
+
+  @override
   String get helloSubtitle => 'Flutter shell baseline page';
 }

@@ -1,247 +1,590 @@
 {
   "@@locale": "en",
   "appTitle": "Shell",
-  "@appTitle": {"description": "Application title"},
+  "@appTitle": {
+    "description": "Application title"
+  },
   "openBridgeDemo": "Open bridge demo",
-  "@openBridgeDemo": {"description": "Button that opens the bridge demo page"},
+  "@openBridgeDemo": {
+    "description": "Button that opens the bridge demo page"
+  },
   "bridgeDemoTitle": "Bridge Demo",
-  "@bridgeDemoTitle": {"description": "Title of the bridge demo page"},
+  "@bridgeDemoTitle": {
+    "description": "Title of the bridge demo page"
+  },
   "systemInfoTitle": "System information",
-  "@systemInfoTitle": {"description": "Card title for system info"},
+  "@systemInfoTitle": {
+    "description": "Card title for system info"
+  },
   "refresh": "Refresh",
-  "@refresh": {"description": "Button to reload system info"},
+  "@refresh": {
+    "description": "Button to reload system info"
+  },
   "tickerTitle": "Native ticker",
-  "@tickerTitle": {"description": "Card title for the 1Hz ticker"},
+  "@tickerTitle": {
+    "description": "Card title for the 1Hz ticker"
+  },
   "ticksValue": "Ticks: {count}",
-  "@ticksValue": {"description": "Ticker value", "placeholders": {"count": {"type": "int"}}},
+  "@ticksValue": {
+    "description": "Ticker value",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "nativeScreenTitle": "Native screen",
-  "@nativeScreenTitle": {"description": "Card title for the native screen round-trip"},
+  "@nativeScreenTitle": {
+    "description": "Card title for the native screen round-trip"
+  },
   "openNativeScreen": "Open native screen",
-  "@openNativeScreen": {"description": "Button that opens the native demo screen"},
+  "@openNativeScreen": {
+    "description": "Button that opens the native demo screen"
+  },
   "nativeResultConfirmed": "Confirmed: {message}",
-  "@nativeResultConfirmed": {"description": "Snackbar text when native screen confirmed", "placeholders": {"message": {"type": "String"}}},
+  "@nativeResultConfirmed": {
+    "description": "Snackbar text when native screen confirmed",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
   "nativeResultCancelled": "Cancelled: {message}",
-  "@nativeResultCancelled": {"description": "Snackbar text when native screen cancelled", "placeholders": {"message": {"type": "String"}}},
+  "@nativeResultCancelled": {
+    "description": "Snackbar text when native screen cancelled",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
   "errorTitle": "Something went wrong",
-  "@errorTitle": {"description": "Generic error title"},
+  "@errorTitle": {
+    "description": "Generic error title"
+  },
   "retry": "Retry",
-  "@retry": {"description": "Button to retry a failed operation"},
+  "@retry": {
+    "description": "Button to retry a failed operation"
+  },
   "homeTab": "Home",
-  "@homeTab": {"description": "Bottom navigation label for the home tab"},
+  "@homeTab": {
+    "description": "Bottom navigation label for the home tab"
+  },
   "serviceTab": "Services",
-  "@serviceTab": {"description": "Bottom navigation label for the concierge chat tab"},
+  "@serviceTab": {
+    "description": "Bottom navigation label for the concierge chat tab"
+  },
   "profileTab": "Profile",
-  "@profileTab": {"description": "Bottom navigation label for the profile tab"},
+  "@profileTab": {
+    "description": "Bottom navigation label for the profile tab"
+  },
   "placeholderNotAvailable": "This feature is not available yet.",
-  "@placeholderNotAvailable": {"description": "Toast shown when tapping a placeholder page or deferred action"},
+  "@placeholderNotAvailable": {
+    "description": "Toast shown when tapping a placeholder page or deferred action"
+  },
   "hotelChatTitle": "AI Concierge",
-  "@hotelChatTitle": {"description": "Title of the concierge chat page"},
+  "@hotelChatTitle": {
+    "description": "Title of the concierge chat page"
+  },
   "hotelRoomBadge": "Room {room} · {guest}",
-  "@hotelRoomBadge": {"description": "Room badge in the chat app bar", "placeholders": {"room": {"type": "String"}, "guest": {"type": "String"}}},
+  "@hotelRoomBadge": {
+    "description": "Room badge in the chat app bar",
+    "placeholders": {
+      "room": {
+        "type": "String"
+      },
+      "guest": {
+        "type": "String"
+      }
+    }
+  },
   "hotelMockGuestName": "Mr. Zhang",
-  "@hotelMockGuestName": {"description": "Mock guest display name (D8); rendered with the room badge"},
+  "@hotelMockGuestName": {
+    "description": "Mock guest display name (D8); rendered with the room badge"
+  },
   "hotelOrdersTooltip": "View orders",
-  "@hotelOrdersTooltip": {"description": "Tooltip and semantics label for the orders icon in the chat app bar"},
+  "@hotelOrdersTooltip": {
+    "description": "Tooltip and semantics label for the orders icon in the chat app bar"
+  },
   "chatWelcome": "Hello, I am XiaoZhi, the smart butler for room {room}. I can deliver items, answer questions and set wake-up calls. Tap + to see all services.",
-  "@chatWelcome": {"description": "Scripted concierge welcome message (S0)", "placeholders": {"room": {"type": "String"}}},
+  "@chatWelcome": {
+    "description": "Scripted concierge welcome message (S0)",
+    "placeholders": {
+      "room": {
+        "type": "String"
+      }
+    }
+  },
   "conciergeAvatarSemantic": "Concierge avatar",
-  "@conciergeAvatarSemantic": {"description": "Semantics label for the concierge avatar placeholder"},
+  "@conciergeAvatarSemantic": {
+    "description": "Semantics label for the concierge avatar placeholder"
+  },
   "quickPanelSemantic": "Quick services",
-  "@quickPanelSemantic": {"description": "Tooltip and semantics label for the quick panel toggle"},
+  "@quickPanelSemantic": {
+    "description": "Tooltip and semantics label for the quick panel toggle"
+  },
   "quickSlippers": "Slippers",
-  "@quickSlippers": {"description": "Quick panel entry label for slippers delivery"},
+  "@quickSlippers": {
+    "description": "Quick panel entry label for slippers delivery"
+  },
   "quickToiletries": "Toiletries",
-  "@quickToiletries": {"description": "Quick panel entry label for toiletries delivery"},
+  "@quickToiletries": {
+    "description": "Quick panel entry label for toiletries delivery"
+  },
   "quickTowels": "Towels",
-  "@quickTowels": {"description": "Quick panel entry label for towels delivery"},
+  "@quickTowels": {
+    "description": "Quick panel entry label for towels delivery"
+  },
   "quickWater": "Water",
-  "@quickWater": {"description": "Quick panel entry label for drinking water delivery"},
+  "@quickWater": {
+    "description": "Quick panel entry label for drinking water delivery"
+  },
   "quickWakeup": "Wake-up call",
-  "@quickWakeup": {"description": "Quick panel entry label for the wake-up reservation"},
+  "@quickWakeup": {
+    "description": "Quick panel entry label for the wake-up reservation"
+  },
   "quickLateCheckout": "Late check-out",
-  "@quickLateCheckout": {"description": "Quick panel entry label for the late check-out reservation"},
+  "@quickLateCheckout": {
+    "description": "Quick panel entry label for the late check-out reservation"
+  },
   "quickWifi": "Wi-Fi password",
-  "@quickWifi": {"description": "Quick panel entry label for the Wi-Fi question"},
+  "@quickWifi": {
+    "description": "Quick panel entry label for the Wi-Fi question"
+  },
   "quickBreakfast": "Breakfast",
-  "@quickBreakfast": {"description": "Quick panel entry label for the breakfast question"},
+  "@quickBreakfast": {
+    "description": "Quick panel entry label for the breakfast question"
+  },
   "presetSlippers": "I need some disposable slippers delivered to my room.",
-  "@presetSlippers": {"description": "Preset guest message sent from the slippers quick entry"},
+  "@presetSlippers": {
+    "description": "Preset guest message sent from the slippers quick entry"
+  },
   "presetToiletries": "Please bring a toiletries set to my room.",
-  "@presetToiletries": {"description": "Preset guest message sent from the toiletries quick entry"},
+  "@presetToiletries": {
+    "description": "Preset guest message sent from the toiletries quick entry"
+  },
   "presetTowels": "Please bring some fresh towels to my room.",
-  "@presetTowels": {"description": "Preset guest message sent from the towels quick entry"},
+  "@presetTowels": {
+    "description": "Preset guest message sent from the towels quick entry"
+  },
   "presetWater": "Please deliver some bottled water to my room.",
-  "@presetWater": {"description": "Preset guest message sent from the water quick entry"},
+  "@presetWater": {
+    "description": "Preset guest message sent from the water quick entry"
+  },
   "presetWakeup": "I would like to set up a wake-up call.",
-  "@presetWakeup": {"description": "Preset guest message sent from the wake-up quick entry"},
+  "@presetWakeup": {
+    "description": "Preset guest message sent from the wake-up quick entry"
+  },
   "presetLateCheckout": "I would like to request a late check-out.",
-  "@presetLateCheckout": {"description": "Preset guest message sent from the late check-out quick entry"},
+  "@presetLateCheckout": {
+    "description": "Preset guest message sent from the late check-out quick entry"
+  },
   "presetWifi": "What is the Wi-Fi password?",
-  "@presetWifi": {"description": "Preset guest message sent from the Wi-Fi quick entry"},
+  "@presetWifi": {
+    "description": "Preset guest message sent from the Wi-Fi quick entry"
+  },
   "presetBreakfast": "What time is breakfast served?",
-  "@presetBreakfast": {"description": "Preset guest message sent from the breakfast quick entry"},
+  "@presetBreakfast": {
+    "description": "Preset guest message sent from the breakfast quick entry"
+  },
   "chatInputHint": "Type a message…",
-  "@chatInputHint": {"description": "Hint text of the chat input field"},
+  "@chatInputHint": {
+    "description": "Hint text of the chat input field"
+  },
   "chatSendSemantic": "Send",
-  "@chatSendSemantic": {"description": "Semantics label for the chat send button"},
+  "@chatSendSemantic": {
+    "description": "Semantics label for the chat send button"
+  },
   "chatAskQuantity": "Sure, how many {unit} of {item} would you like?",
-  "@chatAskQuantity": {"description": "Concierge asks the quantity slot for an amenity (PRD 7.1)", "placeholders": {"item": {"type": "String"}, "unit": {"type": "String"}}},
+  "@chatAskQuantity": {
+    "description": "Concierge asks the quantity slot for an amenity (PRD 7.1)",
+    "placeholders": {
+      "item": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
   "chatQuantityInvalid": "Please reply with a quantity between 1 and 9, for example \"2\".",
-  "@chatQuantityInvalid": {"description": "Re-ask when the quantity slot cannot be parsed"},
+  "@chatQuantityInvalid": {
+    "description": "Re-ask when the quantity slot cannot be parsed"
+  },
   "chatCancelAck": "No problem, I have cancelled that. Anything else I can help with?",
-  "@chatCancelAck": {"description": "Concierge acknowledges the guest cancelling an active slot flow"},
+  "@chatCancelAck": {
+    "description": "Concierge acknowledges the guest cancelling an active slot flow"
+  },
   "chatAskWakeupTime": "Sure, what time should the wake-up call be? For example: tomorrow 07:00.",
-  "@chatAskWakeupTime": {"description": "Concierge asks the time slot for a wake-up reservation"},
+  "@chatAskWakeupTime": {
+    "description": "Concierge asks the time slot for a wake-up reservation"
+  },
   "chatAskLateCheckoutTime": "Sure, until what time would you like to check out late?",
-  "@chatAskLateCheckoutTime": {"description": "Concierge asks the time slot for a late check-out reservation"},
+  "@chatAskLateCheckoutTime": {
+    "description": "Concierge asks the time slot for a late check-out reservation"
+  },
   "chatTimeChipsPrompt": "Sorry, I did not catch the time. Pick one below or type it, for example 07:00.",
-  "@chatTimeChipsPrompt": {"description": "Concierge offers quick time chips after a failed time parse"},
+  "@chatTimeChipsPrompt": {
+    "description": "Concierge offers quick time chips after a failed time parse"
+  },
   "chatWifiAnswer": "The guest Wi-Fi network is {ssid}, password {password}. (demo data)",
-  "@chatWifiAnswer": {"description": "Direct answer to the Wi-Fi question, S3; mock credentials", "placeholders": {"ssid": {"type": "String"}, "password": {"type": "String"}}},
+  "@chatWifiAnswer": {
+    "description": "Direct answer to the Wi-Fi question, S3; mock credentials",
+    "placeholders": {
+      "ssid": {
+        "type": "String"
+      },
+      "password": {
+        "type": "String"
+      }
+    }
+  },
   "chatBreakfastAnswer": "Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.",
-  "@chatBreakfastAnswer": {"description": "Direct answer to the breakfast-time question"},
+  "@chatBreakfastAnswer": {
+    "description": "Direct answer to the breakfast-time question"
+  },
   "chatFallback": "Sorry, I am still a demo concierge and did not understand that. Tap + to see everything I can do.",
-  "@chatFallback": {"description": "Fallback reply guiding the guest to the quick panel (S5)"},
+  "@chatFallback": {
+    "description": "Fallback reply guiding the guest to the quick panel (S5)"
+  },
   "chatTyping": "Concierge is typing…",
-  "@chatTyping": {"description": "Semantics label of the typing indicator bubble"},
+  "@chatTyping": {
+    "description": "Semantics label of the typing indicator bubble"
+  },
   "amenitySlippers": "Disposable slippers",
-  "@amenitySlippers": {"description": "Display name of the slippers amenity"},
+  "@amenitySlippers": {
+    "description": "Display name of the slippers amenity"
+  },
   "amenityToiletries": "Toiletries set",
-  "@amenityToiletries": {"description": "Display name of the toiletries amenity"},
+  "@amenityToiletries": {
+    "description": "Display name of the toiletries amenity"
+  },
   "amenityTowels": "Fresh towels",
-  "@amenityTowels": {"description": "Display name of the towels amenity"},
+  "@amenityTowels": {
+    "description": "Display name of the towels amenity"
+  },
   "amenityWater": "Bottled water",
-  "@amenityWater": {"description": "Display name of the drinking water amenity"},
+  "@amenityWater": {
+    "description": "Display name of the drinking water amenity"
+  },
   "unitSlippers": "pairs",
-  "@unitSlippers": {"description": "Measure word for slippers"},
+  "@unitSlippers": {
+    "description": "Measure word for slippers"
+  },
   "unitToiletries": "sets",
-  "@unitToiletries": {"description": "Measure word for toiletries"},
+  "@unitToiletries": {
+    "description": "Measure word for toiletries"
+  },
   "unitTowels": "pieces",
-  "@unitTowels": {"description": "Measure word for towels"},
+  "@unitTowels": {
+    "description": "Measure word for towels"
+  },
   "unitWater": "bottles",
-  "@unitWater": {"description": "Measure word for bottled water"},
+  "@unitWater": {
+    "description": "Measure word for bottled water"
+  },
   "orderWakeupTitle": "Wake-up call",
-  "@orderWakeupTitle": {"description": "Title of the wake-up reservation card"},
+  "@orderWakeupTitle": {
+    "description": "Title of the wake-up reservation card"
+  },
   "orderLateCheckoutTitle": "Late check-out",
-  "@orderLateCheckoutTitle": {"description": "Title of the late check-out reservation card"},
+  "@orderLateCheckoutTitle": {
+    "description": "Title of the late check-out reservation card"
+  },
   "orderDeliverTo": "Deliver to room {room}",
-  "@orderDeliverTo": {"description": "Delivery destination line on amenity order cards", "placeholders": {"room": {"type": "String"}}},
+  "@orderDeliverTo": {
+    "description": "Delivery destination line on amenity order cards",
+    "placeholders": {
+      "room": {
+        "type": "String"
+      }
+    }
+  },
   "orderConfirmButton": "Confirm order",
-  "@orderConfirmButton": {"description": "Confirm button of amenity order cards"},
+  "@orderConfirmButton": {
+    "description": "Confirm button of amenity order cards"
+  },
   "orderReserveButton": "Confirm reservation",
-  "@orderReserveButton": {"description": "Confirm button of reservation cards"},
+  "@orderReserveButton": {
+    "description": "Confirm button of reservation cards"
+  },
   "orderQuantityLabel": "Quantity ×{count}",
-  "@orderQuantityLabel": {"description": "Item count shown on a confirmed amenity order card", "placeholders": {"count": {"type": "int"}}},
+  "@orderQuantityLabel": {
+    "description": "Item count shown on a confirmed amenity order card",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "orderStatusPending": "Pending",
-  "@orderStatusPending": {"description": "Status badge of a not-yet-confirmed order card"},
+  "@orderStatusPending": {
+    "description": "Status badge of a not-yet-confirmed order card"
+  },
   "orderStatusPlaced": "Placed",
-  "@orderStatusPlaced": {"description": "Status badge after confirmation (PRD 6.3)"},
+  "@orderStatusPlaced": {
+    "description": "Status badge after confirmation (PRD 6.3)"
+  },
   "orderStatusDelivering": "Delivering",
-  "@orderStatusDelivering": {"description": "Status badge while the item is on the way"},
+  "@orderStatusDelivering": {
+    "description": "Status badge while the item is on the way"
+  },
   "orderStatusDelivered": "Delivered",
-  "@orderStatusDelivered": {"description": "Status badge after arrival"},
+  "@orderStatusDelivered": {
+    "description": "Status badge after arrival"
+  },
   "orderStatusRated": "Rated · {stars} stars",
-  "@orderStatusRated": {"description": "Terminal badge after the guest submitted a rating", "placeholders": {"stars": {"type": "int"}}},
+  "@orderStatusRated": {
+    "description": "Terminal badge after the guest submitted a rating",
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "orderStatusReserved": "Reserved",
-  "@orderStatusReserved": {"description": "Terminal badge of reservation cards"},
+  "@orderStatusReserved": {
+    "description": "Terminal badge of reservation cards"
+  },
   "orderProgressPlaced": "Staff notified.",
-  "@orderProgressPlaced": {"description": "Progress hint on the placed card"},
+  "@orderProgressPlaced": {
+    "description": "Progress hint on the placed card"
+  },
   "orderProgressDelivering": "On the way to room {room}.",
-  "@orderProgressDelivering": {"description": "Progress hint on the delivering card", "placeholders": {"room": {"type": "String"}}},
+  "@orderProgressDelivering": {
+    "description": "Progress hint on the delivering card",
+    "placeholders": {
+      "room": {
+        "type": "String"
+      }
+    }
+  },
   "orderProgressDelivered": "Delivered, enjoy!",
-  "@orderProgressDelivered": {"description": "Progress hint on the delivered card"},
+  "@orderProgressDelivered": {
+    "description": "Progress hint on the delivered card"
+  },
   "orderProgressReserved": "Reserved. We will arrange it on time.",
-  "@orderProgressReserved": {"description": "Progress hint on the reserved card"},
+  "@orderProgressReserved": {
+    "description": "Progress hint on the reserved card"
+  },
   "orderWakeupSummary": "{day} {time} wake-up call · room {room}",
-  "@orderWakeupSummary": {"description": "Slot summary of a wake-up reservation card", "placeholders": {"day": {"type": "String"}, "time": {"type": "String"}, "room": {"type": "String"}}},
+  "@orderWakeupSummary": {
+    "description": "Slot summary of a wake-up reservation card",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "room": {
+        "type": "String"
+      }
+    }
+  },
   "orderLateCheckoutSummary": "Late check-out until {time}",
-  "@orderLateCheckoutSummary": {"description": "Slot summary of a late check-out card", "placeholders": {"time": {"type": "String"}}},
+  "@orderLateCheckoutSummary": {
+    "description": "Slot summary of a late check-out card",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "dayToday": "Today",
-  "@dayToday": {"description": "Day word used in reservation slot summaries"},
+  "@dayToday": {
+    "description": "Day word used in reservation slot summaries"
+  },
   "dayTomorrow": "Tomorrow",
-  "@dayTomorrow": {"description": "Day word used in reservation slot summaries"},
+  "@dayTomorrow": {
+    "description": "Day word used in reservation slot summaries"
+  },
   "ratingPrompt": "How was the delivery? Tap a star to rate.",
-  "@ratingPrompt": {"description": "Prompt above the star rating row after delivery (D12)"},
+  "@ratingPrompt": {
+    "description": "Prompt above the star rating row after delivery (D12)"
+  },
   "ratingStarSemantic": "Rate {stars} stars",
-  "@ratingStarSemantic": {"description": "Semantics label of one star in the rating row", "placeholders": {"stars": {"type": "int"}}},
+  "@ratingStarSemantic": {
+    "description": "Semantics label of one star in the rating row",
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "ratingBarSemantic": "Service rating. Tap a star to rate.",
-  "@ratingBarSemantic": {"description": "Semantics label of the whole star rating bar (D12)"},
+  "@ratingBarSemantic": {
+    "description": "Semantics label of the whole star rating bar (D12)"
+  },
   "orderStepperMinusSemantic": "Decrease quantity",
-  "@orderStepperMinusSemantic": {"description": "Semantics label of the quantity stepper minus button"},
+  "@orderStepperMinusSemantic": {
+    "description": "Semantics label of the quantity stepper minus button"
+  },
   "orderStepperPlusSemantic": "Increase quantity",
-  "@orderStepperPlusSemantic": {"description": "Semantics label of the quantity stepper plus button"},
+  "@orderStepperPlusSemantic": {
+    "description": "Semantics label of the quantity stepper plus button"
+  },
   "ordersSheetTitleWithCount": "Current orders · {count}",
-  "@ordersSheetTitleWithCount": {"description": "Title of the orders bottom sheet with the live entry count (D11, docs/06 §3.3)", "placeholders": {"count": {"type": "int"}}},
+  "@ordersSheetTitleWithCount": {
+    "description": "Title of the orders bottom sheet with the live entry count (D11, docs/06 §3.3)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ordersEmpty": "No orders yet",
-  "@ordersEmpty": {"description": "Empty state of the orders bottom sheet"},
+  "@ordersEmpty": {
+    "description": "Empty state of the orders bottom sheet"
+  },
   "quickPanelTitle": "Quick services",
-  "@quickPanelTitle": {"description": "Section title of the quick services panel (docs/06 §3.2)"},
+  "@quickPanelTitle": {
+    "description": "Section title of the quick services panel (docs/06 §3.2)"
+  },
   "guessCardTitle": "You may ask",
-  "@guessCardTitle": {"description": "Title of the guess-question welcome card (docs/06 §3.2)"},
+  "@guessCardTitle": {
+    "description": "Title of the guess-question welcome card (docs/06 §3.2)"
+  },
   "guessCategoryDelivery": "Delivery",
-  "@guessCategoryDelivery": {"description": "Category chip of the guess card: item delivery questions"},
+  "@guessCategoryDelivery": {
+    "description": "Category chip of the guess card: item delivery questions"
+  },
   "guessCategoryQa": "Q&A",
-  "@guessCategoryQa": {"description": "Category chip of the guess card: information questions"},
+  "@guessCategoryQa": {
+    "description": "Category chip of the guess card: information questions"
+  },
   "guessCategoryBooking": "Booking",
-  "@guessCategoryBooking": {"description": "Category chip of the guess card: reservation questions"},
+  "@guessCategoryBooking": {
+    "description": "Category chip of the guess card: reservation questions"
+  },
   "guessRefresh": "Show more",
-  "@guessRefresh": {"description": "Refresh action at the bottom of the guess card"},
+  "@guessRefresh": {
+    "description": "Refresh action at the bottom of the guess card"
+  },
   "faqSlippersDeliver": "How do I get two pairs of slippers delivered?",
-  "@faqSlippersDeliver": {"description": "Guess card preset question; wording matches the slippers intent trigger"},
+  "@faqSlippersDeliver": {
+    "description": "Guess card preset question; wording matches the slippers intent trigger"
+  },
   "faqToiletriesDeliver": "Can you bring me a toiletries set?",
-  "@faqToiletriesDeliver": {"description": "Guess card preset question; wording matches the toiletries intent trigger"},
+  "@faqToiletriesDeliver": {
+    "description": "Guess card preset question; wording matches the toiletries intent trigger"
+  },
   "faqTowelsDeliver": "Could you bring a few more towels?",
-  "@faqTowelsDeliver": {"description": "Guess card preset question; wording matches the towels intent trigger"},
+  "@faqTowelsDeliver": {
+    "description": "Guess card preset question; wording matches the towels intent trigger"
+  },
   "faqWaterDeliver": "Please deliver two bottles of water to my room.",
-  "@faqWaterDeliver": {"description": "Guess card preset question; wording matches the water intent trigger"},
+  "@faqWaterDeliver": {
+    "description": "Guess card preset question; wording matches the water intent trigger"
+  },
   "faqSlippersExchange": "Can I exchange the slippers for another size?",
-  "@faqSlippersExchange": {"description": "Guess card rotation extra; wording matches the slippers intent trigger"},
+  "@faqSlippersExchange": {
+    "description": "Guess card rotation extra; wording matches the slippers intent trigger"
+  },
   "faqTowelsBath": "Please also bring some bath towels.",
-  "@faqTowelsBath": {"description": "Guess card rotation extra; wording matches the towels intent trigger"},
+  "@faqTowelsBath": {
+    "description": "Guess card rotation extra; wording matches the towels intent trigger"
+  },
   "faqWifiPassword": "What is the Wi-Fi password?",
-  "@faqWifiPassword": {"description": "Guess card preset question; wording matches the wifi intent trigger"},
+  "@faqWifiPassword": {
+    "description": "Guess card preset question; wording matches the wifi intent trigger"
+  },
   "faqBreakfastTime": "What time does breakfast start?",
-  "@faqBreakfastTime": {"description": "Guess card preset question; wording matches the breakfast intent trigger"},
+  "@faqBreakfastTime": {
+    "description": "Guess card preset question; wording matches the breakfast intent trigger"
+  },
   "faqWifiConnect": "How do I join the wireless network?",
-  "@faqWifiConnect": {"description": "Guess card rotation extra; wording matches the wifi intent trigger"},
+  "@faqWifiConnect": {
+    "description": "Guess card rotation extra; wording matches the wifi intent trigger"
+  },
   "faqBreakfastFloor": "Where is breakfast served?",
-  "@faqBreakfastFloor": {"description": "Guess card rotation extra; wording matches the breakfast intent trigger"},
+  "@faqBreakfastFloor": {
+    "description": "Guess card rotation extra; wording matches the breakfast intent trigger"
+  },
   "faqWakeupSetup": "Set a wake-up call for 07:00 tomorrow, please.",
-  "@faqWakeupSetup": {"description": "Guess card preset question; wording matches the wake-up intent and the time slot parser"},
+  "@faqWakeupSetup": {
+    "description": "Guess card preset question; wording matches the wake-up intent and the time slot parser"
+  },
   "faqWakeupGeneral": "I would like to set up a wake-up call.",
-  "@faqWakeupGeneral": {"description": "Guess card preset question; wording matches the wake-up intent trigger"},
+  "@faqWakeupGeneral": {
+    "description": "Guess card preset question; wording matches the wake-up intent trigger"
+  },
   "faqLateCheckoutAsk": "Can I request a late checkout?",
-  "@faqLateCheckoutAsk": {"description": "Guess card preset question; wording matches the late check-out intent trigger"},
+  "@faqLateCheckoutAsk": {
+    "description": "Guess card preset question; wording matches the late check-out intent trigger"
+  },
   "faqLateCheckoutTime": "I would like a late checkout at 14:00 tomorrow.",
-  "@faqLateCheckoutTime": {"description": "Guess card preset question; wording matches the late check-out intent and the time slot parser"},
+  "@faqLateCheckoutTime": {
+    "description": "Guess card preset question; wording matches the late check-out intent and the time slot parser"
+  },
   "homeGreeting": "Good afternoon, {guest}",
-  "@homeGreeting": {"description": "Greeting on the home gradient header (docs/06 §3.4)", "placeholders": {"guest": {"type": "String"}}},
+  "@homeGreeting": {
+    "description": "Greeting on the home gradient header (docs/06 §3.4)",
+    "placeholders": {
+      "guest": {
+        "type": "String"
+      }
+    }
+  },
   "homeSearchHint": "Search hotel services",
-  "@homeSearchHint": {"description": "Hint inside the decorative home search capsule"},
+  "@homeSearchHint": {
+    "description": "Hint inside the decorative home search capsule"
+  },
   "homeSearchButton": "Search",
-  "@homeSearchButton": {"description": "Label of the decorative full-round search button"},
+  "@homeSearchButton": {
+    "description": "Label of the decorative full-round search button"
+  },
   "homeServicesTitle": "Hotel services",
-  "@homeServicesTitle": {"description": "Section title of the home icon grid card"},
+  "@homeServicesTitle": {
+    "description": "Section title of the home icon grid card"
+  },
   "homeTileDeliver": "Item delivery",
-  "@homeTileDeliver": {"description": "Decorative home grid tile: item delivery"},
+  "@homeTileDeliver": {
+    "description": "Decorative home grid tile: item delivery"
+  },
   "homeTileWakeup": "Wake-up call",
-  "@homeTileWakeup": {"description": "Decorative home grid tile: wake-up call"},
+  "@homeTileWakeup": {
+    "description": "Decorative home grid tile: wake-up call"
+  },
   "homeTileLateCheckout": "Late check-out",
-  "@homeTileLateCheckout": {"description": "Decorative home grid tile: late check-out"},
+  "@homeTileLateCheckout": {
+    "description": "Decorative home grid tile: late check-out"
+  },
   "homeTileOrders": "My orders",
-  "@homeTileOrders": {"description": "Decorative home grid tile: my orders"},
+  "@homeTileOrders": {
+    "description": "Decorative home grid tile: my orders"
+  },
   "profileMemberTitle": "Shell Plus",
-  "@profileMemberTitle": {"description": "Title of the profile member-style banner (demo copy, docs/06 §3.4)"},
+  "@profileMemberTitle": {
+    "description": "Title of the profile member-style banner (demo copy, docs/06 §3.4)"
+  },
   "profileMemberSubtitle": "Demo member benefits",
-  "@profileMemberSubtitle": {"description": "Subtitle of the profile member-style banner"},
+  "@profileMemberSubtitle": {
+    "description": "Subtitle of the profile member-style banner"
+  },
   "profileTileOrders": "My orders",
-  "@profileTileOrders": {"description": "Decorative profile grid tile: my orders"},
+  "@profileTileOrders": {
+    "description": "Decorative profile grid tile: my orders"
+  },
   "profileTileFavorites": "Favorites",
-  "@profileTileFavorites": {"description": "Decorative profile grid tile: favorites"},
+  "@profileTileFavorites": {
+    "description": "Decorative profile grid tile: favorites"
+  },
   "profileTileSettings": "Settings",
-  "@profileTileSettings": {"description": "Decorative profile grid tile: settings"},
+  "@profileTileSettings": {
+    "description": "Decorative profile grid tile: settings"
+  },
   "profileTileSupport": "Contact support",
-  "@profileTileSupport": {"description": "Decorative profile grid tile: contact support"},
+  "profileMemberHint": "Demo profile · decorative only",
+  "@profileMemberHint": {
+    "description": "Subline under the mock guest name on the decorative profile page."
+  },
+  "@profileTileSupport": {
+    "description": "Decorative profile grid tile: contact support"
+  },
   "helloSubtitle": "Flutter shell baseline page",
-  "@helloSubtitle": {"description": "Message payload of the native screen round-trip on the bridge demo page"}
+  "@helloSubtitle": {
+    "description": "Message payload of the native screen round-trip on the bridge demo page"
+  }
 }
