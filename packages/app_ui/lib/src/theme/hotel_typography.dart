@@ -1,6 +1,5 @@
+import 'package:app_ui/src/theme/hotel_colors.dart';
 import 'package:flutter/material.dart';
-
-import 'hotel_colors.dart';
 
 /// Hotel demo type scale (docs/06 §2.2): system font, hierarchy expressed
 /// through weight only — no custom font files in v0.

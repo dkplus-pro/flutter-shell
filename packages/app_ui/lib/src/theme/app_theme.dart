@@ -1,8 +1,7 @@
+import 'package:app_ui/src/theme/hotel_colors.dart';
+import 'package:app_ui/src/theme/hotel_dimens.dart';
+import 'package:app_ui/src/theme/hotel_typography.dart';
 import 'package:flutter/material.dart';
-
-import 'hotel_colors.dart';
-import 'hotel_dimens.dart';
-import 'hotel_typography.dart';
 
 /// App themes.
 ///
@@ -24,12 +23,8 @@ abstract final class AppTheme {
   static ColorScheme _lightScheme() {
     return const ColorScheme.light(
       primary: HotelColors.primary,
-      onPrimary: Colors.white,
       secondary: HotelColors.primary,
-      onSecondary: Colors.white,
       error: HotelColors.promoRed,
-      onError: Colors.white,
-      surface: HotelColors.surface,
       onSurface: HotelColors.textPrimary,
     );
   }

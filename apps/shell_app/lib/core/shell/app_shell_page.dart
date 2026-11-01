@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 /// (docs/06 §3.1); the centered service tab renders its selected icon
 /// inside the 44dp purple circle.
 class AppShellPage extends StatelessWidget {
-  const AppShellPage({required this.navigationShell, super.key});
+  const new({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 

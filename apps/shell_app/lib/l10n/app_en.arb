@@ -241,5 +241,7 @@
   "profileTileSettings": "Settings",
   "@profileTileSettings": {"description": "Decorative profile grid tile: settings"},
   "profileTileSupport": "Contact support",
-  "@profileTileSupport": {"description": "Decorative profile grid tile: contact support"}
+  "@profileTileSupport": {"description": "Decorative profile grid tile: contact support"},
+  "helloSubtitle": "Flutter shell baseline page",
+  "@helloSubtitle": {"description": "Message payload of the native screen round-trip on the bridge demo page"}
 }

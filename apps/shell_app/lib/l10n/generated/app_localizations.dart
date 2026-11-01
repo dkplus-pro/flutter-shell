@@ -823,6 +823,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact support'**
   String get profileTileSupport;
+
+  /// Message payload of the native screen round-trip on the bridge demo page
+  ///
+  /// In en, this message translates to:
+  /// **'Flutter shell baseline page'**
+  String get helloSubtitle;
 }
 
 class _AppLocalizationsDelegate

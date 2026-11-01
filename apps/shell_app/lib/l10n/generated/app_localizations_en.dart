@@ -415,4 +415,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileTileSupport => 'Contact support';
+
+  @override
+  String get helloSubtitle => 'Flutter shell baseline page';
 }

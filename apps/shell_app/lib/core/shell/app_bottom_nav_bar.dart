@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// One entry of the custom bottom navigation bar.
 class AppBottomNavItem {
-  const AppBottomNavItem({
+  const new({
     required this.icon,
     required this.selectedIcon,
     required this.label,
@@ -30,7 +30,7 @@ class AppBottomNavItem {
 /// [AppBottomNavItem.circleWhenSelected] host the selected icon inside a
 /// 44dp purple circle.
 class AppBottomNavBar extends StatelessWidget {
-  const AppBottomNavBar({
+  const new({
     required this.items,
     required this.currentIndex,
     required this.onTap,
@@ -46,14 +46,14 @@ class AppBottomNavBar extends StatelessWidget {
     return DecoratedBox(
       decoration: const BoxDecoration(
         color: HotelColors.surface,
-        border: Border(
-          top: BorderSide(color: HotelColors.divider, width: 0.5),
-        ),
+        border: Border(top: BorderSide(color: HotelColors.divider, width: 0.5)),
       ),
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 56,
+          // 64dp: the 44dp circle slot plus the label needs more than the
+          // stock 56dp bar; anything lower overflows the item column.
+          height: 64,
           child: Row(
             children: [
               for (var i = 0; i < items.length; i++)
@@ -73,11 +73,7 @@ class AppBottomNavBar extends StatelessWidget {
 }
 
 class _NavItem extends StatelessWidget {
-  const _NavItem({
-    required this.item,
-    required this.selected,
-    required this.onTap,
-  });
+  const new({required this.item, required this.selected, required this.onTap});
 
   final AppBottomNavItem item;
   final bool selected;

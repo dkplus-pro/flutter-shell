@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 /// Tapping anywhere shows the "not available yet" toast; the bridge demo
 /// entry stays reachable.
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
 
 /// Purple gradient welcome header (docs/06 §3.4).
 class _GreetingHeader extends StatelessWidget {
-  const _GreetingHeader({required this.greeting});
+  const new({required this.greeting});
 
   final String greeting;
 
@@ -82,7 +82,7 @@ class _GreetingHeader extends StatelessWidget {
 /// Decorative search card: a fake input capsule plus a full-round purple
 /// button (docs/06 §3.4). No interaction logic.
 class _FakeSearchCard extends StatelessWidget {
-  const _FakeSearchCard({required this.l10n});
+  const new({required this.l10n});
 
   final AppLocalizations l10n;
 
@@ -149,7 +149,7 @@ class _FakeSearchCard extends StatelessWidget {
 
 /// White card with a section title and a 4-tile icon grid.
 class _ServiceGridCard extends StatelessWidget {
-  const _ServiceGridCard({required this.title, required this.tiles});
+  const new({required this.title, required this.tiles});
 
   final String title;
   final List<(IconData, String)> tiles;
@@ -184,7 +184,7 @@ class _ServiceGridCard extends StatelessWidget {
 }
 
 class _GridTile extends StatelessWidget {
-  const _GridTile({required this.icon, required this.label});
+  const new({required this.icon, required this.label});
 
   final IconData icon;
   final String label;
@@ -221,7 +221,7 @@ class _GridTile extends StatelessWidget {
 
 /// The bridge demo stays reachable from the home mock (PRD 4).
 class _BridgeDemoCard extends StatelessWidget {
-  const _BridgeDemoCard({required this.l10n});
+  const new({required this.l10n});
 
   final AppLocalizations l10n;
 

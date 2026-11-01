@@ -120,5 +120,6 @@
   "profileTileOrders": "我的订单",
   "profileTileFavorites": "我的收藏",
   "profileTileSettings": "设置",
-  "profileTileSupport": "联系客服"
+  "profileTileSupport": "联系客服",
+  "helloSubtitle": "Flutter 壳工程基线页面"
 }

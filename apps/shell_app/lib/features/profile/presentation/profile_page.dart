@@ -1,14 +1,14 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttershell/features/hotel/application/hotel_chat_providers.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Profile tab restyled as a decorative mock (docs/06 §3.4, P3): avatar +
 /// name header, a member-card style gradient banner and an icon grid — all
 /// purely visual. Tapping anywhere shows the "not available yet" toast.
 class ProfilePage extends ConsumerWidget {
-  const ProfilePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +50,7 @@ class ProfilePage extends ConsumerWidget {
 
 /// Avatar + name + room badge header (mock guest binding, D8).
 class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({required this.l10n, required this.room});
+  const new({required this.l10n, required this.room});
 
   final AppLocalizations l10n;
   final String room;
@@ -80,10 +80,7 @@ class _ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l10n.hotelMockGuestName,
-                  style: HotelTypography.title,
-                ),
+                Text(l10n.hotelMockGuestName, style: HotelTypography.title),
                 const SizedBox(height: 2),
                 Text(badge, style: HotelTypography.sub),
               ],
@@ -98,7 +95,7 @@ class _ProfileHeader extends StatelessWidget {
 /// Member-card style gradient banner (docs/06 §3.4; decorative demo copy
 /// only — no external brand membership wording).
 class _MemberBanner extends StatelessWidget {
-  const _MemberBanner({required this.l10n});
+  const new({required this.l10n});
 
   final AppLocalizations l10n;
 
@@ -137,7 +134,7 @@ class _MemberBanner extends StatelessWidget {
 
 /// White card with a 4-tile icon grid (docs/06 §3.4).
 class _ToolGridCard extends StatelessWidget {
-  const _ToolGridCard({required this.tiles});
+  const new({required this.tiles});
 
   final List<(IconData, String)> tiles;
 

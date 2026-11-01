@@ -105,7 +105,7 @@ void main() {
     await tester.tap(find.byTooltip('View orders'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Current orders'), findsOneWidget);
+    expect(find.textContaining('Current orders'), findsOneWidget);
     expect(find.text('Disposable slippers ×2'), findsOneWidget);
     // The same copy renders in the chat card behind the sheet.
     expect(find.text('Deliver to room 1208'), findsNWidgets(2));
@@ -120,7 +120,7 @@ void main() {
     await tester.tap(find.byTooltip('View orders'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Current orders'), findsOneWidget);
+    expect(find.textContaining('Current orders'), findsOneWidget);
     expect(find.text('No orders yet'), findsOneWidget);
   });
 }

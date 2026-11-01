@@ -24,7 +24,14 @@ Widget _wrap() {
 /// Pumps the shell past the async session restore. Deliberately avoids
 /// pumpAndSettle: the chat session is async and the typing indicator
 /// animates indefinitely while a reply is in flight.
+///
+/// Uses a taller-than-default surface because the chat transcript, quick
+/// panel and 52dp input pill need more vertical space than the 800x600
+/// default provides once the app bar and the 64dp nav bar are deducted.
 Future<void> pumpShell(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1200, 1800);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
   await tester.pumpWidget(_wrap());
   await tester.pump();
   await tester.pump(const Duration(seconds: 1));
@@ -50,34 +57,37 @@ void main() {
     expect(find.text('Profile'), findsOneWidget);
   });
 
-  testWidgets('home tab shows the placeholder toast and bridge demo entry', (
+  testWidgets('home tab shows the decorative mock and bridge demo entry', (
     tester,
   ) async {
     await pumpShell(tester);
 
     await tester.tap(find.text('Home'));
     await tester.pumpAndSettle();
-    expect(find.text('Hello World'), findsOneWidget);
+    expect(find.text('Search hotel services'), findsOneWidget);
+    expect(find.text('Hotel services'), findsOneWidget);
 
-    await tester.tap(find.text('Hello World'));
+    await tester.tap(find.text('Search hotel services'));
     await tester.pump();
     expect(find.text('This feature is not available yet.'), findsOneWidget);
 
     expect(find.text('Open bridge demo'), findsOneWidget);
   });
 
-  testWidgets('profile tab shows the placeholder toast', (tester) async {
+  testWidgets('profile tab shows the decorative mock and placeholder toast', (
+    tester,
+  ) async {
     await pumpShell(tester);
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
 
-    expect(
-      find.text('Personal information will show up here later.'),
-      findsOneWidget,
-    );
+    expect(find.text('Mr. Zhang'), findsOneWidget);
+    expect(find.text('Shell Plus'), findsOneWidget);
 
-    await tester.tap(find.text('Profile').first);
+    // The mock profile page is purely decorative: tapping anywhere on it
+    // (here the member banner) shows the global placeholder toast.
+    await tester.tap(find.text('Shell Plus'));
     await tester.pump();
     expect(find.text('This feature is not available yet.'), findsOneWidget);
   });
@@ -86,6 +96,9 @@ void main() {
     await pumpShell(tester);
 
     await tester.enterText(find.byType(TextField), 'Hello there');
+    // The send button only exists while the input is non-empty, so a frame
+    // must pass before the tooltip finder can resolve.
+    await tester.pump();
     await tester.tap(find.byTooltip('Send'));
     await pumpReply(tester);
 
