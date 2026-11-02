@@ -1,14 +1,31 @@
+import 'package:app_ui/src/theme/hotel_colors.dart';
+import 'package:app_ui/src/theme/hotel_dimens.dart';
+import 'package:app_ui/src/theme/hotel_typography.dart';
 import 'package:flutter/material.dart';
 
-/// Material 3 themes seeded from a fixed brand color.
+/// App themes.
+///
+/// Light theme (docs/06 §3.1): an explicitly constructed color scheme built
+/// from the hotel tokens — no `fromSeed` surface tinting — with pure white
+/// cards on the cool grey background and zero elevation everywhere.
 abstract final class AppTheme {
-  static const Color _seed = Color(0xFF3D5AFE);
-
-  static ThemeData light() => _base(ColorScheme.fromSeed(seedColor: _seed));
+  static ThemeData light() => _base(_lightScheme());
 
   static ThemeData dark() {
     return _base(
-      ColorScheme.fromSeed(seedColor: _seed, brightness: Brightness.dark),
+      ColorScheme.fromSeed(
+        seedColor: HotelColors.primary,
+        brightness: Brightness.dark,
+      ),
+    );
+  }
+
+  static ColorScheme _lightScheme() {
+    return const ColorScheme.light(
+      primary: HotelColors.primary,
+      secondary: HotelColors.primary,
+      error: HotelColors.promoRed,
+      onSurface: HotelColors.textPrimary,
     );
   }
 
@@ -16,9 +33,31 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      appBarTheme: AppBarTheme(
-        backgroundColor: scheme.surface,
-        foregroundColor: scheme.onSurface,
+      scaffoldBackgroundColor: HotelColors.bg,
+      splashFactory: InkSparkle.splashFactory,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: HotelColors.surface,
+        foregroundColor: HotelColors.textPrimary,
+        centerTitle: true,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        titleTextStyle: HotelTypography.title,
+        shape: Border(
+          bottom: BorderSide(color: HotelColors.divider, width: 0.5),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: HotelColors.surface,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: HotelColors.divider,
+        thickness: HotelDimens.hairline,
+        space: HotelDimens.hairline,
       ),
     );
   }

@@ -101,20 +101,8 @@ abstract class AppLocalizations {
   /// Application title
   ///
   /// In en, this message translates to:
-  /// **'Shell'**
+  /// **'Mist Hotel'**
   String get appTitle;
-
-  /// Greeting shown on the home page
-  ///
-  /// In en, this message translates to:
-  /// **'Hello World'**
-  String get helloWorld;
-
-  /// Subtitle under the greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Flutter shell baseline page'**
-  String get helloSubtitle;
 
   /// Button that opens the bridge demo page
   ///
@@ -187,6 +175,666 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// Bottom navigation label for the home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeTab;
+
+  /// Bottom navigation label for the concierge chat tab
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get serviceTab;
+
+  /// Bottom navigation label for the profile tab
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTab;
+
+  /// Toast shown when tapping a placeholder page or deferred action
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is not available yet.'**
+  String get placeholderNotAvailable;
+
+  /// Title of the concierge chat page
+  ///
+  /// In en, this message translates to:
+  /// **'AI Concierge'**
+  String get hotelChatTitle;
+
+  /// Room badge in the chat app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Room {room} · {guest}'**
+  String hotelRoomBadge(String room, String guest);
+
+  /// Mock guest display name (D8); rendered with the room badge
+  ///
+  /// In en, this message translates to:
+  /// **'Mr. Zhang'**
+  String get hotelMockGuestName;
+
+  /// Tooltip and semantics label for the orders icon in the chat app bar
+  ///
+  /// In en, this message translates to:
+  /// **'View orders'**
+  String get hotelOrdersTooltip;
+
+  /// Scripted concierge welcome message (S0)
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I am XiaoZhi, the smart butler for room {room}. I can deliver items, answer questions and set wake-up calls. Tap + to see all services.'**
+  String chatWelcome(String room);
+
+  /// Tooltip and semantics label for the quick panel toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Quick services'**
+  String get quickPanelSemantic;
+
+  /// Quick panel entry label for slippers delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Slippers'**
+  String get quickSlippers;
+
+  /// Quick panel entry label for toiletries delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Toiletries'**
+  String get quickToiletries;
+
+  /// Quick panel entry label for towels delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Towels'**
+  String get quickTowels;
+
+  /// Quick panel entry label for drinking water delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get quickWater;
+
+  /// Quick panel entry label for the wake-up reservation
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up call'**
+  String get quickWakeup;
+
+  /// Quick panel entry label for the late check-out reservation
+  ///
+  /// In en, this message translates to:
+  /// **'Late check-out'**
+  String get quickLateCheckout;
+
+  /// Quick panel entry label for the Wi-Fi question
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi password'**
+  String get quickWifi;
+
+  /// Quick panel entry label for the breakfast question
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get quickBreakfast;
+
+  /// Preset guest message sent from the slippers quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'I need some disposable slippers delivered to my room.'**
+  String get presetSlippers;
+
+  /// Preset guest message sent from the toiletries quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'Please bring a toiletries set to my room.'**
+  String get presetToiletries;
+
+  /// Preset guest message sent from the towels quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'Please bring some fresh towels to my room.'**
+  String get presetTowels;
+
+  /// Preset guest message sent from the water quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'Please deliver some bottled water to my room.'**
+  String get presetWater;
+
+  /// Preset guest message sent from the wake-up quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'I would like to set up a wake-up call.'**
+  String get presetWakeup;
+
+  /// Preset guest message sent from the late check-out quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'I would like to request a late check-out.'**
+  String get presetLateCheckout;
+
+  /// Preset guest message sent from the Wi-Fi quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Wi-Fi password?'**
+  String get presetWifi;
+
+  /// Preset guest message sent from the breakfast quick entry
+  ///
+  /// In en, this message translates to:
+  /// **'What time is breakfast served?'**
+  String get presetBreakfast;
+
+  /// Hint text of the chat input field
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message…'**
+  String get chatInputHint;
+
+  /// Semantics label for the chat send button
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get chatSendSemantic;
+
+  /// Concierge asks the quantity slot for an amenity (PRD 7.1)
+  ///
+  /// In en, this message translates to:
+  /// **'Sure, how many {item} would you like?'**
+  String chatAskQuantity(String item, String unit);
+
+  /// Re-ask when the quantity slot cannot be parsed
+  ///
+  /// In en, this message translates to:
+  /// **'Please reply with a quantity between 1 and 9, for example \"2\".'**
+  String get chatQuantityInvalid;
+
+  /// Concierge acknowledges the guest cancelling an active slot flow
+  ///
+  /// In en, this message translates to:
+  /// **'No problem, I have cancelled that. Anything else I can help with?'**
+  String get chatCancelAck;
+
+  /// Concierge asks the time slot for a wake-up reservation
+  ///
+  /// In en, this message translates to:
+  /// **'Sure, what time should the wake-up call be? For example: tomorrow 07:00.'**
+  String get chatAskWakeupTime;
+
+  /// Concierge asks the time slot for a late check-out reservation
+  ///
+  /// In en, this message translates to:
+  /// **'Sure, until what time would you like to check out late?'**
+  String get chatAskLateCheckoutTime;
+
+  /// Concierge offers quick time chips after a failed time parse
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, I did not catch the time. Pick one below or type it, for example 07:00.'**
+  String get chatTimeChipsPrompt;
+
+  /// Direct answer to the Wi-Fi question, S3; mock credentials
+  ///
+  /// In en, this message translates to:
+  /// **'The guest Wi-Fi network is {ssid}, password {password}. (demo data)'**
+  String chatWifiAnswer(String ssid, String password);
+
+  /// Direct answer to the breakfast-time question
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.'**
+  String get chatBreakfastAnswer;
+
+  /// Refusal when a wake-up reservation already exists (one per session)
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a wake-up call request. Check Current orders to review it.'**
+  String get chatWakeupAlreadyBooked;
+
+  /// Refusal when a late check-out already exists (one per session)
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a late check-out request. Check Current orders to review it.'**
+  String get chatLateCheckoutAlreadyRequested;
+
+  /// Fallback reply guiding the guest to the quick panel (S5)
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, I am still a demo concierge and did not understand that. Tap + to see everything I can do.'**
+  String get chatFallback;
+
+  /// Semantics label of the typing indicator bubble
+  ///
+  /// In en, this message translates to:
+  /// **'Concierge is typing…'**
+  String get chatTyping;
+
+  /// Display name of the slippers amenity
+  ///
+  /// In en, this message translates to:
+  /// **'Disposable slippers'**
+  String get amenitySlippers;
+
+  /// Display name of the toiletries amenity
+  ///
+  /// In en, this message translates to:
+  /// **'Toiletries set'**
+  String get amenityToiletries;
+
+  /// Display name of the towels amenity
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh towels'**
+  String get amenityTowels;
+
+  /// Display name of the drinking water amenity
+  ///
+  /// In en, this message translates to:
+  /// **'Bottled water'**
+  String get amenityWater;
+
+  /// Measure word for slippers
+  ///
+  /// In en, this message translates to:
+  /// **'pairs'**
+  String get unitSlippers;
+
+  /// Measure word for toiletries
+  ///
+  /// In en, this message translates to:
+  /// **'sets'**
+  String get unitToiletries;
+
+  /// Measure word for towels
+  ///
+  /// In en, this message translates to:
+  /// **'pieces'**
+  String get unitTowels;
+
+  /// Measure word for bottled water
+  ///
+  /// In en, this message translates to:
+  /// **'bottles'**
+  String get unitWater;
+
+  /// Title of the wake-up reservation card
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up call'**
+  String get orderWakeupTitle;
+
+  /// Title of the late check-out reservation card
+  ///
+  /// In en, this message translates to:
+  /// **'Late check-out'**
+  String get orderLateCheckoutTitle;
+
+  /// Delivery destination line on amenity order cards
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver to room {room}'**
+  String orderDeliverTo(String room);
+
+  /// Confirm button of amenity order cards
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm order'**
+  String get orderConfirmButton;
+
+  /// Confirm button of reservation cards
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm reservation'**
+  String get orderReserveButton;
+
+  /// Item count shown on a confirmed amenity order card
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity ×{count}'**
+  String orderQuantityLabel(int count);
+
+  /// Status badge of a not-yet-confirmed order card
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get orderStatusPending;
+
+  /// Status badge after confirmation (PRD 6.3)
+  ///
+  /// In en, this message translates to:
+  /// **'Placed'**
+  String get orderStatusPlaced;
+
+  /// Status badge while the item is on the way
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering'**
+  String get orderStatusDelivering;
+
+  /// Status badge after arrival
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get orderStatusDelivered;
+
+  /// Terminal badge after the guest submitted a rating
+  ///
+  /// In en, this message translates to:
+  /// **'Rated · {stars} stars'**
+  String orderStatusRated(int stars);
+
+  /// Terminal badge of reservation cards
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved'**
+  String get orderStatusReserved;
+
+  /// Progress hint on the placed card
+  ///
+  /// In en, this message translates to:
+  /// **'Staff notified.'**
+  String get orderProgressPlaced;
+
+  /// Progress hint on the delivering card
+  ///
+  /// In en, this message translates to:
+  /// **'On the way to room {room}.'**
+  String orderProgressDelivering(String room);
+
+  /// Progress hint on the delivered card
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered, enjoy!'**
+  String get orderProgressDelivered;
+
+  /// Progress hint on the reserved card
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved. We will arrange it on time.'**
+  String get orderProgressReserved;
+
+  /// Slot summary of a wake-up reservation card
+  ///
+  /// In en, this message translates to:
+  /// **'{day} {time} wake-up call · room {room}'**
+  String orderWakeupSummary(String day, String time, String room);
+
+  /// Slot summary of a late check-out card
+  ///
+  /// In en, this message translates to:
+  /// **'Late check-out until {time}'**
+  String orderLateCheckoutSummary(String time);
+
+  /// Day word used in reservation slot summaries
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dayToday;
+
+  /// Day word used in reservation slot summaries
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get dayTomorrow;
+
+  /// Prompt above the star rating row after delivery (D12)
+  ///
+  /// In en, this message translates to:
+  /// **'How was the delivery? Tap a star to rate.'**
+  String get ratingPrompt;
+
+  /// Semantics label of one star in the rating row
+  ///
+  /// In en, this message translates to:
+  /// **'Rate {stars} stars'**
+  String ratingStarSemantic(int stars);
+
+  /// Semantics label of the whole star rating bar (D12)
+  ///
+  /// In en, this message translates to:
+  /// **'Service rating. Tap a star to rate.'**
+  String get ratingBarSemantic;
+
+  /// Semantics label of the quantity stepper minus button
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease quantity'**
+  String get orderStepperMinusSemantic;
+
+  /// Semantics label of the quantity stepper plus button
+  ///
+  /// In en, this message translates to:
+  /// **'Increase quantity'**
+  String get orderStepperPlusSemantic;
+
+  /// Title of the orders bottom sheet with the live entry count (D11, docs/06 §3.3)
+  ///
+  /// In en, this message translates to:
+  /// **'Current orders · {count}'**
+  String ordersSheetTitleWithCount(int count);
+
+  /// Empty state of the orders bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet'**
+  String get ordersEmpty;
+
+  /// Title of the guess-question welcome card (docs/06 §3.2)
+  ///
+  /// In en, this message translates to:
+  /// **'You may ask'**
+  String get guessCardTitle;
+
+  /// Category chip of the guess card: item delivery questions
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get guessCategoryDelivery;
+
+  /// Category chip of the guess card: information questions
+  ///
+  /// In en, this message translates to:
+  /// **'Q&A'**
+  String get guessCategoryQa;
+
+  /// Category chip of the guess card: reservation questions
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get guessCategoryBooking;
+
+  /// Refresh action at the bottom of the guess card
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get guessRefresh;
+
+  /// Guess card preset question; wording matches the slippers intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'How do I get two pairs of slippers delivered?'**
+  String get faqSlippersDeliver;
+
+  /// Guess card preset question; wording matches the toiletries intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can you bring me a toiletries set?'**
+  String get faqToiletriesDeliver;
+
+  /// Guess card preset question; wording matches the towels intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Could you bring a few more towels?'**
+  String get faqTowelsDeliver;
+
+  /// Guess card preset question; wording matches the water intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Please deliver two bottles of water to my room.'**
+  String get faqWaterDeliver;
+
+  /// Guess card rotation extra; wording matches the slippers intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can I exchange the slippers for another size?'**
+  String get faqSlippersExchange;
+
+  /// Guess card rotation extra; wording matches the towels intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Please also bring some bath towels.'**
+  String get faqTowelsBath;
+
+  /// Guess card preset question; wording matches the wifi intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'What is the Wi-Fi password?'**
+  String get faqWifiPassword;
+
+  /// Guess card preset question; wording matches the breakfast intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'What time does breakfast start?'**
+  String get faqBreakfastTime;
+
+  /// Guess card rotation extra; wording matches the wifi intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'How do I join the wireless network?'**
+  String get faqWifiConnect;
+
+  /// Guess card rotation extra; wording matches the breakfast intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Where is breakfast served?'**
+  String get faqBreakfastFloor;
+
+  /// Guess card preset question; wording matches the wake-up intent and the time slot parser
+  ///
+  /// In en, this message translates to:
+  /// **'Set a wake-up call for 07:00 tomorrow, please.'**
+  String get faqWakeupSetup;
+
+  /// Guess card preset question; wording matches the wake-up intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'I would like to set up a wake-up call.'**
+  String get faqWakeupGeneral;
+
+  /// Guess card preset question; wording matches the late check-out intent trigger
+  ///
+  /// In en, this message translates to:
+  /// **'Can I request a late checkout?'**
+  String get faqLateCheckoutAsk;
+
+  /// Guess card preset question; wording matches the late check-out intent and the time slot parser
+  ///
+  /// In en, this message translates to:
+  /// **'I would like a late checkout at 14:00 tomorrow.'**
+  String get faqLateCheckoutTime;
+
+  /// Greeting on the home gradient header (docs/06 §3.4)
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon, {guest}'**
+  String homeGreeting(String guest);
+
+  /// Hint inside the decorative home search capsule
+  ///
+  /// In en, this message translates to:
+  /// **'Search hotel services'**
+  String get homeSearchHint;
+
+  /// Label of the decorative full-round search button
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get homeSearchButton;
+
+  /// Section title of the home icon grid card
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel services'**
+  String get homeServicesTitle;
+
+  /// Decorative home grid tile: item delivery
+  ///
+  /// In en, this message translates to:
+  /// **'Item delivery'**
+  String get homeTileDeliver;
+
+  /// Decorative home grid tile: wake-up call
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up call'**
+  String get homeTileWakeup;
+
+  /// Decorative home grid tile: late check-out
+  ///
+  /// In en, this message translates to:
+  /// **'Late check-out'**
+  String get homeTileLateCheckout;
+
+  /// Decorative home grid tile: my orders
+  ///
+  /// In en, this message translates to:
+  /// **'My orders'**
+  String get homeTileOrders;
+
+  /// Title of the profile member-style banner (demo copy, docs/06 §3.4)
+  ///
+  /// In en, this message translates to:
+  /// **'Mist Pro'**
+  String get profileMemberTitle;
+
+  /// Subtitle of the profile member-style banner
+  ///
+  /// In en, this message translates to:
+  /// **'Demo member benefits'**
+  String get profileMemberSubtitle;
+
+  /// Decorative profile grid tile: my orders
+  ///
+  /// In en, this message translates to:
+  /// **'My orders'**
+  String get profileTileOrders;
+
+  /// Decorative profile grid tile: favorites
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get profileTileFavorites;
+
+  /// Decorative profile grid tile: settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileTileSettings;
+
+  /// Decorative profile grid tile: contact support
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get profileTileSupport;
+
+  /// Subline under the mock guest name on the decorative profile page.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo profile · decorative only'**
+  String get profileMemberHint;
+
+  /// Message payload of the native screen round-trip on the bridge demo page
+  ///
+  /// In en, this message translates to:
+  /// **'Flutter shell baseline page'**
+  String get helloSubtitle;
 }
 
 class _AppLocalizationsDelegate

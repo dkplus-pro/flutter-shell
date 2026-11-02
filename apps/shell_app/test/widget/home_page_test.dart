@@ -21,15 +21,21 @@ Widget _wrap(Locale locale) {
 }
 
 void main() {
-  testWidgets('home shows English hello copy for locale en', (tester) async {
+  testWidgets('home shows the decorative mock header for locale en', (
+    tester,
+  ) async {
     await tester.pumpWidget(_wrap(const Locale('en')));
-    expect(find.text('Hello World'), findsOneWidget);
-    expect(find.text('Flutter shell baseline page'), findsOneWidget);
+    expect(find.text('Good afternoon, Mr. Zhang'), findsOneWidget);
+    expect(find.text('Search hotel services'), findsOneWidget);
+    expect(find.text('Hotel services'), findsOneWidget);
   });
 
-  testWidgets('home shows Chinese hello copy for locale zh', (tester) async {
+  testWidgets('home shows the decorative mock header for locale zh', (
+    tester,
+  ) async {
     await tester.pumpWidget(_wrap(const Locale('zh')));
-    expect(find.text('你好，世界'), findsOneWidget);
-    expect(find.text('Flutter 壳工程基线页面'), findsOneWidget);
+    expect(find.text('下午好，张先生'), findsOneWidget);
+    expect(find.text('搜索酒店服务'), findsOneWidget);
+    expect(find.text('酒店服务'), findsOneWidget);
   });
 }

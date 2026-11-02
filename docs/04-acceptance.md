@@ -217,6 +217,11 @@ for i in 1 2 3; do adb shell am start -W -n com.dk.fluttershell/.MainActivity; d
 | Flutter 构建页面 | Home + Bridge Demo，Material 3，i18n | R1–R3、6.5 |
 | Native Bridge 给 Flutter | Pigeon 方法/事件流/FlutterApi | 第 3、6 节 |
 | 开发规范写入 AGENT(S).md | 根 `AGENTS.md` | S6 |
+| 酒店 AI 客服 Demo：3 tab 壳、聊天页（欢迎语/气泡/快捷面板/时间分组） | `features/hotel`（DEC-021，`docs/05` PRD） | `docs/evidence/hotel-demo.md`、shell/hotel widget 测试 |
+| 酒店 Demo：脚本化意图引擎 + 多轮槽位（数量/时间）+ 兜底 | `data/concierge_agent.dart` + `data/slot_parsers.dart` | 意图引擎单测 24 例 |
+| 酒店 Demo：订单卡状态机（下单→配送→送达→评价 / 预约终态） | `application/hotel_chat_providers.dart` + `presentation/order_card.dart` | 状态机单测 + 聊天主路径 widget 测试 |
+| 酒店 Demo：打字机回复、订单弹层、星级评价 | `presentation/reply_text.dart`（`ReplyTypewriter`）、`order_sheet.dart`、`star_rating_bar.dart` | 组件 widget 测试 14 例 + 集成接线测试 |
+| 酒店 Demo：会话持久化与恢复 | `KeyValueStore`（`hotel.chat.messages.v1` / `hotel.orders.v1`） | 持久化往返单测 + 杀进程重启走查 |
 
 ## 12. 已知限制（必须写入最终报告）
 
