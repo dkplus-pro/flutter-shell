@@ -105,21 +105,27 @@ class _MemberBanner extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [HotelColors.primary, HotelColors.primaryDeep],
+          colors: [
+            HotelColors.vipGoldLight,
+            HotelColors.vipGold,
+            HotelColors.vipGoldDeep,
+          ],
+          stops: [0, 0.55, 1],
         ),
+        border: Border.all(color: const Color(0x66FFFFFF)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.profileMemberTitle,
-            style: HotelTypography.title.copyWith(color: Colors.white),
+            style: HotelTypography.title.copyWith(color: HotelColors.vipInk),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             l10n.profileMemberSubtitle,
             style: HotelTypography.sub.copyWith(
-              color: Colors.white.withValues(alpha: 0.8),
+              color: HotelColors.vipInk.withValues(alpha: 0.72),
             ),
           ),
         ],

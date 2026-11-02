@@ -83,11 +83,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Mr. Zhang'), findsOneWidget);
-    expect(find.text('Shell Plus'), findsOneWidget);
+    expect(find.text('Mist Pro'), findsOneWidget);
 
     // The mock profile page is purely decorative: tapping anywhere on it
     // (here the member banner) shows the global placeholder toast.
-    await tester.tap(find.text('Shell Plus'));
+    await tester.tap(find.text('Mist Pro'));
     await tester.pump();
     expect(find.text('This feature is not available yet.'), findsOneWidget);
   });

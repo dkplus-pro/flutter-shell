@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Shell';
+  String get appTitle => 'Mist Hotel';
 
   @override
   String get openBridgeDemo => 'Open bridge demo';
@@ -401,7 +401,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeTileOrders => 'My orders';
 
   @override
-  String get profileMemberTitle => 'Shell Plus';
+  String get profileMemberTitle => 'Mist Pro';
 
   @override
   String get profileMemberSubtitle => 'Demo member benefits';

@@ -10,7 +10,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appTitle => 'Shell';
+  String get appTitle => 'Mist Hotel';
 
   @override
   String get openBridgeDemo => '进入桥接演示';
@@ -387,7 +387,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeTileOrders => '我的订单';
 
   @override
-  String get profileMemberTitle => 'Shell Plus';
+  String get profileMemberTitle => 'Mist Pro';
 
   @override
   String get profileMemberSubtitle => '演示会员权益';

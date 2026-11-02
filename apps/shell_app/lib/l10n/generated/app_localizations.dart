@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// Application title
   ///
   /// In en, this message translates to:
-  /// **'Shell'**
+  /// **'Mist Hotel'**
   String get appTitle;
 
   /// Button that opens the bridge demo page
@@ -791,7 +791,7 @@ abstract class AppLocalizations {
   /// Title of the profile member-style banner (demo copy, docs/06 §3.4)
   ///
   /// In en, this message translates to:
-  /// **'Shell Plus'**
+  /// **'Mist Pro'**
   String get profileMemberTitle;
 
   /// Subtitle of the profile member-style banner

@@ -1,6 +1,6 @@
 {
   "@@locale": "zh",
-  "appTitle": "Shell",
+  "appTitle": "Mist Hotel",
   "openBridgeDemo": "进入桥接演示",
   "bridgeDemoTitle": "桥接演示",
   "systemInfoTitle": "系统信息",
@@ -115,7 +115,7 @@
   "homeTileWakeup": "叫醒服务",
   "homeTileLateCheckout": "延迟退房",
   "homeTileOrders": "我的订单",
-  "profileMemberTitle": "Shell Plus",
+  "profileMemberTitle": "Mist Pro",
   "profileMemberSubtitle": "演示会员权益",
   "profileTileOrders": "我的订单",
   "profileTileFavorites": "我的收藏",

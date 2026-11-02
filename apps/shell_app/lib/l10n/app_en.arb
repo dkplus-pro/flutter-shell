@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Shell",
+  "appTitle": "Mist Hotel",
   "@appTitle": {
     "description": "Application title"
   },
@@ -555,7 +555,7 @@
   "@homeTileOrders": {
     "description": "Decorative home grid tile: my orders"
   },
-  "profileMemberTitle": "Shell Plus",
+  "profileMemberTitle": "Mist Pro",
   "@profileMemberTitle": {
     "description": "Title of the profile member-style banner (demo copy, docs/06 §3.4)"
   },

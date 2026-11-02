@@ -60,4 +60,17 @@ abstract final class HotelColors {
 
   /// Icon blocks and panel tile backgrounds.
   static const Color tileGray = Color(0xFFF4F5F7);
+
+  /// Supreme-VIP gold gradient (profile member banner): champagne highlight
+  /// to deep gold.
+  static const Color vipGoldLight = Color(0xFFF9E7B6);
+
+  /// Mid gold stop of the VIP banner gradient.
+  static const Color vipGold = Color(0xFFE7C25E);
+
+  /// Deep gold end of the VIP banner gradient.
+  static const Color vipGoldDeep = Color(0xFFB9891F);
+
+  /// Dark bronze ink that stays legible on the gold banner.
+  static const Color vipInk = Color(0xFF3B2A05);
 }

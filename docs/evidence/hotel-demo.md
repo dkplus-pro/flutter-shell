@@ -76,7 +76,7 @@
 | 7 | S5 兜底 | PASS | 文本输入 "asdfgh qwerty" → "Sorry, I am still a demo concierge..."（UI describe 文本证据；无独立编号截图） |
 | 8 | 订单弹层：把手、「Current orders · 4」粗标题、行式列表（图标块+粗标题×数量+灰副题+状态胶囊+时间）、liveItems 实时同步 | PASS | `hotel-12-order-sheet.png`（4 单倒序：Delivered 绿 / Reserved 紫 / Rated·3 stars 灰胶囊） |
 | 9 | 首页 mock：紫渐变头卡 + 假搜索卡 + 图标格 + bridge demo 入口可达；点击任意处 toast | PASS | `hotel-02-home-toast.png`（SnackBar "This feature is not available yet."） |
-| 10 | 我的 mock：通用图标头像（无照片/吉祥物素材）+ Shell Plus 渐变横幅 + 图标格；点击 toast；纯装饰无房号（R4 修复后） | PASS | `hotel-03-profile-toast.png` |
+| 10 | 我的 mock：通用图标头像（无照片/吉祥物素材）+ Mist Pro 金色渐变横幅 + 图标格；点击 toast；纯装饰无房号（R4 修复后） | PASS | `hotel-03-profile-toast.png` |
 | 11 | 杀进程重启恢复：会话/订单完整还原、welcome 不重播、欢迎卡不重现 | PASS | `hotel-15-restore.png`（force-stop 后重启，Toiletries/Water Delivered 卡均在） |
 | 12 | 自绘底部导航：白底 + 0.5 hairline；未选中线性灰图标+灰字；选中紫实心+紫字；服务 tab（居中）选中 44dp 紫圆白图标；Semantics（3 nav Button + button/selected 标志） | PASS | `hotel-18-nav-circle.png`（紫圆选中态特写，兼见各截图底部）；UI 树确认 `Home/Home`、`Services/Services`、`Profile/Profile` Button 节点；widget 测试覆盖 3 项渲染/点击回调/圆钮/Semantics |
 | 13 | zh-CN 全界面中文（per-app locale） | PASS | `hotel-16-zh-locale.png`（AI 客服/1208 房·张先生/洗漱用品/已送达/数量×2/输入消息…/首页·服务·我的） |
@@ -152,3 +152,18 @@
 > 本轮同时清理了 `quickPanelTitle` / `conciergeAvatarSemantic` 两个不再使用的 ARB key，`gen.sh` 生成物已同步。
 
 **Gates（本轮）**：`check.sh` PASS；`test.sh` PASS（101）；debug APK 构建并安装，`lastUpdateTime` 与本地 APK SHA-256 一致。
+
+## 7. 应用更名与图标（2026-11-02）
+
+- **产品名**：`Mist Hotel`（用户选定图标方案 A：Futura Bold 白色 M + `#5747C6` 底）。
+- **Android**：`AndroidManifest.xml` `android:label="Mist Hotel"`，`android:roundIcon` 指向 `ic_launcher_round`；新增 `mipmap-anydpi-v26` 自适应图标（`colors.xml` 背景 `#5747C6` + 108dp 前景 M，安全区内）及 mdpi–xxxhdpi 传统/圆形图标。
+- **iOS**：`CFBundleDisplayName` 改为 `Mist Hotel`，`AppIcon.appiconset` 全尺寸（20–1024）替换为同一图形；iOS 仍为未编译桩（沿袭限制）。
+- **应用内标题**：`appTitle`（en/zh）改为 `Mist Hotel`，`flutter gen-l10n` 生成物已同步。
+- **验证**：`aapt2 dump badging` → `application-label:'Mist Hotel'`、`application-icon-*` 指向 `mipmap-anydpi-v26/ic_launcher.xml`；API 36 模拟器应用信息页显示紫色 M 圆形图标与 Mist Hotel（`hotel-26-mist-hotel-rename.png`）；`check.sh`/`test.sh`（101）通过。
+- 源图：`images/mist-hotel-icon-1024.png`（1024×1024，无圆角；由系统/启动器负责遮罩）。
+
+### 7.1 会员横幅（2026-11-02）
+
+- 「Shell Plus」更名 **Mist Pro**（en/zh ARB 同步）。
+- 横幅采用至尊 VIP 香槟金渐变（最初方案）：`vipGoldLight #F9E7B6 → vipGold #E7C25E → vipGoldDeep #B9891F`（左上到右下），细白描边；文字深棕 `vipInk #3B2A05` 保证对比度。后续尝试的古董金属金/黑金方案均未采用，维持此版。
+- 相关组件测试与证据截图同步更新：`hotel-27-mist-pro-gold.png`，导航 widget 测试断言为 Mist Pro。
