@@ -116,10 +116,6 @@
       }
     }
   },
-  "conciergeAvatarSemantic": "Concierge avatar",
-  "@conciergeAvatarSemantic": {
-    "description": "Semantics label for the concierge avatar placeholder"
-  },
   "quickPanelSemantic": "Quick services",
   "@quickPanelSemantic": {
     "description": "Tooltip and semantics label for the quick panel toggle"
@@ -243,6 +239,14 @@
   "chatBreakfastAnswer": "Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.",
   "@chatBreakfastAnswer": {
     "description": "Direct answer to the breakfast-time question"
+  },
+  "chatWakeupAlreadyBooked": "You already have a wake-up call request. Check Current orders to review it.",
+  "@chatWakeupAlreadyBooked": {
+    "description": "Refusal when a wake-up reservation already exists (one per session)"
+  },
+  "chatLateCheckoutAlreadyRequested": "You already have a late check-out request. Check Current orders to review it.",
+  "@chatLateCheckoutAlreadyRequested": {
+    "description": "Refusal when a late check-out already exists (one per session)"
   },
   "chatFallback": "Sorry, I am still a demo concierge and did not understand that. Tap + to see everything I can do.",
   "@chatFallback": {
@@ -437,10 +441,6 @@
   "ordersEmpty": "No orders yet",
   "@ordersEmpty": {
     "description": "Empty state of the orders bottom sheet"
-  },
-  "quickPanelTitle": "Quick services",
-  "@quickPanelTitle": {
-    "description": "Section title of the quick services panel (docs/06 §3.2)"
   },
   "guessCardTitle": "You may ask",
   "@guessCardTitle": {

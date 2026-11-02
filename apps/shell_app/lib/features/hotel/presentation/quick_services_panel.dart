@@ -2,11 +2,11 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershell/l10n/generated/app_localizations.dart';
 
-/// Quick-service panel shown above the input bar (PRD 6.4, D7), restyled per
-/// docs/06 §3.2: white card with 20-radius top corners, a "quick services"
-/// section title and small `tileGray` tiles whose icons sit on `primarySoft`
-/// circles; labels scale down with [FittedBox] instead of truncating.
-/// Selecting an entry sends the matching preset message as the guest.
+/// Quick-service panel shown below the input bar (PRD 6.4, D7), like a
+/// keyboard tray: white card, a "quick services" section title and small
+/// `tileGray` tiles whose icons sit on `primarySoft` circles; labels scale
+/// down with [FittedBox] instead of truncating. Selecting an entry sends
+/// the matching preset message as the guest.
 class QuickServicesPanel extends StatelessWidget {
   const new({required this.onSelect, super.key});
 
@@ -27,44 +27,51 @@ class QuickServicesPanel extends StatelessWidget {
     ];
     return Container(
       width: double.infinity,
+      // On short viewports (landscape / tests) the tray scrolls instead of
+      // overflowing; on phones the whole 2×4 grid still fits.
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.45,
+      ),
       decoration: const BoxDecoration(
         color: HotelColors.surface,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(HotelDimens.panelTopRadius),
+        border: Border(
+          top: BorderSide(
+            color: HotelColors.divider,
+            width: HotelDimens.hairline,
+          ),
         ),
+        boxShadow: HotelShadows.edgeTop,
       ),
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        AppSpacing.md,
-        AppSpacing.md,
-        AppSpacing.lg,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-            child: Text(l10n.quickPanelTitle, style: HotelTypography.titleL),
-          ),
-          GridView.count(
-            crossAxisCount: 4,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: AppSpacing.sm,
-            crossAxisSpacing: AppSpacing.sm,
-            childAspectRatio: 1.1,
-            children: [
-              for (final (icon, label, preset) in entries)
-                _QuickItem(
-                  icon: icon,
-                  label: label,
-                  preset: preset,
-                  onSelect: onSelect,
-                ),
-            ],
-          ),
-        ],
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.lg,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GridView.count(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: AppSpacing.sm,
+              crossAxisSpacing: AppSpacing.sm,
+              childAspectRatio: 1.1,
+              children: [
+                for (final (icon, label, preset) in entries)
+                  _QuickItem(
+                    icon: icon,
+                    label: label,
+                    preset: preset,
+                    onSelect: onSelect,
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -95,6 +102,7 @@ class _QuickItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: HotelColors.tileGray,
             borderRadius: BorderRadius.circular(HotelDimens.tileRadius),
+            boxShadow: HotelShadows.tile,
           ),
           padding: const EdgeInsets.all(AppSpacing.xs),
           child: Column(

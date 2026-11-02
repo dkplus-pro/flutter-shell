@@ -86,6 +86,7 @@ class _GuessQuestionCardState extends State<GuessQuestionCard> {
       decoration: BoxDecoration(
         color: HotelColors.surface,
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

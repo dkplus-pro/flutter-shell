@@ -23,6 +23,8 @@ enum ScriptedReply {
   timeChipsPrompt,
   wifiAnswer,
   breakfastAnswer,
+  wakeupAlreadyBooked,
+  lateCheckoutAlreadyRequested,
   fallback,
 }
 

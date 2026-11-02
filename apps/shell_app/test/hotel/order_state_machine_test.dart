@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fluttershell/features/hotel/data/amenity_catalog.dart';
 import 'package:fluttershell/features/hotel/data/chat_message.dart';
 import 'package:fluttershell/features/hotel/data/hotel_order.dart';
 
@@ -127,7 +128,10 @@ void main() {
           .toList();
       expect(replies, hasLength(3));
       expect(replies[1].reply, ScriptedReply.askQuantity);
-      expect(replies[2].reply, ScriptedReply.quantityInvalid);
+      // The second guest turn is a different service, so it supersedes the
+      // open slippers flow and asks for towels instead.
+      expect(replies[2].reply, ScriptedReply.askQuantity);
+      expect(replies[2].params['amenity'], Amenity.towels.name);
 
       await harness.settle();
       harness.dispose();

@@ -117,6 +117,7 @@ Future<void> showHotelOrderSheet(
   return showModalBottomSheet<void>(
     context: context,
     backgroundColor: HotelColors.surface,
+    elevation: 16,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(HotelDimens.panelTopRadius),

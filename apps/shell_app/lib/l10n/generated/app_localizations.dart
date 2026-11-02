@@ -230,12 +230,6 @@ abstract class AppLocalizations {
   /// **'Hello, I am XiaoZhi, the smart butler for room {room}. I can deliver items, answer questions and set wake-up calls. Tap + to see all services.'**
   String chatWelcome(String room);
 
-  /// Semantics label for the concierge avatar placeholder
-  ///
-  /// In en, this message translates to:
-  /// **'Concierge avatar'**
-  String get conciergeAvatarSemantic;
-
   /// Tooltip and semantics label for the quick panel toggle
   ///
   /// In en, this message translates to:
@@ -397,6 +391,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.'**
   String get chatBreakfastAnswer;
+
+  /// Refusal when a wake-up reservation already exists (one per session)
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a wake-up call request. Check Current orders to review it.'**
+  String get chatWakeupAlreadyBooked;
+
+  /// Refusal when a late check-out already exists (one per session)
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a late check-out request. Check Current orders to review it.'**
+  String get chatLateCheckoutAlreadyRequested;
 
   /// Fallback reply guiding the guest to the quick panel (S5)
   ///
@@ -619,12 +625,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No orders yet'**
   String get ordersEmpty;
-
-  /// Section title of the quick services panel (docs/06 §3.2)
-  ///
-  /// In en, this message translates to:
-  /// **'Quick services'**
-  String get quickPanelTitle;
 
   /// Title of the guess-question welcome card (docs/06 §3.2)
   ///

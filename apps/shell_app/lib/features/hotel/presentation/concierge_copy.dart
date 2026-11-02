@@ -63,6 +63,9 @@ String resolveConciergeCopy(
       params['password'] ?? '',
     ),
     ScriptedReply.breakfastAnswer => l10n.chatBreakfastAnswer,
+    ScriptedReply.wakeupAlreadyBooked => l10n.chatWakeupAlreadyBooked,
+    ScriptedReply.lateCheckoutAlreadyRequested =>
+      l10n.chatLateCheckoutAlreadyRequested,
     ScriptedReply.fallback => l10n.chatFallback,
   };
 }

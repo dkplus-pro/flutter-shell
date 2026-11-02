@@ -93,3 +93,62 @@
 4. **Placed 状态独立帧**：状态仅保持约 3s，MCP 截图工具往返延迟追不上，改用单条 adb `input tap + screencap`（~1s）以 Water 订单捕获；拖鞋单的 Placed→Delivering 流转由时间线文本证据确认。
 5. **真机**：全部走查在模拟器（AVD shell_api36），数字与观感不代表真机。
 6. **iOS**：未编译未运行（沿袭 v0 已知限制）。
+
+## 6. 交互修订（2026-11-02，DEC-022）
+
+针对模拟器走查反馈的 6 项体验问题做修订；范围仅 `features/hotel` 表现层、Agent/状态机与 `app_ui` 主题令牌，不改桥接与持久化契约。
+
+### 6.1 改动摘要
+
+| 问题 | 处理 |
+| --- | --- |
+| 过度滚动把整段聊天内容拉扯/回弹 | 聊天列表固定 `ClampingScrollPhysics`，并在 `MaterialApp.scrollBehavior` 使用 `AppScrollBehavior` 直接关闭 Android 12+ 的 stretch/glow overscroll 指示器（仅改 physics 不够）；新增 physics 与 ScrollBehavior 两条测试 |
+| 快捷面板应位于输入框下方 | 页面 Column 顺序改为「对话区 → 输入栏 → 快捷面板」，面板形似键盘托盘；高度上限 45% 屏高、矮屏内部滚动，避免溢出 |
+| 面板打开后点其它区域应关闭 | 面板展开时在对话区覆盖透明手势层，点对话/订单入口先收起面板；打开订单弹层前主动收面板、收键盘 |
+| 弹窗互斥 | 快捷面板 ↔ 订单弹层 ↔ 键盘三者互斥；同一页面不会同时出现两种弹层 |
+| 槽位流程被新快捷功能打断仍续问 | `ScriptedConciergeAgent` 在 pending 槽位期间检测到新意图即放弃旧流程，按新意图响应（如退房等时间时点 WiFi 直接答 WiFi） |
+| 同类预约重复 | 会话内同类预约（叫醒/延迟退房）仅一张；`AgentRequest.activeReservationKinds` 传入当前订单类别，重复请求返回「已存在」提示，不再生成卡片 |
+| 已完成的交互还能再点 | 时间 chip 一次性：仅当前 pending 流程的最后一条 chips 可点，其余渲染为灰色不可点；订单确认/评分/欢迎卡原本即终态不可再操作 |
+| 整体过于扁平 | 新增 `HotelShadows`（bubble/card/tile/raised/edgeTop），应用于气泡、欢迎卡、订单卡、快捷面板 tile、订单弹层、输入区与底部导航；不含厚重 M3 投影 |
+
+### 6.2 Gates
+
+| 命令 | 结果 |
+| --- | --- |
+| `bash tool/gen.sh` | PASS；ARB 新增 2 条客服话术（en/zh 对称），生成物无异常 |
+| `bash tool/check.sh` | PASS（format 0 diff、check_imports OK、四包 analyze 零 issue） |
+| `bash tool/test.sh` | PASS：**101 = shell_app 88 + app_core 9 + native_bridge 4**（新增 19：Agent 取消/去重 6、状态 chips 3、chip 组件 2、页面布局/互斥/去重 4、scroll behavior 1、标题左对齐/输入框滚底/chip 对齐 3；原 82 基线 → 101） |
+| `flutter build apk --debug --dart-define=APP_ENV=dev` | PASS（`app-debug.apk`，需 `GRADLE_USER_HOME`） |
+
+### 6.3 模拟器走查（emulator-5554）
+
+| # | 项 | 结果 | 证据 |
+| --- | --- | --- | --- |
+| 1 | 微立体层级：气泡/卡片/面板 tile 有柔和阴影，无厚重投影 | PASS | `hotel-19-micro-depth.png` |
+| 2 | 快捷面板位于输入框下方；8 项宫格完整、无截断 | PASS | `hotel-20-panel-below-input.png` |
+| 3 | 面板打开时点对话区收起面板，不误触 FAQ；点订单图标先收面板再开弹层 | PASS | 走查截图 `hotel-21-panel-sheet-exclusive.png`；widget 测试覆盖「panel top ≥ input bottom」「outside tap dismiss」「sheet collapses panel」 |
+| 4 | 退房等时间期间点 WiFi：直接回答 WiFi，旧流程取消，不再提示时间 | PASS | `hotel-22-cancel-pending-flow.png` |
+| 5 | 已有延迟退房时再次请求：返回「您已经申请过延迟退房…」，仍只有一张卡 | PASS | `hotel-23-duplicate-reservation.png` |
+| 6 | 已用时间 chip 不可再点（灰色历史） | PASS | 组件测试 `chat_chips_test`（disabled 无回调、灰色）+ 状态测试 `activeChipsMessageId`（流程结束/被后续消息覆盖即失效）；模拟器键盘注入不稳定，未单独截图 |
+| 7 | 过度滚动无整页拉伸 | PASS | `ClampingScrollPhysics` + app 级 `AppScrollBehavior` 关闭 stretch 指示器；实测长会话顶部下拉多帧内容位移为 0（`videos/hotel-overscroll-fixed.mp4`），并有 widget 测试断言 |
+| 8 | 底部导航/首页/我的卡片同步微立体层次 | PASS | `hotel-19-micro-depth.png` 及既有首页/我的截图 |
+
+### 6.4 遗留
+
+1. 模拟器 `adb input text` 对中文/冒号仍存在 IME 注入延迟与空格问题，交互截图使用预设与面板点击完成；chip 一次性由组件/状态测试覆盖。
+2. 本次未重拍全量 17 张旧走查图；仅新增上述 5 张针对性证据。
+3. release/真机/iOS 限制沿袭本文 §5.5 与 `docs/01` §19。
+
+### 6.5 二次走查修订（2026-11-02，同日追加）
+
+| # | 反馈 | 处理 | 验证 |
+| --- | --- | --- | --- |
+| 1 | 快捷面板里的「快捷服务」标题多余 | 删除标题，面板直接呈现 2×4 宫格（保留无障碍 tooltip/semantic） | `hotel-25-panel-no-title.png`；widget 测试断言面板内无该文案 |
+| 2 | 叫醒输入「7」后出现两个图标，气泡与时间 chip 对不齐 | 根因：chips 消息外层又加了一次头像，而气泡组件内部也渲染头像；移除客服头像并简化 chips 布局为「气泡 + chips」同一列，左边缘一致 | 新增 widget 测试比较 chips 左缘与气泡文本左缘（含 14px 内边距）；`hotel-24-header-left-no-avatar.png` 可见无头像 |
+| 3 | 顶部「AI 客服」与房号徽标应左对齐 | AppBar 改 `centerTitle: false`，标题与徽标整体靠左 | `hotel-24-header-left-no-avatar.png`；测试断言 `AppBar.centerTitle == false` |
+| 4 | 去掉左侧客服 icon | 删除 `ChatAvatar` 及 typing indicator 中的头像，仅保留气泡；移除不再使用的 `conciergeAvatarSemantic` ARB key | 截图与 ARB 生成物；全量测试通过 |
+| 5 | 点击输入框时聊天记录应滚到最底部 | 输入框加 `Listener.onPointerDown`（已聚焦时同样生效）+ 聚焦监听；jump 到 `maxScrollExtent`，键盘 inset 后 300ms 再校正 | 新增 widget 测试：滚离底部后点输入框，位置回到最大滚动值 |
+
+> 本轮同时清理了 `quickPanelTitle` / `conciergeAvatarSemantic` 两个不再使用的 ARB key，`gen.sh` 生成物已同步。
+
+**Gates（本轮）**：`check.sh` PASS；`test.sh` PASS（101）；debug APK 构建并安装，`lastUpdateTime` 与本地 APK SHA-256 一致。

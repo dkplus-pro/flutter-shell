@@ -86,9 +86,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get conciergeAvatarSemantic => 'Concierge avatar';
-
-  @override
   String get quickPanelSemantic => 'Quick services';
 
   @override
@@ -179,6 +176,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chatBreakfastAnswer =>
       'Breakfast is served daily from 06:30 to 10:00 at the restaurant on the 2nd floor.';
+
+  @override
+  String get chatWakeupAlreadyBooked =>
+      'You already have a wake-up call request. Check Current orders to review it.';
+
+  @override
+  String get chatLateCheckoutAlreadyRequested =>
+      'You already have a late check-out request. Check Current orders to review it.';
 
   @override
   String get chatFallback =>
@@ -307,9 +312,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ordersEmpty => 'No orders yet';
-
-  @override
-  String get quickPanelTitle => 'Quick services';
 
   @override
   String get guessCardTitle => 'You may ask';

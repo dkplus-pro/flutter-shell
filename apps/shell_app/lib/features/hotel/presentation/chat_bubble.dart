@@ -2,52 +2,16 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershell/features/hotel/data/chat_message.dart';
 
-/// White concierge avatar with a hairline border and the purple headset
-/// line icon (docs/06 §3.2; no mascot artwork).
-class ChatAvatar extends StatelessWidget {
-  const new({required this.semanticLabel, super.key});
-
-  final String semanticLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: semanticLabel,
-      child: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          color: HotelColors.surface,
-          shape: BoxShape.circle,
-          border: Border.all(color: HotelColors.divider, width: 0.5),
-        ),
-        child: const Icon(
-          Icons.headset_mic_outlined,
-          size: 16,
-          color: HotelColors.primary,
-        ),
-      ),
-    );
-  }
-}
-
 /// A single message bubble. Guest messages sit right on the purple primary
-/// color; concierge messages sit left on a white surface next to the avatar.
-/// Both are 16-radius rounded rectangles without tails (docs/06 §3.2).
+/// color; concierge messages sit left on a white surface. Both are 16-radius
+/// rounded rectangles without tails (docs/06 §3.2) and no avatar — the
+/// transcript stays compact and the time chips under a prompt line up with
+/// the bubble edge.
 class ChatBubble extends StatelessWidget {
-  const new({
-    required this.role,
-    required this.text,
-    this.avatarSemanticLabel = '',
-    this.content,
-    super.key,
-  });
+  const new({required this.role, required this.text, this.content, super.key});
 
   final MessageRole role;
   final String text;
-
-  /// Accessibility label for the concierge avatar placeholder.
-  final String avatarSemanticLabel;
 
   /// Optional concierge bubble content rendered instead of [text] (e.g. the
   /// typewriter reveal). Guest bubbles always render [text].
@@ -67,6 +31,7 @@ class ChatBubble extends StatelessWidget {
           decoration: const BoxDecoration(
             color: HotelColors.primary,
             borderRadius: BorderRadius.all(Radius.circular(16)),
+            boxShadow: HotelShadows.bubble,
           ),
           child: Text(
             text,
@@ -75,23 +40,18 @@ class ChatBubble extends StatelessWidget {
         ),
       );
     }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ChatAvatar(semanticLabel: avatarSemanticLabel),
-        const SizedBox(width: AppSpacing.sm),
-        Flexible(
-          child: Container(
-            constraints: BoxConstraints(maxWidth: maxWidth),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: const BoxDecoration(
-              color: HotelColors.surface,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: content ?? Text(text, style: HotelTypography.body),
-          ),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: const BoxDecoration(
+          color: HotelColors.surface,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          boxShadow: HotelShadows.bubble,
         ),
-      ],
+        child: content ?? Text(text, style: HotelTypography.body),
+      ),
     );
   }
 }

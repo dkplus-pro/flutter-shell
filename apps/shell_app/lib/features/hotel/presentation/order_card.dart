@@ -87,6 +87,7 @@ class _OrderCardState extends State<OrderCard> {
       decoration: BoxDecoration(
         color: HotelColors.surface,
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

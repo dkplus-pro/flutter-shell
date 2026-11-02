@@ -56,6 +56,16 @@ class HotelChatState {
 
   bool isFreshReply(String messageId) => freshReplyIds.contains(messageId);
 
+  /// The chips prompt still awaiting a tap: only the latest chips message of
+  /// an open slot flow stays interactive; everything else is spent history.
+  String? get activeChipsMessageId {
+    if (pending == null || messages.isEmpty) {
+      return null;
+    }
+    final last = messages.last;
+    return last.kind == MessageKind.chips ? last.id : null;
+  }
+
   HotelChatState withMessage(ChatMessage message, {bool freshReply = false}) {
     return HotelChatState(
       messages: [...messages, message],
@@ -214,7 +224,15 @@ class HotelChatController extends _$HotelChatController {
       createdAt: _clock.now(),
     );
     final response = _agent.respond(
-      AgentRequest(input: text, pending: current.pending, roomNo: _room),
+      AgentRequest(
+        input: text,
+        pending: current.pending,
+        roomNo: _room,
+        activeReservationKinds: <OrderKind>{
+          for (final order in current.orders.values)
+            if (order.kind != OrderKind.amenity) order.kind,
+        },
+      ),
     );
     _update(current.withMessage(message).withPending(response.nextPending));
     _enqueue(response);

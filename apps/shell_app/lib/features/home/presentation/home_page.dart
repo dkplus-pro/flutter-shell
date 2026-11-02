@@ -65,6 +65,7 @@ class _GreetingHeader extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -93,6 +94,7 @@ class _FakeSearchCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: HotelColors.surface,
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
       ),
       child: Row(
         children: [
@@ -161,6 +163,7 @@ class _ServiceGridCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: HotelColors.surface,
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,6 +234,7 @@ class _BridgeDemoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: HotelColors.surface,
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),
+        boxShadow: HotelShadows.card,
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(HotelDimens.cardRadius),

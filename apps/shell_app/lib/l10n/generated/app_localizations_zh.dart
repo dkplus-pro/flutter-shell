@@ -86,9 +86,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get conciergeAvatarSemantic => '客服头像';
-
-  @override
   String get quickPanelSemantic => '快捷服务';
 
   @override
@@ -172,6 +169,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatBreakfastAnswer => '早餐时间为每天 06:30–10:00，地点在 2 层餐厅。';
+
+  @override
+  String get chatWakeupAlreadyBooked => '您已经有一个叫醒服务请求，可在「本次订单」中查看。';
+
+  @override
+  String get chatLateCheckoutAlreadyRequested => '您已经申请过延迟退房，可在「本次订单」中查看。';
 
   @override
   String get chatFallback => '抱歉，我还在学习中，暂时听不懂这句话。点击右下角 + 可查看我能提供的全部服务。';
@@ -299,9 +302,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ordersEmpty => '暂无订单';
-
-  @override
-  String get quickPanelTitle => '快捷服务';
 
   @override
   String get guessCardTitle => '猜您想问';

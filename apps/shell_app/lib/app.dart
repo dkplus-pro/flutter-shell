@@ -15,6 +15,7 @@ class ShellApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
     return MaterialApp.router(
       routerConfig: router,
+      scrollBehavior: const AppScrollBehavior(),
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,

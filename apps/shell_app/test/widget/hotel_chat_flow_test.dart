@@ -1,11 +1,15 @@
 import 'package:app_core/app_core.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fluttershell/app.dart';
 import 'package:fluttershell/core/logging/log_providers.dart';
 import 'package:fluttershell/core/storage/storage_providers.dart';
+import 'package:fluttershell/features/hotel/presentation/chat_chips.dart';
+import 'package:fluttershell/features/hotel/presentation/hotel_chat_page.dart';
 import 'package:fluttershell/features/hotel/presentation/order_card.dart';
+import 'package:fluttershell/features/hotel/presentation/quick_services_panel.dart';
 import 'package:fluttershell/features/hotel/presentation/star_rating_bar.dart';
 
 import '../hotel/fake_key_value_store.dart';
@@ -122,5 +126,141 @@ void main() {
 
     expect(find.textContaining('Current orders'), findsOneWidget);
     expect(find.text('No orders yet'), findsOneWidget);
+  });
+
+  testWidgets('transcript scroll uses clamping physics (no stretch drag)', (
+    tester,
+  ) async {
+    await _pumpShell(tester);
+
+    final list = tester.widget<ListView>(find.byType(ListView).first);
+    expect(list.physics, isA<ClampingScrollPhysics>());
+  });
+
+  testWidgets('app disables the Android stretch overscroll indicator', (
+    tester,
+  ) async {
+    await _pumpShell(tester);
+
+    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
+    expect(app.scrollBehavior, isA<AppScrollBehavior>());
+  });
+
+  testWidgets('quick panel opens below the input and closes on outside tap', (
+    tester,
+  ) async {
+    await _pumpShell(tester);
+
+    await tester.tap(find.byTooltip('Quick services'));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuickServicesPanel), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(QuickServicesPanel),
+        matching: find.text('Quick services'),
+      ),
+      findsNothing,
+      reason: 'the panel has no redundant section title',
+    );
+
+    final input = tester.getRect(find.byType(TextField));
+    final panel = tester.getRect(find.byType(QuickServicesPanel));
+    expect(
+      panel.top,
+      greaterThanOrEqualTo(input.bottom),
+      reason: 'the panel should sit below the input bar, like a keyboard tray',
+    );
+
+    await tester.tapAt(tester.getCenter(find.byType(ChatMessageList)));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuickServicesPanel), findsNothing);
+  });
+
+  testWidgets('app bar title block is left aligned', (tester) async {
+    await _pumpShell(tester);
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.centerTitle, isFalse);
+  });
+
+  testWidgets('focusing the input scrolls the transcript to the bottom', (
+    tester,
+  ) async {
+    await _pumpShell(tester);
+    for (var i = 0; i < 5; i++) {
+      await _send(tester, 'WiFi 密码是多少？');
+    }
+
+    final scrollable = tester.state<ScrollableState>(
+      find.byType(Scrollable).first,
+    );
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 300));
+    await tester.pumpAndSettle();
+    expect(
+      scrollable.position.pixels,
+      lessThan(scrollable.position.maxScrollExtent),
+    );
+
+    await tester.tap(find.byType(TextField));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(scrollable.position.pixels, greaterThan(0));
+    expect(
+      scrollable.position.pixels,
+      greaterThanOrEqualTo(scrollable.position.maxScrollExtent - 24),
+    );
+  });
+
+  testWidgets('opening the order sheet collapses the quick panel first', (
+    tester,
+  ) async {
+    await _pumpShell(tester);
+
+    await tester.tap(find.byTooltip('Quick services'));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuickServicesPanel), findsOneWidget);
+
+    await tester.tap(find.byTooltip('View orders'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(QuickServicesPanel), findsNothing);
+    expect(find.textContaining('Current orders'), findsOneWidget);
+  });
+
+  testWidgets('time chips align under the prompt bubble', (tester) async {
+    await _pumpShell(tester);
+    await _send(tester, '我想申请延迟退房。');
+    await _send(tester, 'later');
+    await tester.pump(const Duration(seconds: 3));
+    await _revealTail(tester);
+
+    final prompt = tester.getRect(
+      find.textContaining('did not catch the time'),
+    );
+    final chips = tester.getRect(find.byType(ChatChips));
+    // Bubble text sits 14px inside its container; chips share the container's
+    // left edge. A second avatar used to offset the bubble and break this.
+    expect(chips.left, moreOrLessEquals(prompt.left - 14, epsilon: 1));
+  });
+
+  testWidgets('a second wake-up reservation is refused', (tester) async {
+    await _pumpShell(tester);
+
+    await _send(tester, '明早 7 点叫我起床');
+    await _revealTail(tester);
+    await tester.tap(find.text('Confirm reservation'));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    await _send(tester, '明早 7 点叫我起床');
+    // Let the refusal's typewriter reveal finish before matching its copy.
+    await tester.pump(const Duration(seconds: 3));
+
+    expect(
+      find.textContaining('already have a wake-up call request'),
+      findsOneWidget,
+    );
+    expect(find.byType(OrderCard), findsOneWidget);
   });
 }

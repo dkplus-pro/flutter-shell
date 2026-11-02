@@ -47,6 +47,7 @@ class AppBottomNavBar extends StatelessWidget {
       decoration: const BoxDecoration(
         color: HotelColors.surface,
         border: Border(top: BorderSide(color: HotelColors.divider, width: 0.5)),
+        boxShadow: HotelShadows.edgeTop,
       ),
       child: SafeArea(
         top: false,

@@ -7,9 +7,18 @@ import 'package:fluttershell/features/hotel/data/hotel_order.dart';
 void main() {
   const agent = ScriptedConciergeAgent();
 
-  AgentResponse respond(String input, {PendingSlot? pending}) {
+  AgentResponse respond(
+    String input, {
+    PendingSlot? pending,
+    Set<OrderKind> activeReservations = const <OrderKind>{},
+  }) {
     return agent.respond(
-      AgentRequest(input: input, pending: pending, roomNo: '1208'),
+      AgentRequest(
+        input: input,
+        pending: pending,
+        roomNo: '1208',
+        activeReservationKinds: activeReservations,
+      ),
     );
   }
 
@@ -217,6 +226,72 @@ void main() {
       final response = respond('算了', pending: wakeupPending);
       expect(sayOf(response).reply, ScriptedReply.cancelAck);
       expect(response.nextPending, isNull);
+    });
+  });
+
+  group('open flow is abandoned by a different quick-service intent', () {
+    test('time flow -> another quick item answers that item instead', () {
+      final pending = respond('我想申请延迟退房。').nextPending!;
+      final response = respond('WiFi 密码是多少？', pending: pending);
+
+      expect(sayOf(response).reply, ScriptedReply.wifiAnswer);
+      expect(response.nextPending, isNull);
+      expect(response.actions.whereType<CreateOrderAction>(), isEmpty);
+    });
+
+    test('quantity flow -> another amenity asks for the new item', () {
+      final pending = respond('我需要拖鞋').nextPending!;
+      final response = respond('请给我送几条干净毛巾。', pending: pending);
+
+      final say = sayOf(response);
+      expect(say.reply, ScriptedReply.askQuantity);
+      expect(say.params['amenity'], Amenity.towels.name);
+      expect(response.nextPending!.amenity, Amenity.towels);
+    });
+
+    test('time flow -> reservation for another time still parses', () {
+      final pending = respond('我想设置叫醒服务。').nextPending!;
+      final response = respond('明天早上7点', pending: pending);
+
+      final action = response.actions.whereType<CreateOrderAction>().single;
+      expect(action.kind, OrderKind.wakeup);
+      expect(action.slotTime, '07:00');
+      expect(response.nextPending, isNull);
+    });
+  });
+
+  group('one reservation per kind', () {
+    test('second wake-up request is refused', () {
+      final response = respond(
+        '明早 7 点叫我起床',
+        activeReservations: const {OrderKind.wakeup},
+      );
+
+      expect(sayOf(response).reply, ScriptedReply.wakeupAlreadyBooked);
+      expect(response.actions.whereType<CreateOrderAction>(), isEmpty);
+      expect(response.nextPending, isNull);
+    });
+
+    test('second late checkout request is refused', () {
+      final response = respond(
+        '我想明天 14:00 退房。',
+        activeReservations: const {OrderKind.lateCheckout},
+      );
+
+      expect(sayOf(response).reply, ScriptedReply.lateCheckoutAlreadyRequested);
+      expect(response.actions.whereType<CreateOrderAction>(), isEmpty);
+    });
+
+    test('a different reservation kind is still allowed', () {
+      final response = respond(
+        '我想明天 14:00 退房。',
+        activeReservations: const {OrderKind.wakeup},
+      );
+
+      expect(
+        response.actions.whereType<CreateOrderAction>().single.kind,
+        OrderKind.lateCheckout,
+      );
     });
   });
 }

@@ -101,7 +101,7 @@ final class HotelChatControllerProvider
 }
 
 String _$hotelChatControllerHash() =>
-    r'a37c611404df9acdf8b8440ce3accac72a84737f';
+    r'3b2cd36dcaadc53e0fcd6bc556dccfd6422583c8';
 
 /// Chat session controller: transcript, concierge reply queue, order state
 /// machine and KeyValueStore persistence.

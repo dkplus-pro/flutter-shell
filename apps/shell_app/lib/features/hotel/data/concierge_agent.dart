@@ -24,7 +24,12 @@ class PendingSlot {
 /// One turn of guest input into the agent (PRD 7.4: swapping in a real LLM
 /// later means another [ConciergeAgent] behind this same request/response).
 class AgentRequest {
-  const new({required this.input, required this.pending, required this.roomNo});
+  const new({
+    required this.input,
+    required this.pending,
+    required this.roomNo,
+    this.activeReservationKinds = const <OrderKind>{},
+  });
 
   /// Raw guest text; the agent normalizes it.
   final String input;
@@ -32,6 +37,10 @@ class AgentRequest {
   /// Active slot-filling flow, if any.
   final PendingSlot? pending;
   final String roomNo;
+
+  /// Reservation kinds already present in the session; a second request of
+  /// the same kind is refused instead of creating a duplicate card.
+  final Set<OrderKind> activeReservationKinds;
 }
 
 /// Emitted side effects, applied by the chat controller in order.
@@ -144,9 +153,19 @@ class ScriptedConciergeAgent implements ConciergeAgent {
     final normalized = normalizeInput(request.input);
     final pending = request.pending;
     if (pending != null) {
+      if (isCancelIntent(normalized)) {
+        return const AgentResponse(
+          actions: [SayAction(reply: ScriptedReply.cancelAck)],
+        );
+      }
+      // A fresh intent abandons the open slot flow: tapping another quick
+      // service must not keep asking for the previous flow's time/quantity.
+      if (_detectIntent(normalized) != null) {
+        return _matchIntent(normalized, request.activeReservationKinds);
+      }
       return _continueFlow(normalized, pending);
     }
-    return _matchIntent(normalized);
+    return _matchIntent(normalized, request.activeReservationKinds);
   }
 
   AgentResponse _continueFlow(String text, PendingSlot pending) {
@@ -206,7 +225,7 @@ class ScriptedConciergeAgent implements ConciergeAgent {
     );
   }
 
-  AgentResponse _matchIntent(String text) {
+  AgentResponse _matchIntent(String text, Set<OrderKind> activeReservations) {
     switch (_detectIntent(text)) {
       case Intent.slippers:
         return _askQuantity(Amenity.slippers);
@@ -233,8 +252,20 @@ class ScriptedConciergeAgent implements ConciergeAgent {
           actions: [SayAction(reply: ScriptedReply.breakfastAnswer)],
         );
       case Intent.wakeup:
+        if (activeReservations.contains(OrderKind.wakeup)) {
+          return const AgentResponse(
+            actions: [SayAction(reply: ScriptedReply.wakeupAlreadyBooked)],
+          );
+        }
         return _startReservation(text, OrderKind.wakeup);
       case Intent.lateCheckout:
+        if (activeReservations.contains(OrderKind.lateCheckout)) {
+          return const AgentResponse(
+            actions: [
+              SayAction(reply: ScriptedReply.lateCheckoutAlreadyRequested),
+            ],
+          );
+        }
         return _startReservation(text, OrderKind.lateCheckout);
       case null:
         return const AgentResponse(

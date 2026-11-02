@@ -48,11 +48,22 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   }
 
   /// Keyboard and quick panel are mutually exclusive (PRD 6.4): focusing the
-  /// input collapses the panel.
+  /// input collapses the panel and brings the newest message into view.
   void _handleFocusChanged() {
-    if (_inputFocus.hasFocus && _panelOpen) {
+    if (!_inputFocus.hasFocus) {
+      return;
+    }
+    if (_panelOpen) {
       setState(() => _panelOpen = false);
     }
+    _scrollToBottom(animated: false);
+    // The keyboard inset lands a few frames later; scroll again afterwards so
+    // the transcript really rests at the new bottom edge.
+    Future<void>.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && _inputFocus.hasFocus) {
+        _scrollToBottom(animated: false);
+      }
+    });
   }
 
   void _togglePanel() {
@@ -64,7 +75,14 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     setState(() => _panelOpen = true);
   }
 
+  void _closePanel() {
+    if (_panelOpen) {
+      setState(() => _panelOpen = false);
+    }
+  }
+
   void _sendText(String raw) {
+    _closePanel();
     ref.read(hotelChatControllerProvider.notifier).sendGuestText(raw);
   }
 
@@ -84,7 +102,12 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
 
   /// Opens the read-only order sheet (D11). Rows refresh live while the
   /// sheet stays open through the [showHotelOrderSheet] items builder.
+  ///
+  /// The quick panel and the order sheet are mutually exclusive: opening the
+  /// sheet collapses the panel and drops the keyboard first (PRD 6.4).
   void _showOrderSheet() {
+    _closePanel();
+    _inputFocus.unfocus();
     final l10n = AppLocalizations.of(context);
     final room = ref.read(hotelGuestProfileProvider).roomNo;
     final state = ref.read(hotelChatControllerProvider).value;
@@ -103,16 +126,21 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
     );
   }
 
-  void _scrollToBottom() {
+  void _scrollToBottom({bool animated = true}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scroll.hasClients) {
         return;
       }
-      _scroll.animateTo(
-        _scroll.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
+      final target = _scroll.position.maxScrollExtent;
+      if (animated) {
+        _scroll.animateTo(
+          target,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      } else {
+        _scroll.jumpTo(target);
+      }
     });
   }
 
@@ -146,15 +174,33 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
         bottom: false,
         child: Column(
           children: [
-            Expanded(child: _buildBody(l10n, chat)),
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(l10n, chat),
+                  // Tapping the transcript dismisses the quick panel before
+                  // any chat control receives the gesture (PRD 6.4).
+                  if (_panelOpen)
+                    Positioned.fill(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: _closePanel,
+                        child: const ColoredBox(color: Colors.transparent),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            _buildInputBar(l10n),
+            // The quick panel opens below the input bar, like a keyboard
+            // tray, so opening it never compresses the transcript upward.
             AnimatedSize(
               duration: const Duration(milliseconds: 200),
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               child: _panelOpen
                   ? QuickServicesPanel(onSelect: _onQuickSelect)
                   : const SizedBox(width: double.infinity),
             ),
-            _buildInputBar(l10n),
           ],
         ),
       ),
@@ -186,6 +232,7 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
         controller: _scroll,
         typing: state.typing,
         freshReplyIds: state.freshReplyIds,
+        activeChipsId: state.activeChipsMessageId,
         showGuessCard: _shouldShowGuessCard(state),
         onGuessSelect: _sendText,
         onConfirm: (orderId, quantity) => ref
@@ -259,6 +306,8 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n, String room) {
     final badge = l10n.hotelRoomBadge(room, l10n.hotelMockGuestName);
     return AppBar(
+      centerTitle: false,
+      titleSpacing: AppSpacing.md,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -303,7 +352,10 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
   /// (docs/06 §3.2).
   Widget _buildInputBar(AppLocalizations l10n) {
     return Container(
-      color: HotelColors.surface,
+      decoration: const BoxDecoration(
+        color: HotelColors.surface,
+        boxShadow: HotelShadows.edgeTop,
+      ),
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.md,
         AppSpacing.sm,
@@ -318,26 +370,36 @@ class _HotelChatPageState extends ConsumerState<HotelChatPage> {
           decoration: BoxDecoration(
             color: HotelColors.inputPill,
             borderRadius: BorderRadius.circular(HotelDimens.capsuleRadius),
+            boxShadow: HotelShadows.tile,
           ),
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: _input,
-                  focusNode: _inputFocus,
-                  textInputAction: TextInputAction.send,
-                  onSubmitted: (_) => _sendFromInput(),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: HotelColors.textPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: l10n.chatInputHint,
-                    hintStyle: const TextStyle(
+                // Listener (not a gesture) so every tap on the field scrolls
+                // the transcript down even when the field already has focus.
+                child: Listener(
+                  behavior: HitTestBehavior.translucent,
+                  onPointerDown: (_) {
+                    _closePanel();
+                    _scrollToBottom(animated: false);
+                  },
+                  child: TextField(
+                    controller: _input,
+                    focusNode: _inputFocus,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => _sendFromInput(),
+                    style: const TextStyle(
                       fontSize: 15,
-                      color: HotelColors.textHint,
+                      color: HotelColors.textPrimary,
                     ),
-                    border: InputBorder.none,
+                    decoration: InputDecoration(
+                      hintText: l10n.chatInputHint,
+                      hintStyle: const TextStyle(
+                        fontSize: 15,
+                        color: HotelColors.textHint,
+                      ),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
@@ -384,6 +446,7 @@ class ChatMessageList extends StatelessWidget {
     required this.controller,
     required this.typing,
     required this.freshReplyIds,
+    required this.activeChipsId,
     required this.showGuessCard,
     required this.onGuessSelect,
     required this.onConfirm,
@@ -401,6 +464,10 @@ class ChatMessageList extends StatelessWidget {
 
   /// Reply ids that arrived live this session and still play their reveal.
   final Set<String> freshReplyIds;
+
+  /// Chips message that may still be tapped; every other chips row is a
+  /// spent prompt and renders disabled (one-shot interaction rule).
+  final String? activeChipsId;
 
   /// Whether the guess-question welcome card is still active (docs/06 §3.2).
   final bool showGuessCard;
@@ -444,6 +511,9 @@ class ChatMessageList extends StatelessWidget {
     }
     return ListView.builder(
       controller: controller,
+      // Clamping keeps Android 12's stretch effect from dragging the whole
+      // transcript on overscroll.
+      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.all(AppSpacing.md),
       itemCount: entries.length,
       itemBuilder: (context, index) {
@@ -473,24 +543,19 @@ class ChatMessageList extends StatelessWidget {
           onRate: onRate,
         );
       case MessageKind.chips:
-        return Row(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ChatAvatar(semanticLabel: l10n.conciergeAvatarSemantic),
-            const SizedBox(width: AppSpacing.sm),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildConciergeText(
-                    l10n,
-                    message,
-                    key: ValueKey('chips-${message.id}'),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  ChatChips(options: message.chips, onSelect: onChipSelect),
-                ],
-              ),
+            _buildConciergeText(
+              l10n,
+              message,
+              key: ValueKey('chips-${message.id}'),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            ChatChips(
+              options: message.chips,
+              onSelect: onChipSelect,
+              enabled: message.id == activeChipsId,
             ),
           ],
         );
@@ -506,11 +571,7 @@ class ChatMessageList extends StatelessWidget {
             key: ValueKey('text-${message.id}'),
           );
         }
-        return ChatBubble(
-          role: message.role,
-          text: text,
-          avatarSemanticLabel: l10n.conciergeAvatarSemantic,
-        );
+        return ChatBubble(role: message.role, text: text);
     }
   }
 
@@ -528,7 +589,6 @@ class ChatMessageList extends StatelessWidget {
       key: key,
       role: MessageRole.concierge,
       text: text,
-      avatarSemanticLabel: l10n.conciergeAvatarSemantic,
       content: isFresh
           ? ReplyTypewriter(
               text: text,
